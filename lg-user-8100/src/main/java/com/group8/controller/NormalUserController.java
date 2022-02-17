@@ -31,7 +31,6 @@ public class NormalUserController {
     @Autowired
     RabbitTemplate rabbitTemplate;
 
-    public ResponseEntity<String> register(@RequestBody LgNormalUser lgNormalUser){
     CircleCaptcha captcha;
 
 
@@ -108,32 +107,10 @@ public class NormalUserController {
         }
     }
 
-    @PostMapping("/collect")
-    @ApiOperation(value = "用户更新", notes = "根据id更新用户信息")
+    //@PostMapping("/collect")
+    //@ApiOperation(value = "用户更新", notes = "根据id更新用户信息")
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @GetMapping("/test")
-    public ResponseEntity<String> test() {
-        //定义图形验证码的长、宽、验证码字符数、干扰元素个数
-        captcha = CaptchaUtil.createCircleCaptcha(200, 100, 4, 20);
-        //CircleCaptcha captcha = new CircleCaptcha(200, 100, 4, 20);
-        //图形验证码写出，可以写出到文件，也可以写出到流
-        captcha.write("/Users/Comme_moi/Desktop/circle.png");
-        return null;
-    }
 
     @RequestMapping("/sendEmail")
     public String sendEmail(){
@@ -156,6 +133,15 @@ public class NormalUserController {
 
 
 
+    @GetMapping("/test")
+    public ResponseEntity<String> test() {
+        //定义图形验证码的长、宽、验证码字符数、干扰元素个数
+        captcha = CaptchaUtil.createCircleCaptcha(200, 100, 4, 20);
+        //CircleCaptcha captcha = new CircleCaptcha(200, 100, 4, 20);
+        //图形验证码写出，可以写出到文件，也可以写出到流
+        captcha.write("/Users/Comme_moi/Desktop/circle.png");
+        return null;
+    }
 
 
     @GetMapping("/test1/{code}")

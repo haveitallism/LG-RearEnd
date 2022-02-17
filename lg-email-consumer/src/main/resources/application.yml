@@ -17,7 +17,7 @@ spring:
     password: guest
 
 mybatis:
-  type-aliases-package: com.group.entity
+  type-aliases-package: com.group8.entity
   mapper-locations: classpath:/dao/*.xml
 
 mail:

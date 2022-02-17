@@ -20,7 +20,7 @@ public class sendEmail {
         String email = lgNormalUser.getUserEmail();
         //String message = "<a href = http://localhost:8100/nUser/activeUser?code="+ code +">点击此链接进行激活❥</a> ";
         String text = "<a href='http://localhost:8100/nUser/activeUser?code="+ code + "'>点击此链接进行激活</a>";
-        MailUtil.send("454476569@qq.com","旅鸽网站激活邮件",text,false);
+        MailUtil.send(lgNormalUser.getUserEmail(),"旅鸽网站激活邮件",text,false);
     }
 
 }

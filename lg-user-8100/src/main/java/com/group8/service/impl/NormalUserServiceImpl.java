@@ -4,10 +4,10 @@ import com.group8.dao.NormalUserDao;
 import com.group8.entity.LgNormalUser;
 import com.group8.service.NormalUserService;
 import com.group8.utils.MD5Utils;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.UUID;
 
 import java.sql.Timestamp;
@@ -23,6 +23,9 @@ public class NormalUserServiceImpl implements NormalUserService {
 
     @Autowired(required = false)
     NormalUserDao normalUserDao;
+
+    @Autowired
+    RabbitTemplate rabbitTemplate;
 
     @Override
     public int addNormalUser(LgNormalUser lgNormalUser) {
@@ -66,10 +69,6 @@ public class NormalUserServiceImpl implements NormalUserService {
         lgNormalUser.setUpdatedTime(timestamp);
         return normalUserDao.update(lgNormalUser);
     }
-
-
-    @Autowired
-    NormalUserDao normalUserDao;
 
     @Override
     public boolean checkActiveCode(String code) {

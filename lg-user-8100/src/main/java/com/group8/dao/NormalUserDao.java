@@ -18,6 +18,7 @@ public interface NormalUserDao {
     LgNormalUser checkActiveCode(String code);
 
     int updateUserStatus(int userId);
+
     LgNormalUser findByUsernameAndPwd(@Param("userName") String userName, @Param("password") String password);
 
     List<LgNormalUser> findAll();
