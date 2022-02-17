@@ -17,6 +17,7 @@ public class LgNormalUser {
     private String userHeadImg;
     private String userIntro;
     private String userStatus;
+    private String activeCode;
     private String createdBy;
     private java.sql.Timestamp createdTime;
     private String updatedBy;

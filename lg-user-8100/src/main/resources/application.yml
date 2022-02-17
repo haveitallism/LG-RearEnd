@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://162.14.112.78:3306/stepFour?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://162.14.112.78:3306/lg?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
     username: travel
     password: 123456
   application:
@@ -13,7 +13,14 @@ spring:
   main:
     allow-circular-references: true
 
-
 mybatis:
-  type-aliases-package: com.group.entity
+  type-aliases-package: com.group8.entity
   mapper-locations: classpath:/dao/*.xml
+  #下划线转驼峰配置
+  configuration:
+    map-underscore-to-camel-case: true
+
+#日志配置
+logging:
+  level:
+    com.group8.dao: debug

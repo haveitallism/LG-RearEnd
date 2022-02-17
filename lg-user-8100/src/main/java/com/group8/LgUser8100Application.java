@@ -1,5 +1,6 @@
 package com.group8;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @apiNote
  */
 @SpringBootApplication
+@MapperScan("com.group8.dao")
 public class LgUser8100Application {
     public static void main(String[] args) {
         SpringApplication.run(LgUser8100Application.class, args);

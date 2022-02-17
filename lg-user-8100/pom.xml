@@ -60,6 +60,13 @@
             <version>2.9.2</version>
         </dependency>
 
+        <!--HuTool工具包依赖-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.7.21</version>
+        </dependency>
+
     </dependencies>
 
 </project>

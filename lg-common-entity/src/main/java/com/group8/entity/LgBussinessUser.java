@@ -21,6 +21,7 @@ public class LgBussinessUser {
     private long bussLicenseNum;
     private String bussLicenseImg;
     private long bussStatus;
+    private String activeCode;
     private String createdBy;
     private java.sql.Timestamp createdTime;
     private String updatedBy;
