@@ -1,0 +1,15 @@
+server:
+  port: 8200
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://162.14.112.78:3306/etms?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    username: travel
+    password: 123456
+#mybatis配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.group8.entity
+  #下划线转驼峰配置
+  configuration:
+    map-underscore-to-camel-case: true
