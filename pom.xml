@@ -11,6 +11,10 @@
     <modules>
         <module>lg-group-8400</module>
     </modules>
+    <modules>
+        <module>lg-common-entity</module>
+        <module>lg-user-8100</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
