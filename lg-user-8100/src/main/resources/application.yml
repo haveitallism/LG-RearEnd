@@ -1,0 +1,19 @@
+server:
+  port: 8100
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://162.14.112.78:3306/stepFour?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    username: travel
+    password: 123456
+  application:
+    name: lg-user-8100 # 注册到注册中心的名字
+  # 分页插件允许循环依赖
+  main:
+    allow-circular-references: true
+
+
+mybatis:
+  type-aliases-package: com.group.entity
+  mapper-locations: classpath:/dao/*.xml
