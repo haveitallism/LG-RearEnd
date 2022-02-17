@@ -1,6 +1,7 @@
 package com.group8;
 
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @apiNote
  */
 @SpringBootApplication
+@EnableRabbit
 @MapperScan("com.group8.dao")
 public class LgUser8100Application {
     public static void main(String[] args) {

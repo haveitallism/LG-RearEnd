@@ -14,6 +14,10 @@ public interface NormalUserDao {
 
     int addNormalUser(@Param("normalUser") LgNormalUser lgNormalUser);
 
+    //验证激活码
+    LgNormalUser checkActiveCode(String code);
+
+    int updateUserStatus(int userId);
     LgNormalUser findByUsernameAndPwd(@Param("userName") String userName, @Param("password") String password);
 
     List<LgNormalUser> findAll();

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LgNormalUser {
 
-    private long userId;
+    private int userId;
     private String userName;
     private String userPassword;
     private String userEmail;
@@ -22,5 +22,6 @@ public class LgNormalUser {
     private java.sql.Timestamp createdTime;
     private String updatedBy;
     private java.sql.Timestamp updatedTime;
+    private String activeCode;
 
 }

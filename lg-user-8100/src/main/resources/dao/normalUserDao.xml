@@ -42,4 +42,11 @@
         select * from lg.lg_normal_user where user_id = #{id}
     </select>
 
+    <select id="checkActiveCode" resultType="com.group8.entity.LgNormalUser">
+        select * from lg.lg_normal_user where active_code = #{code}
+    </select>
+
+    <update id="updateUserStatus">
+        update lg.lg_normal_user set user_status = 1 where user_id = #{userId}
+    </update>
 </mapper>
