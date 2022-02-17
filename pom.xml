@@ -8,12 +8,10 @@
     <artifactId>LG-RearEnd</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+
     <modules>
-        <module>lg-group-8400</module>
-    </modules>
-    <modules>
+        <module>lg-tournote-8500</module>
         <module>lg-common-entity</module>
-        <module>lg-user-8100</module>
     </modules>
 
     <properties>

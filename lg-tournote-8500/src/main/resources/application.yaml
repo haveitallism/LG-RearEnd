@@ -1,0 +1,14 @@
+server:
+  port: 8500
+  application:
+    name: alibaba-provider-user
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://162.14.112.78:3306/lg
+    username: travel
+    password: 123456
+
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  type-aliases-package: com.group8.entity
