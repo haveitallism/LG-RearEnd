@@ -1,5 +1,5 @@
 server:
-  port: 8100
+  port: 8101
 
 spring:
   datasource:
@@ -8,10 +8,7 @@ spring:
     username: travel
     password: 123456
   application:
-    name: lg-user-8100 # 注册到注册中心的名字
-  # 分页插件允许循环依赖
-  main:
-    allow-circular-references: true
+    name: lg-eamil-8101 # 注册到注册中心的名字
   rabbitmq:
     host: localhost
     port: 5672
@@ -19,20 +16,12 @@ spring:
     username: guest
     password: guest
 
-
 mybatis:
   type-aliases-package: com.group.entity
   mapper-locations: classpath:/dao/*.xml
-  #下划线转驼峰配置
-  configuration:
-    map-underscore-to-camel-case: true
 
-#日志配置
-logging:
-  level:
-    com.group8.dao: debug
-
-
-
+mail:
+  subject: 来自飞鸽旅社的通知
+  content: 欢迎{username},您的验证码w为{code},请在5分钟内激活~
 
 

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.group8.dao.NormalUserDao">
+
+    <insert id="addNormalUser">
+        insert into lg.lg_normal_user values (null,
+                                              #{normalUser.userName},
+                                              #{normalUser.userPassword},
+                                              #{normalUser.userEmail},
+                                              #{normalUser.userTelphone},
+                                              #{normalUser.userHeadImg},
+                                              #{normalUser.userIntro},
+                                              #{normalUser.userStatus},
+                                              #{normalUser.createdBy},
+                                              #{normalUser.createdTime},
+                                              #{normalUser.updatedBy},
+                                              #{normalUser.updatedTime}
+                                              )
+    </insert>
+
+    <select id="checkActiveCode" resultType="com.group8.entity.LgNormalUser">
+        select * from lg.lg_normal_user where active_code = #{code}
+    </select>
+
+    <update id="updateUserStatus">
+        update lg.lg_normal_user set user_status = 1 where user_id = #{userId}
+    </update>
+</mapper>

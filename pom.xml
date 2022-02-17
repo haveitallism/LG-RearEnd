@@ -13,6 +13,7 @@
         <module>lg-common-entity</module>
         <module>lg-user-8100</module>
         <module>lg-group-8400</module>
+        <module>lg-email-consumer</module>
     </modules>
 
     <properties>

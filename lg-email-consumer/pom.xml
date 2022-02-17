@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>lg-user-8100</artifactId>
+    <artifactId>lg-email-consumer</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -17,11 +17,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.group8</groupId>
-            <artifactId>lg-common-entity</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
         <!--mysql连接驱动-->
         <dependency>
             <groupId>mysql</groupId>
@@ -48,16 +43,16 @@
             <artifactId>druid-spring-boot-starter</artifactId>
         </dependency>
 
-        <!-- swagger2 依赖 -->
+        <!-- 发送邮件-->
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>2.9.2</version>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.7.19</version>
         </dependency>
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.9.2</version>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
         </dependency>
 
         <!-- RabbitMq-->
@@ -71,11 +66,6 @@
             <artifactId>lg-common-entity</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-
-
-
-
-
     </dependencies>
 
 </project>
