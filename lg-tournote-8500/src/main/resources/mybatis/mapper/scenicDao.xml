@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.group8.dao.ScenicDao">
+    <update id="uploadImg">
+        update lg_scenicspot set scenic_cover_url = #{scenicSpotUrl} where scenic_id = #{scenicId}
+    </update>
+</mapper>
