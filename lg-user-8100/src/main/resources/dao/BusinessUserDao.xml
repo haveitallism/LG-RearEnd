@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.group8.dao.BusinessUserDao">
+
+    <insert id="addBuss">
+        insert into
+            lg_bussiness_user(buss_id, buss_name, buss_company_name, buss_password, buss_email, buss_telphone, buss_head_img, buss_intro, buss_scale, buss_address, buss_license_num, buss_license_img, buss_status, created_by, created_time, updated_by, updated_time)
+            values (null,#{bussName},#{bussCompanyName},#{bussPassword},#{bussEmail},#{bussTelphone},#{bussHeadImg},#{bussIntro},#{bussScale},#{bussAddress},#{bussLicenseNum},#{bussLicenseImg},0,#{createdBy},#{createdTime},null,null)
+    </insert>
+
+    <select id="findByUsernameAndPwd" resultType="com.group8.entity.LgBussinessUser">
+        select * from lg.lg_bussiness_user where buss_name=#{userName} and buss_password = #{encryptedPwd}
+    </select>
+
+    <select id="findAll" resultType="com.group8.entity.LgBussinessUser">
+        select * from lg_bussiness_user
+    </select>
+
+    <select id="findById" resultType="com.group8.entity.LgBussinessUser">
+        select * from lg_bussiness_user where buss_id = #{id}
+    </select>
+
+    <update id="update">
+        update lg_bussiness_user set buss_name = #{bussName},
+                                     buss_company_name = #{bussCompanyName},
+                                     buss_password = #{bussPassword},
+                                     buss_email = #{bussEmail},
+                                     buss_intro = #{bussIntro},
+                                     buss_scale = #{bussScale},
+                                     buss_telphone = #{bussTelphone},
+                                     buss_head_img = #{bussHeadImg},
+                                     buss_address = #{bussAddress},
+                                     buss_license_num = #{bussLicenseNum},
+                                     buss_license_img = #{bussLicenseImg},
+                                     updated_time = #{updatedTime}
+                               where buss_id = #{bussId}
+    </update>
+</mapper>

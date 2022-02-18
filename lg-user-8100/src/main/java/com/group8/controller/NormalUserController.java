@@ -111,7 +111,7 @@ public class NormalUserController {
     //@ApiOperation(value = "用户更新", notes = "根据id更新用户信息")
 
 
-
+    @ApiOperation(value = "邮件发送", notes = "将邮件业务由消息队列中传出")
     @RequestMapping("/sendEmail")
     public String sendEmail(){
         LgNormalUser user = new LgNormalUser();
@@ -121,6 +121,7 @@ public class NormalUserController {
         return "发送邮件成功";
     }
 
+    @ApiOperation(value = "用户激活", notes = "将用户状态码更改为1")
     @RequestMapping("/activeUser")
     public String checkActiveCode(String code){
         boolean b = normalUserService.checkActiveCode(code);
@@ -130,7 +131,6 @@ public class NormalUserController {
             return "验证失败";
         }
     }
-
 
 
     @GetMapping("/test")

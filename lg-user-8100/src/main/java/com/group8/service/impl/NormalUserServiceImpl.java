@@ -36,8 +36,6 @@ public class NormalUserServiceImpl implements NormalUserService {
         long currentTimeMillis = System.currentTimeMillis();
         Timestamp timestamp = new Timestamp(currentTimeMillis);
         lgNormalUser.setCreatedTime(timestamp);
-        // 设置用户账户状态为0，用户需要邮箱验证
-        lgNormalUser.setUserStatus("0");
         // 设置用户默认头像,用户后期自行修改
         String defaultAvatar = "https://gitee.com/cdlycode/oss/raw/master/uPic/2022-02/17-145600.jpeg";
         lgNormalUser.setUserHeadImg(defaultAvatar);
