@@ -1,17 +1,22 @@
 package com.group8.service.impl;
 
 import com.group8.dao.NormalUserDao;
+import com.group8.dto.UserLoginForm;
 import com.group8.entity.LgNormalUser;
 import com.group8.service.NormalUserService;
+import com.group8.utils.JWTUtils;
 import com.group8.utils.MD5Utils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
 import java.util.UUID;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author laiyong
@@ -27,8 +32,15 @@ public class NormalUserServiceImpl implements NormalUserService {
     @Autowired
     RabbitTemplate rabbitTemplate;
 
+    @Autowired
+    RedisTemplate redisTemplate;
+
     @Override
     public int addNormalUser(LgNormalUser lgNormalUser) {
+        LgNormalUser existUser = normalUserDao.checkUserName(lgNormalUser.getUserName());
+        if (existUser != null){
+            return -1; // 用户名已存在
+        }
         // 密码使用MD5加密,重新设置回去
         String encryptedPwd = MD5Utils.encrypt(lgNormalUser.getUserPassword(), lgNormalUser.getUserName() + "lg");
         lgNormalUser.setUserPassword(encryptedPwd);
@@ -39,14 +51,30 @@ public class NormalUserServiceImpl implements NormalUserService {
         // 设置用户默认头像,用户后期自行修改
         String defaultAvatar = "https://gitee.com/cdlycode/oss/raw/master/uPic/2022-02/17-145600.jpeg";
         lgNormalUser.setUserHeadImg(defaultAvatar);
+        // 发送验证邮件
+        // 生成随机验证码
+        UUID uuid = UUID.randomUUID();
+        String activeCode = uuid.toString().replace("-", "");
+        lgNormalUser.setActiveCode(activeCode);
+        // 将激活码存入redis，设置失效时间为30分钟
+        redisTemplate.opsForValue().set(activeCode, activeCode);
+        redisTemplate.expire(activeCode, 30, TimeUnit.MINUTES);
+        rabbitTemplate.convertAndSend("LG-mail-exchange", "LgMail", lgNormalUser);
         return normalUserDao.addNormalUser(lgNormalUser);
     }
 
     @Override
-    public LgNormalUser findByUsernameAndPwd(String userName, String password) {
+    public String login(UserLoginForm userLoginForm) {
         // 密码加密后查询
-        String encryptedPwd = MD5Utils.encrypt(password, userName + "lg");
-        return normalUserDao.findByUsernameAndPwd(userName, encryptedPwd);
+        String encryptedPwd = MD5Utils.encrypt(userLoginForm.getPassword(), userLoginForm.getUserName() + "lg");
+        LgNormalUser normalUser = normalUserDao.findByUsernameAndPwd(userLoginForm.getUserName(), encryptedPwd);
+        if (normalUser != null){
+            String token = JWTUtils.sign(normalUser.getUserName(), normalUser.getUserPassword());
+            redisTemplate.opsForValue().set(normalUser.getUserName(), token);
+            return token;
+        }else {
+            return null;
+        }
     }
 
     @Override
@@ -61,6 +89,9 @@ public class NormalUserServiceImpl implements NormalUserService {
 
     @Override
     public int update(LgNormalUser lgNormalUser) {
+        // 密码使用MD5加密,重新设置回去
+        String encryptedPwd = MD5Utils.encrypt(lgNormalUser.getUserPassword(), lgNormalUser.getUserName() + "lg");
+        lgNormalUser.setUserPassword(encryptedPwd);
         // 获取当前时间为更新时间
         long currentTimeMillis = System.currentTimeMillis();
         Timestamp timestamp = new Timestamp(currentTimeMillis);
@@ -70,15 +101,23 @@ public class NormalUserServiceImpl implements NormalUserService {
 
     @Override
     public boolean checkActiveCode(String code) {
-        //验证激活码获取此用户信息
-        LgNormalUser lgNormalUser = normalUserDao.checkActiveCode(code);
-        System.out.println(code);
-        System.out.println(lgNormalUser);
-        //如果验证激活码成功修改状态
-        if(lgNormalUser != null){
-            normalUserDao.updateUserStatus(lgNormalUser.getUserId());
+        if (redisTemplate.hasKey(code)){
+            //验证激活码获取此用户信息
+            LgNormalUser lgNormalUser = normalUserDao.checkActiveCode(code);
+            //如果验证激活码成功修改状态
+            if (lgNormalUser != null) {
+                normalUserDao.updateUserStatus(lgNormalUser.getUserId());
+                redisTemplate.delete(code);
+                return true;
+            }
+            return false;
         }
-        return lgNormalUser != null;
+        return false;
+    }
+
+    @Override
+    public int deleteById(int id) {
+        return normalUserDao.deleteById(id);
     }
 
 

@@ -30,6 +30,10 @@
                                where user_id = #{normalUser.userId}
     </update>
 
+    <delete id="deleteById">
+        delete from lg.lg_normal_user where user_id = #{id}
+    </delete>
+
     <select id="findByUsernameAndPwd" resultType="com.group8.entity.LgNormalUser">
         select * from lg.lg_normal_user where user_name = #{userName} and user_password = #{password}
     </select>
@@ -44,6 +48,10 @@
 
     <select id="checkActiveCode" resultType="com.group8.entity.LgNormalUser">
         select * from lg.lg_normal_user where active_code = #{code}
+    </select>
+
+    <select id="checkUserName" resultType="com.group8.entity.LgNormalUser">
+        select * from lg.lg_normal_user where user_name = #{userName}
     </select>
 
     <update id="updateUserStatus">
