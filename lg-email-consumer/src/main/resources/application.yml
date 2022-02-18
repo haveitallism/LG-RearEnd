@@ -20,8 +20,5 @@ mybatis:
   type-aliases-package: com.group8.entity
   mapper-locations: classpath:/dao/*.xml
 
-mail:
-  subject: 来自飞鸽旅社的通知
-  content: 欢迎{username},您的验证码w为{code},请在5分钟内激活~
 
 

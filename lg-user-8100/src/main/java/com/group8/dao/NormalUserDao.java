@@ -1,5 +1,6 @@
 package com.group8.dao;
 
+import com.group8.dto.UserQueryCondition;
 import com.group8.entity.LgNormalUser;
 import org.apache.ibatis.annotations.Param;
 
@@ -21,9 +22,7 @@ public interface NormalUserDao {
 
     LgNormalUser findByUsernameAndPwd(@Param("userName") String userName, @Param("password") String password);
 
-    List<LgNormalUser> findAll();
-
-    LgNormalUser findById(@Param("id") int id);
+    List<LgNormalUser> findByCondition(@Param("lgNormalUser") LgNormalUser lgNormalUser);
 
     int update(@Param("normalUser") LgNormalUser lgNormalUser);
 

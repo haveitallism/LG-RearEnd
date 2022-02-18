@@ -1,6 +1,7 @@
 package com.group8.service;
 
 import com.group8.dto.UserLoginForm;
+import com.group8.dto.UserQueryCondition;
 import com.group8.entity.LgNormalUser;
 
 import java.util.List;
@@ -14,9 +15,7 @@ import java.util.List;
 public interface NormalUserService {
     int addNormalUser(LgNormalUser lgNormalUser);
 
-    List<LgNormalUser> findAll();
-
-    LgNormalUser findById(int id);
+    List<LgNormalUser> findByCondition(LgNormalUser lgNormalUser);
 
     int update(LgNormalUser lgNormalUser);
 
@@ -26,4 +25,10 @@ public interface NormalUserService {
     int deleteById(int id);
 
     String login(UserLoginForm userLoginForm);
+
+    boolean logout(String token);
+
+    void browse(long userId, Object browsed);
+
+    List<Object> selectBrowsed(long userId);
 }

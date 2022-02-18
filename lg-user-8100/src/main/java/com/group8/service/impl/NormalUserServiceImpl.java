@@ -2,6 +2,7 @@ package com.group8.service.impl;
 
 import com.group8.dao.NormalUserDao;
 import com.group8.dto.UserLoginForm;
+import com.group8.dto.UserQueryCondition;
 import com.group8.entity.LgNormalUser;
 import com.group8.service.NormalUserService;
 import com.group8.utils.JWTUtils;
@@ -10,12 +11,12 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
+import java.util.*;
 
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -38,7 +39,7 @@ public class NormalUserServiceImpl implements NormalUserService {
     @Override
     public int addNormalUser(LgNormalUser lgNormalUser) {
         LgNormalUser existUser = normalUserDao.checkUserName(lgNormalUser.getUserName());
-        if (existUser != null){
+        if (existUser != null) {
             return -1; // 用户名已存在
         }
         // 密码使用MD5加密,重新设置回去
@@ -70,23 +71,26 @@ public class NormalUserServiceImpl implements NormalUserService {
         // 密码加密后查询
         String encryptedPwd = MD5Utils.encrypt(userLoginForm.getPassword(), userLoginForm.getUserName() + "lg");
         LgNormalUser normalUser = normalUserDao.findByUsernameAndPwd(userLoginForm.getUserName(), encryptedPwd);
-        if (normalUser != null){
+        if (normalUser != null) {
             String token = JWTUtils.sign(normalUser.getUserName(), normalUser.getUserPassword());
             redisTemplate.opsForValue().set(normalUser.getUserName(), token);
             return token;
-        }else {
+        } else {
             return null;
         }
     }
 
     @Override
-    public List<LgNormalUser> findAll() {
-        return normalUserDao.findAll();
+    public boolean logout(String token) {
+        // 删除redis中的token
+        String userName = JWTUtils.getUserName(token);
+        return redisTemplate.delete(userName);
     }
 
     @Override
-    public LgNormalUser findById(int id) {
-        return normalUserDao.findById(id);
+    public List<LgNormalUser> findByCondition(LgNormalUser lgNormalUser) {
+        System.out.println(lgNormalUser);
+        return normalUserDao.findByCondition(lgNormalUser);
     }
 
     @Override
@@ -103,7 +107,7 @@ public class NormalUserServiceImpl implements NormalUserService {
 
     @Override
     public boolean checkActiveCode(String code) {
-        if (redisTemplate.hasKey(code)){
+        if (redisTemplate.hasKey(code)) {
             //验证激活码获取此用户信息
             LgNormalUser lgNormalUser = normalUserDao.checkActiveCode(code);
             //如果验证激活码成功修改状态
@@ -120,6 +124,26 @@ public class NormalUserServiceImpl implements NormalUserService {
     @Override
     public int deleteById(int id) {
         return normalUserDao.deleteById(id);
+    }
+
+    @Override
+    public void browse(long userId, Object browsed) {
+        ZSetOperations<String, Object> zSetOperations = redisTemplate.opsForZSet();
+        Boolean add = zSetOperations.add(Long.toString(userId), browsed, System.currentTimeMillis());
+    }
+
+    @Override
+    public List<Object> selectBrowsed(long userId) {
+        if (userId <= 0) {
+            return Collections.emptyList();
+        }
+        // 获取用户最近浏览的项目
+        Set<Object> set = redisTemplate.opsForZSet().reverseRange(Long.toString(userId), 0, 7);
+        List<Object> arrayList = new ArrayList<>();
+        set.forEach(item -> {
+            arrayList.add(item);
+        });
+        return arrayList;
     }
 
 
