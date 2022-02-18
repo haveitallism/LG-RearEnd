@@ -152,7 +152,6 @@ public class NormalUserController {
     }
 
 
-
     @GetMapping("/test")
     public ResponseEntity<String> test() {
         //定义图形验证码的长、宽、验证码字符数、干扰元素个数
