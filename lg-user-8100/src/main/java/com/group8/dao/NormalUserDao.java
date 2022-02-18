@@ -26,4 +26,8 @@ public interface NormalUserDao {
     LgNormalUser findById(@Param("id") int id);
 
     int update(@Param("normalUser") LgNormalUser lgNormalUser);
+
+    int deleteById(@Param("id") int id);
+
+    LgNormalUser checkUserName(@Param("userName") String userName);
 }
