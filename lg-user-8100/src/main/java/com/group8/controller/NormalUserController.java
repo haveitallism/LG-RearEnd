@@ -75,7 +75,7 @@ public class NormalUserController {
     public ResponseEntity<String> logout(@PathVariable("token") String token) {
         boolean flag = normalUserService.logout(token);
         if (flag) {
-            return new ResponseEntity<>(200, "登出成功！", token);
+            return new ResponseEntity<>(200, "登出成功！", "");
         } else {
             return new ResponseEntity<>(500, "登出失败！", "");
         }
