@@ -14,7 +14,7 @@
         <module>lg-common-entity</module>
         <module>lg-user-8100</module>
         <module>lg-email-consumer</module>
-        <module>lg-comment-8200</module>
+        <module>lg-comments-8200</module>
     </modules>
 
     <properties>
