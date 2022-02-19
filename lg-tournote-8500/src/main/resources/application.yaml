@@ -1,13 +1,13 @@
 server:
   port: 8500
-  application:
-    name: tourNote-8500
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://162.14.112.78:3306/lg
     username: travel
     password: 123456
+  application:
+    name: lh-tourNote-8500
 
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml

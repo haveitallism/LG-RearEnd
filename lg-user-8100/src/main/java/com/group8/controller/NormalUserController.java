@@ -57,6 +57,7 @@ public class NormalUserController {
     @PostMapping("/login")
     @ApiOperation(value = "用户登陆", notes = "用户登陆")
     public ResponseEntity<String> login(@RequestBody UserLoginForm userLoginForm) {
+        System.out.println(userLoginForm);
         String token = normalUserService.login(userLoginForm);
         if (token != null) {
             return new ResponseEntity<>(200, "登陆成功！", token);
