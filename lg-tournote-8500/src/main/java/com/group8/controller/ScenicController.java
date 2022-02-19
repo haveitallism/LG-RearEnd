@@ -24,6 +24,7 @@ public class ScenicController {
     //上传图片
     @PostMapping("/uploadImg")
     public ResponseEntity<String> uploadImg(UploadImg uploadImg){
+        System.out.println(uploadImg);
         String imgUrl = scenicService.uploadImg(uploadImg);
         return new ResponseEntity(200,"上传成功！",imgUrl);
     }

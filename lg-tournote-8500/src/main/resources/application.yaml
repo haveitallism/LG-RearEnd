@@ -1,7 +1,6 @@
 server:
   port: 8500
-  application:
-    name: tourNote-8500
+
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -12,6 +11,8 @@ spring:
     multipart:
       max-file-size: 50MB
       max-request-size: 60MB
+  application:
+    name: lg-tourNote-8500
 
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml

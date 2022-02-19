@@ -12,6 +12,8 @@
     <modules>
         <module>lg-tournote-8500</module>
         <module>lg-common-entity</module>
+        <module>lg-user-8100</module>
+        <module>lg-email-consumer</module>
     </modules>
 
     <properties>
