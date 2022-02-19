@@ -8,7 +8,15 @@ spring:
     url: jdbc:mysql://162.14.112.78:3306/lg
     username: travel
     password: 123456
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 60MB
 
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
   type-aliases-package: com.group8.entity
+  #下划线转驼峰配置
+  configuration:
+    map-underscore-to-camel-case: true
+

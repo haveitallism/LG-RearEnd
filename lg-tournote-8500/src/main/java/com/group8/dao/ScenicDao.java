@@ -1,5 +1,6 @@
 package com.group8.dao;
 
+import com.group8.entity.LgScenicspot;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -13,4 +14,11 @@ import org.springframework.stereotype.Repository;
 public interface ScenicDao {
 
     boolean uploadImg(@Param("scenicSpotUrl") String scenicSpotUrl,@Param("scenicId") int scenicId);
+
+    LgScenicspot findScenic(int scenicId);
+
+    boolean uploadStrategy(@Param("strategyUrl") String imgUrl, @Param("scenicId") int scenicId);
+
+    boolean updateDownloadsNum(int id);
+
 }

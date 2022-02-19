@@ -5,4 +5,15 @@
     <update id="uploadImg">
         update lg_scenicspot set scenic_cover_url = #{scenicSpotUrl} where scenic_id = #{scenicId}
     </update>
+    <update id="uploadStrategy">
+        update lg_scenicspot set strategy_url = #{strategyUrl} where scenic_id = #{scenicId}
+    </update>
+    <update id="updateDownloadsNum">
+        update lg_scenicspot set downloads_num = IFNULL(downloads_num,0)+1 where scenic_id = #{scenicId}
+    </update>
+    <select id="findScenic" resultType="com.group8.entity.LgScenicspot">
+        select * from lg_scenicspot where scenic_id = #{scenicId}
+    </select>
+
+
 </mapper>
