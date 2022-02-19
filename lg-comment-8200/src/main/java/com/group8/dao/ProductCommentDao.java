@@ -5,14 +5,13 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface TravelNoteCommentDao {
+public interface ProductCommentDao {
+    void addProductCommentDao(LgComment lgComment);
 
-    void addTravelNoteCommentDao(LgComment lgComment);
+    void addMiddule(@Param("pid") int pid, @Param("cid") long commentId);
 
     List<LgComment> findAll(int id);
     List<LgComment> findSon(int fid);
-
-    void addMiddule(@Param("nid") int nid, @Param("cid") long commentId);
 
     void update(int cid);
 
