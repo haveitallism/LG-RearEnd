@@ -16,7 +16,7 @@
         <collection property="lgComments" column="comment_id" ofType="com.group8.entity.LgComment" select="findSon"></collection>
     </resultMap>
     <select id="findAll" resultMap="findAllMap">
-        select * from lg_comment where comment_id in (select sid from lg_scenicspot_comment where sid = #{sid} )
+        select * from lg_comment where comment_id in (select cid from lg_scenicspot_comment where sid = #{sid} )
     </select>
     <select id="findSon" resultMap="findAllMap">
         select * from lg_comment where comment_fid =#{id}
