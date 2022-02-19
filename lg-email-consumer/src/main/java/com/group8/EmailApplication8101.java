@@ -1,15 +1,16 @@
-package com.group;
+package com.group8;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * @author acoffee
- * @create 2022-02-17 13:01
+ * @author QY
+ * @create 2022-02-17 14:29
  */
+
 @SpringBootApplication
-public class LgTournoteApplication8500 {
+public class EmailApplication8101 {
     public static void main(String[] args) {
-        SpringApplication.run(LgTournoteApplication8500.class,args);
+        SpringApplication.run(EmailApplication8101.class,args);
     }
 }
