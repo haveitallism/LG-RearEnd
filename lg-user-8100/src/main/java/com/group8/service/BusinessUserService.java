@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface BusinessUserService {
 
-    int addNormalUser(LgBussinessUser lgBussinessUser) ;
+    int addBusinessUser(LgBussinessUser lgBussinessUser) ;
 
     LgBussinessUser login(String userName, String password);
 
@@ -19,5 +19,9 @@ public interface BusinessUserService {
 
     int update(LgBussinessUser lgBussinessUser);
 
-    List<LgBussinessUser> findAll();
+    List<LgBussinessUser> findAll(LgBussinessUser lgBussinessUser);
+
+    int checkName(String username);
+
+    boolean checkActiveCode(String code);
 }

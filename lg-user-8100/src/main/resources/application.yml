@@ -21,15 +21,17 @@ spring:
 
   #redis配置
   redis:
-    host: 127.0.0.1
-    database: 0
+    host: 162.14.112.78
+    database: 1
     port: 6379
+    password: 123
     jedis:
       pool:
         max-active: 8
         max-idle: 5
         min-idle: 0
         max-wait: -1ms
+
 
 mybatis:
   type-aliases-package: com.group8.entity
