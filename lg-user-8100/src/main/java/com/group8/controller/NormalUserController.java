@@ -50,19 +50,29 @@ public class NormalUserController {
     }
 
     /**
-     * 用户登陆
-     * @param userLoginForm 登陆信息类
+     * 用户登陆获取token
+     * @param lgNormalUser 用户信息类
      * @return 登陆结果
      */
     @PostMapping("/login")
     @ApiOperation(value = "用户登陆", notes = "用户登陆")
-    public ResponseEntity<String> login(@RequestBody UserLoginForm userLoginForm) {
-        System.out.println(userLoginForm);
-        String token = normalUserService.login(userLoginForm);
+    public ResponseEntity<String> login(@RequestBody LgNormalUser lgNormalUser) {
+        String token = normalUserService.login(lgNormalUser);
         if (token != null) {
             return new ResponseEntity<>(200, "登陆成功！", token);
         } else {
             return new ResponseEntity<>(500, "登陆失败！", "");
+        }
+    }
+
+    @PostMapping("/getInfo/{token}")
+    @ApiOperation(value = "获取用户信息", notes = "根据token获取用户信息")
+    public ResponseEntity<LgNormalUser> getInfo(@PathVariable("token") String token) {
+        LgNormalUser normalUser = normalUserService.getInfo(token);
+        if (normalUser != null) {
+            return new ResponseEntity<>(200, "获取成功！", normalUser);
+        } else {
+            return new ResponseEntity<>(500, "获取失败！", null);
         }
     }
 

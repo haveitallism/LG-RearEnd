@@ -24,11 +24,13 @@ public interface NormalUserService {
 
     int deleteById(int id);
 
-    String login(UserLoginForm userLoginForm);
+    String login(LgNormalUser lgNormalUser);
 
     boolean logout(String token);
 
     void browse(long userId, Object browsed);
 
     List<Object> selectBrowsed(long userId);
+
+    LgNormalUser getInfo(String token);
 }

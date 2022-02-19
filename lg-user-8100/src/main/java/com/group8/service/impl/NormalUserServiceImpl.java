@@ -65,10 +65,10 @@ public class NormalUserServiceImpl implements NormalUserService {
     }
 
     @Override
-    public String login(UserLoginForm userLoginForm) {
+    public String login(LgNormalUser lgNormalUser) {
         // 密码加密后查询
-        String encryptedPwd = MD5Utils.encrypt(userLoginForm.getPassword(), userLoginForm.getUserName() + "lg");
-        LgNormalUser normalUser = normalUserDao.findByUsernameAndPwd(userLoginForm.getUserName(), encryptedPwd);
+        String encryptedPwd = MD5Utils.encrypt(lgNormalUser.getUserPassword(), lgNormalUser.getUserName() + "lg");
+        LgNormalUser normalUser = normalUserDao.findByUsernameAndPwd(lgNormalUser.getUserName(), encryptedPwd);
         if (normalUser != null) {
             String token = JWTUtils.sign(normalUser.getUserName(), normalUser.getUserPassword());
             redisTemplate.opsForValue().set(normalUser.getUserName(), token);
@@ -76,6 +76,13 @@ public class NormalUserServiceImpl implements NormalUserService {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public LgNormalUser getInfo(String token) {
+        String userName = JWTUtils.getUserName(token);
+        String encryptedPwd = JWTUtils.getPassword(token);
+        return normalUserDao.findByUsernameAndPwd(userName, encryptedPwd);
     }
 
     @Override
@@ -143,6 +150,8 @@ public class NormalUserServiceImpl implements NormalUserService {
         });
         return arrayList;
     }
+
+
 
 
 }
