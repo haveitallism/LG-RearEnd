@@ -3,13 +3,16 @@ package com.group8.controller;
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.CircleCaptcha;
 import com.group8.dto.BrowseHistory;
+import com.group8.dto.UploadImg;
 import com.group8.dto.UserLoginForm;
 import com.group8.dto.UserQueryCondition;
 import com.group8.entity.*;
+import com.group8.feignClient.TourNoteClient;
 import com.group8.service.NormalUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -22,14 +25,17 @@ import java.util.List;
  */
 @Api(tags = "普通用户管理")
 @RestController
+@RefreshScope
 @RequestMapping("/nUser")
 public class NormalUserController {
 
     @Autowired
     NormalUserService normalUserService;
 
-    CircleCaptcha captcha;
+    @Autowired
+    TourNoteClient tourNoteClient;
 
+    CircleCaptcha captcha;
 
     /**
      * 用户注册
@@ -65,6 +71,11 @@ public class NormalUserController {
         }
     }
 
+    /**
+     * 根据token获取用户信息
+     * @param token 用户token
+     * @return 用户信息
+     */
     @PostMapping("/getInfo/{token}")
     @ApiOperation(value = "获取用户信息", notes = "根据token获取用户信息")
     public ResponseEntity<LgNormalUser> getInfo(@PathVariable("token") String token) {
@@ -119,6 +130,17 @@ public class NormalUserController {
         }
     }
 
+    @PostMapping("/updateHeadImg")
+    @ApiOperation(value = "修改头像", notes = "根据id修改用户头像")
+    public ResponseEntity<String> updateHeadImg(UploadImg uploadImg){
+        int i = normalUserService.updateHeadImg(uploadImg);
+        if (i > 0) {
+            return new ResponseEntity<>(200, "修改成功！", "");
+        } else {
+            return new ResponseEntity<>(500, "修改失败！", "");
+        }
+    }
+
     /**
      * 删除用户，用于注销用户的账户，删除用户信息
      * @param id 用户id
@@ -135,9 +157,11 @@ public class NormalUserController {
         }
     }
 
-    //@PostMapping("/collect")
-    //@ApiOperation(value = "用户更新", notes = "根据id更新用户信息")
-
+    /**
+     * 根据激活码激活账户
+     * @param code 用户唯一激活码
+     * @return 验证结果
+     */
     @RequestMapping("/activeUser")
     @ApiOperation(value = "账户激活", notes = "根据激活码验证用户")
     public ResponseEntity<String> checkActiveCode(String code) {
@@ -149,14 +173,14 @@ public class NormalUserController {
         }
     }
 
-    @RequestMapping("/browse")
+    @PostMapping("/browse")
     @ApiOperation(value = "记录浏览历史", notes = "查询详情后记录进浏览历史中")
     public void browse(@RequestBody BrowseHistory browseHistory){
         normalUserService.browse(browseHistory.getUserId(), browseHistory.getBrowsed());
     }
 
-    @RequestMapping("/selectBrowsed/{userId}")
-    @ApiOperation(value = "记录浏览历史", notes = "查询详情后记录进浏览历史中")
+    @PostMapping("/selectBrowsed/{userId}")
+    @ApiOperation(value = "查询浏览历史", notes = "查询详情后展示浏览历史")
     public ResponseEntity<List<Object>> selectBrowsed(@PathVariable("userId") long userId){
         List<Object> list = normalUserService.selectBrowsed(userId);
         return new ResponseEntity<>(200, "查询成功", list);

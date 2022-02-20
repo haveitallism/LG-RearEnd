@@ -1,5 +1,6 @@
 package com.group8.service;
 
+import com.group8.dto.UploadImg;
 import com.group8.dto.UserLoginForm;
 import com.group8.dto.UserQueryCondition;
 import com.group8.entity.LgNormalUser;
@@ -33,4 +34,6 @@ public interface NormalUserService {
     List<Object> selectBrowsed(long userId);
 
     LgNormalUser getInfo(String token);
+
+    int updateHeadImg(UploadImg uploadImg);
 }

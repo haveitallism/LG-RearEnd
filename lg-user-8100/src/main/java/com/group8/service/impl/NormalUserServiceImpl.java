@@ -1,12 +1,14 @@
 package com.group8.service.impl;
 
 import com.group8.dao.NormalUserDao;
+import com.group8.dto.UploadImg;
 import com.group8.dto.UserLoginForm;
 import com.group8.dto.UserQueryCondition;
 import com.group8.entity.LgNormalUser;
 import com.group8.service.NormalUserService;
 import com.group8.utils.JWTUtils;
 import com.group8.utils.MD5Utils;
+import com.group8.utils.QiuniuUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +85,13 @@ public class NormalUserServiceImpl implements NormalUserService {
         String userName = JWTUtils.getUserName(token);
         String encryptedPwd = JWTUtils.getPassword(token);
         return normalUserDao.findByUsernameAndPwd(userName, encryptedPwd);
+    }
+
+    @Override
+    public int updateHeadImg(UploadImg uploadImg) {
+        String url = QiuniuUtils.uploadPicture(uploadImg);
+        System.out.println(url);
+        return normalUserDao.updateHeadImg(uploadImg.getId(), url);
     }
 
     @Override
