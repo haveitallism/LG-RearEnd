@@ -11,6 +11,10 @@ spring:
           uri: http://localhost:8100 #匹配的路径
           predicates:
             - Path=/nUser/**, /bUser/**    #具体的访问路径
+        - id: lg-tourNote-8500
+          uri: http://localhost:8500
+          predicates:
+            - Path=/scenic/**, /travelnotes/**
 
 
 #        不同的微服务有不同的路由
