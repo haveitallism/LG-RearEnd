@@ -95,7 +95,6 @@ public class NormalUserController {
     public ResponseEntity<String> login(@RequestBody UserLoginForm userLoginForm) {
         String token = normalUserService.login(userLoginForm);
         if (token != null) {
-
             return new ResponseEntity<>(200, "登陆成功！", token);
         } else {
             return new ResponseEntity<>(500, "登陆失败！", "");
