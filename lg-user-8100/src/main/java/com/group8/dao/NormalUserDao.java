@@ -1,9 +1,15 @@
 package com.group8.dao;
 
+import com.group8.dto.UserCollects;
 import com.group8.entity.LgNormalUser;
+import com.group8.entity.LgNormalUserGroupCollect;
+import com.group8.entity.LgNormalUserScenicspotCollect;
+import com.group8.entity.LgNormalUserTravelnotesCollect;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.data.redis.core.ZSetOperations;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author laiyong
@@ -30,4 +36,22 @@ public interface NormalUserDao {
     int deleteById(@Param("id") int id);
 
     LgNormalUser checkUserName(@Param("userName") String userName);
+
+    int addTravelCollect(LgNormalUserTravelnotesCollect notesCollect);
+
+    int addGroupCollect(LgNormalUserGroupCollect groupCollect);
+
+    int addScenicCollect(LgNormalUserScenicspotCollect scenicCollect);
+
+    List<LgNormalUserTravelnotesCollect> findTravelCollects(int userId);
+
+    List<LgNormalUserGroupCollect> findgroupCollects(int userId);
+
+    List<LgNormalUserScenicspotCollect> findscenicCollects(int userId);
+
+    //List<UserCollects> findUserCollects(Set set);
+
+    //List<UserCollects> findUserCollects(@Param("typeName") String typeName ,@Param("userId") int userId);
+
+
 }
