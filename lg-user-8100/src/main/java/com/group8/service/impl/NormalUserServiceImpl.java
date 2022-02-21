@@ -16,7 +16,7 @@ import com.group8.entity.LgTravelnotes;
 import com.group8.service.NormalUserService;
 import com.group8.utils.JWTUtils;
 import com.group8.utils.MD5Utils;
-import com.group8.utils.QiuniuUtils;
+import com.group8.utils.QiniuUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -101,7 +101,7 @@ public class NormalUserServiceImpl implements NormalUserService {
 
     @Override
     public int updateHeadImg(UploadImg uploadImg) {
-        String url = QiuniuUtils.uploadPicture(uploadImg);
+        String url = QiniuUtils.uploadFile(uploadImg);
         System.out.println(url);
         return normalUserDao.updateHeadImg(uploadImg.getId(), url);
     }

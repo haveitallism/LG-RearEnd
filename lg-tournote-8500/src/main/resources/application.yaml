@@ -1,17 +1,26 @@
 server:
   port: 8500
+
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://162.14.112.78:3306/lg
     username: travel
     password: 123456
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 60MB
   cloud:
     nacos:
       server-addr: 127.0.0.1:8848
   application:
-    name: lg-tournote-8500
+    name: lg-tourNote-8500
 
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
   type-aliases-package: com.group8.entity
+  #下划线转驼峰配置
+  configuration:
+    map-underscore-to-camel-case: true
+

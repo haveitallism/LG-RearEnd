@@ -1,6 +1,10 @@
 package com.group8.service;
 
+import com.group8.dto.DownFile;
 import com.group8.dto.UploadImg;
+import com.group8.entity.LgScenicspot;
+
+import java.net.MalformedURLException;
 
 /**
  * @author acoffee
@@ -8,4 +12,17 @@ import com.group8.dto.UploadImg;
  */
 public interface ScenicService {
     String uploadImg(UploadImg uploadImg);
+
+    String downloadStrategy(DownFile file);
+
+    String uploadStrategy(UploadImg uploadImg);
+
+
+    boolean addScenicspot(LgScenicspot lgScenicspot);
+
+    boolean updateScenicspot(LgScenicspot lgScenicspot);
+
+    boolean deleteScenicspot(int scenicId);
+
+    LgScenicspot findScenicspot(int scenicId);
 }
