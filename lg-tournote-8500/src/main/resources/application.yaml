@@ -11,6 +11,9 @@ spring:
     multipart:
       max-file-size: 50MB
       max-request-size: 60MB
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
   application:
     name: lg-tourNote-8500
 

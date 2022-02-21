@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BrowseHistory<T> {
 
-    private long userId;
-    private T browsed;
+    private long userId; // 浏览者id
+    private T browsed; // 被浏览的东西（商品，攻略，游记等）
 
 }

@@ -5,20 +5,38 @@
 
     <insert id="addBuss">
         insert into
-            lg_bussiness_user(buss_id, buss_name, buss_company_name, buss_password, buss_email, buss_telphone, buss_head_img, buss_intro, buss_scale, buss_address, buss_license_num, buss_license_img, buss_status, created_by, created_time, updated_by, updated_time)
-            values (null,#{bussName},#{bussCompanyName},#{bussPassword},#{bussEmail},#{bussTelphone},#{bussHeadImg},#{bussIntro},#{bussScale},#{bussAddress},#{bussLicenseNum},#{bussLicenseImg},0,#{createdBy},#{createdTime},null,null)
+            lg_bussiness_user(buss_id, buss_name, buss_company_name, buss_password, buss_email, buss_telphone, buss_head_img, buss_intro, buss_scale, buss_address, buss_license_num, buss_license_img, buss_status,active_code, created_by, created_time, updated_by, updated_time)
+            values (null,#{bussName},#{bussCompanyName},#{bussPassword},#{bussEmail},#{bussTelphone},#{bussHeadImg},#{bussIntro},#{bussScale},#{bussAddress},#{bussLicenseNum},#{bussLicenseImg},0,#{activeCode},#{createdBy},#{createdTime},null,null)
     </insert>
 
     <select id="findByUsernameAndPwd" resultType="com.group8.entity.LgBussinessUser">
         select * from lg.lg_bussiness_user where buss_name=#{userName} and buss_password = #{encryptedPwd}
     </select>
 
-    <select id="findAll" resultType="com.group8.entity.LgBussinessUser">
-        select * from lg_bussiness_user
+    <select id="findAll" resultType="com.group8.entity.LgBussinessUser" parameterType="com.group8.entity.LgBussinessUser">
+        select * from lg_bussiness_user u
+        <where>
+            <if test="!bussName.equals('')" >
+                and u.buss_name like CONCAT('%',#{bussName},'%')
+            </if>
+            <if test="bussCompanyName != null" >
+                and u.buss_company_name like CONCAT('%',#{bussCompanyName},'%')
+            </if>
+            <if test="bussScale != null" >
+                and u.buss_scale = #{bussScale}
+            </if>
+            <if test="bussStatus != null" >
+                and u.buss_status = #{bussStatus}
+            </if>
+        </where>
     </select>
 
     <select id="findById" resultType="com.group8.entity.LgBussinessUser">
         select * from lg_bussiness_user where buss_id = #{id}
+    </select>
+
+    <select id="checkUserName" resultType="com.group8.entity.LgBussinessUser">
+        select * from lg_bussiness_user where buss_name = #{userName}
     </select>
 
     <update id="update">
@@ -35,5 +53,13 @@
                                      buss_license_img = #{bussLicenseImg},
                                      updated_time = #{updatedTime}
                                where buss_id = #{bussId}
+    </update>
+
+    <select id="checkActiveCode" resultType="com.group8.entity.LgBussinessUser">
+        select * from lg_bussiness_user where active_code = #{code}
+    </select>
+
+    <update id="updateUserStatus">
+        update lg_bussiness_user set buss_status = 1 where buss_id = #{userId}
     </update>
 </mapper>

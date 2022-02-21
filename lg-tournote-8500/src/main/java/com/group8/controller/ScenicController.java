@@ -6,6 +6,9 @@ import com.group8.service.ScenicService;
 import com.group8.dto.UploadImg;
 import com.group8.entity.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * @create 2022-02-17 17:29
  */
 @RequestMapping("/scenic")
+@RefreshScope
 @RestController
 @CrossOrigin
 public class ScenicController {
@@ -22,7 +26,7 @@ public class ScenicController {
 
     //上传图片
     @PostMapping("/uploadImg")
-    public ResponseEntity<String> uploadImg(UploadImg uploadImg) {
+    public ResponseEntity<String> uploadImg(@RequestBody UploadImg uploadImg){
         System.out.println(uploadImg);
         String imgUrl = scenicService.uploadImg(uploadImg);
         return new ResponseEntity(200, "上传成功！", imgUrl);
@@ -73,6 +77,11 @@ public class ScenicController {
         } else {
             return new ResponseEntity<String>(500,"删除失败！",null);
         }
+    }
+
+    @PostMapping("/test/{str}")
+    public ResponseEntity<String> test(@PathVariable("str") String str){
+        return new ResponseEntity<>(200, "str", str);
     }
 }
 
