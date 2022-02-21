@@ -36,4 +36,8 @@ public interface NormalUserService {
     LgNormalUser getInfo(String token);
 
     int updateHeadImg(UploadImg uploadImg);
+
+    LgNormalUser findById(int id);
+
+    LgNormalUser checkUserName(String userName);
 }

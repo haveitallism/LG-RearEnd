@@ -31,4 +31,6 @@ public interface NormalUserDao {
     LgNormalUser checkUserName(@Param("userName") String userName);
 
     int updateHeadImg(@Param("id") int id, @Param("url") String url);
+
+    LgNormalUser findById(@Param("id") int id);
 }

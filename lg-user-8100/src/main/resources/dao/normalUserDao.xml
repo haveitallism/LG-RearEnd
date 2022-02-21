@@ -41,9 +41,7 @@
     <select id="findByCondition" resultType="com.group8.entity.LgNormalUser">
         select * from lg.lg_normal_user
         <where>
-            <if test="lgNormalUser.userId != 0">
-                and user_id = #{lgNormalUser.userId}
-            </if>
+            user_status = '1'
             <if test="!lgNormalUser.userName.equals('')">
                 and user_name = #{lgNormalUser.userName}
             </if>
@@ -56,6 +54,10 @@
 
     <select id="checkUserName" resultType="com.group8.entity.LgNormalUser">
         select * from lg.lg_normal_user where user_name = #{userName}
+    </select>
+
+    <select id="findById" resultType="com.group8.entity.LgNormalUser">
+        select * from lg.lg_normal_user where user_id = #{id}
     </select>
 
     <update id="updateUserStatus">
