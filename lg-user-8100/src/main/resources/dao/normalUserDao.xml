@@ -38,12 +38,14 @@
         select * from lg.lg_normal_user where user_name = #{userName} and user_password = #{password}
     </select>
 
-    <select id="findAll" resultType="com.group8.entity.LgNormalUser">
+    <select id="findByCondition" resultType="com.group8.entity.LgNormalUser">
         select * from lg.lg_normal_user
-    </select>
-
-    <select id="findById" resultType="com.group8.entity.LgNormalUser">
-        select * from lg.lg_normal_user where user_id = #{id}
+        <where>
+            user_status = '1'
+            <if test="!lgNormalUser.userName.equals('')">
+                and user_name = #{lgNormalUser.userName}
+            </if>
+        </where>
     </select>
 
     <select id="checkActiveCode" resultType="com.group8.entity.LgNormalUser">
@@ -52,6 +54,10 @@
 
     <select id="checkUserName" resultType="com.group8.entity.LgNormalUser">
         select * from lg.lg_normal_user where user_name = #{userName}
+    </select>
+
+    <select id="findById" resultType="com.group8.entity.LgNormalUser">
+        select * from lg.lg_normal_user where user_id = #{id}
     </select>
 
     <update id="updateUserStatus">
@@ -87,7 +93,7 @@
         from lg_scenicspot s ,lg_normal_user_scenicspot_collect c
         where c.user_id = #{userId} and c.scenic_id = s.scenic_id
     </select>
-    
+
     <!--<select id="findUserCollects" resultType="com.group8.dto.UserCollects">
         <foreach collection="set" item="name" separator=",">
             <if test="name.contains('scenic')">
@@ -108,4 +114,9 @@
         </foreach>
 
     </select>-->
+
+    <update id="updateHeadImg">
+        update lg.lg_normal_user set user_head_img = #{url} where user_id = #{id}
+    </update>
+
 </mapper>

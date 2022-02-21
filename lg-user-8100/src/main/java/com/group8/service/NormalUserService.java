@@ -1,7 +1,9 @@
 package com.group8.service;
 
 import com.group8.dto.UserCollects;
+import com.group8.dto.UploadImg;
 import com.group8.dto.UserLoginForm;
+import com.group8.dto.UserQueryCondition;
 import com.group8.entity.LgNormalUser;
 import com.group8.entity.LgNormalUserGroupCollect;
 import com.group8.entity.LgNormalUserScenicspotCollect;
@@ -18,9 +20,7 @@ import java.util.List;
 public interface NormalUserService {
     int addNormalUser(LgNormalUser lgNormalUser);
 
-    List<LgNormalUser> findAll();
-
-    LgNormalUser findById(int id);
+    List<LgNormalUser> findByCondition(LgNormalUser lgNormalUser);
 
     int update(LgNormalUser lgNormalUser);
 
@@ -38,4 +38,20 @@ public interface NormalUserService {
     int addScenicCollect(LgNormalUserScenicspotCollect parseObject);
 
     List<UserCollects> showAllCollects(int userId);
+
+    String login(LgNormalUser lgNormalUser);
+
+    boolean logout(String token);
+
+    void browse(long userId, Object browsed);
+
+    List<Object> selectBrowsed(long userId);
+
+    LgNormalUser getInfo(String token);
+
+    int updateHeadImg(UploadImg uploadImg);
+
+    LgNormalUser findById(int id);
+
+    LgNormalUser checkUserName(String userName);
 }

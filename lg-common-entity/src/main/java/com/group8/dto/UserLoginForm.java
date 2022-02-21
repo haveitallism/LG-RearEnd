@@ -17,6 +17,6 @@ public class UserLoginForm {
 
     private String userName;
     private String password;
-    private String verifyCode;
+    //private String verifyCode;
 
 }

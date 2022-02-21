@@ -7,6 +7,9 @@ spring:
     url: jdbc:mysql://162.14.112.78:3306/lg?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
     username: travel
     password: 123456
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
   application:
     name: lg-user-8100 # 注册到注册中心的名字
   # 分页插件允许循环依赖
@@ -22,16 +25,15 @@ spring:
   #redis配置
   redis:
     host: 162.14.112.78
+    password: 123
     database: 1
     port: 6379
-    password: 123
     jedis:
       pool:
         max-active: 8
         max-idle: 5
         min-idle: 0
         max-wait: -1ms
-
 
 mybatis:
   type-aliases-package: com.group8.entity

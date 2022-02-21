@@ -4,6 +4,7 @@ import com.group8.dao.BusinessUserDao;
 import com.group8.entity.LgBussinessUser;
 import com.group8.entity.LgNormalUser;
 import com.group8.service.BusinessUserService;
+import com.group8.utils.JWTUtils;
 import com.group8.utils.MD5Utils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class BusinessUserServiceImpl implements BusinessUserService {
 
-    @Autowired
+    @Autowired(required = false)
     BusinessUserDao businessUserDao;
 
     @Autowired
@@ -97,6 +98,20 @@ public class BusinessUserServiceImpl implements BusinessUserService {
             return false;
         }
         return false;
+    }
+
+    @Override
+    public LgBussinessUser getInfo(String token) {
+        String userName = JWTUtils.getUserName(token);
+        String encryptedPwd = JWTUtils.getPassword(token);
+        return businessUserDao.findByUsernameAndPwd(userName, encryptedPwd);
+    }
+
+    @Override
+    public boolean logout(String token) {
+        // 删除redis中的token
+        String userName = JWTUtils.getUserName(token);
+        return redisTemplate.delete(userName);
     }
 
     /**

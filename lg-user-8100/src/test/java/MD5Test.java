@@ -1,3 +1,4 @@
+import com.group8.entity.LgGroup;
 import com.group8.utils.MD5Utils;
 
 /**
@@ -7,7 +8,5 @@ import com.group8.utils.MD5Utils;
  */
 public class MD5Test {
     public static void main(String[] args) {
-        String s = MD5Utils.encrypt("123456", "tom");
-        System.out.println(s);
     }
 }

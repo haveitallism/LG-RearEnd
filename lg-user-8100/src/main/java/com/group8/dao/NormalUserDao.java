@@ -1,6 +1,7 @@
 package com.group8.dao;
 
 import com.group8.dto.UserCollects;
+import com.group8.dto.UserQueryCondition;
 import com.group8.entity.LgNormalUser;
 import com.group8.entity.LgNormalUserGroupCollect;
 import com.group8.entity.LgNormalUserScenicspotCollect;
@@ -27,9 +28,7 @@ public interface NormalUserDao {
 
     LgNormalUser findByUsernameAndPwd(@Param("userName") String userName, @Param("password") String password);
 
-    List<LgNormalUser> findAll();
-
-    LgNormalUser findById(@Param("id") int id);
+    List<LgNormalUser> findByCondition(@Param("lgNormalUser") LgNormalUser lgNormalUser);
 
     int update(@Param("normalUser") LgNormalUser lgNormalUser);
 
@@ -54,4 +53,8 @@ public interface NormalUserDao {
     //List<UserCollects> findUserCollects(@Param("typeName") String typeName ,@Param("userId") int userId);
 
 
+
+    int updateHeadImg(@Param("id") int id, @Param("url") String url);
+
+    LgNormalUser findById(@Param("id") int id);
 }

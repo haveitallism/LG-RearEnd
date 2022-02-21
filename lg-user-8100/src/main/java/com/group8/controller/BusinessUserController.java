@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.group8.dto.UserLoginForm;
 import com.group8.dto.UserQueryCondition;
 import com.group8.entity.LgBussinessUser;
+import com.group8.entity.LgNormalUser;
 import com.group8.entity.ResponseEntity;
 import com.group8.service.BusinessUserService;
 import com.group8.utils.JWTUtils;
@@ -65,10 +66,44 @@ public class BusinessUserController {
         System.out.println(userLoginForm);
         LgBussinessUser lgBussinessUser = businessUserService.login(userLoginForm.getUserName(),userLoginForm.getPassword());
         if(lgBussinessUser != null){
-            String token = JWTUtils.sign(userLoginForm.getUserName(), userLoginForm.getPassword());
+            String token = JWTUtils.sign(lgBussinessUser.getBussName(), lgBussinessUser.getBussPassword());
             return new ResponseEntity<>(200,"登陆成功",token);
         }else{
             return new ResponseEntity<>(200,"用户名或密码错误",null);
+        }
+    }
+
+    /**
+     * 根据token获取用户信息
+     *
+     * @param token 用户token
+     * @return 用户信息
+     */
+    @PostMapping("/getInfo/{token}")
+    @ApiOperation(value = "获取用户信息", notes = "根据token获取用户信息")
+    public ResponseEntity<LgBussinessUser> getInfo(@PathVariable("token") String token) {
+        LgBussinessUser bussinessUser = businessUserService.getInfo(token);
+        if (bussinessUser != null) {
+            return new ResponseEntity<>(200, "获取成功！", bussinessUser);
+        } else {
+            return new ResponseEntity<>(500, "获取失败！", null);
+        }
+    }
+
+    /**
+     * 用户登出
+     *
+     * @param token 用户信息token
+     * @return 登出结果
+     */
+    @PostMapping("/logout/{token}")
+    @ApiOperation(value = "用户登出", notes = "用户登出")
+    public ResponseEntity<String> logout(@PathVariable("token") String token) {
+        boolean flag = businessUserService.logout(token);
+        if (flag) {
+            return new ResponseEntity<>(200, "登出成功！", "");
+        } else {
+            return new ResponseEntity<>(500, "登出失败！", "");
         }
     }
 
