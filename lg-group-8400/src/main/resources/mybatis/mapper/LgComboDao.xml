@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.group8.dao.LgComboDao">
+
+    <insert id="insert">
+        insert into lg_combo(combo_id, combo_name, group_id, created_by, updated_time, combo_status)
+        values (null, #{comboName}, #{groupId}, #{createdBy}, #{createdTime}, #{comboStatus})
+    </insert>
+    <update id="update" parameterType="com.group8.entity.LgCombo">
+        UPDATE lg_combo
+        SET combo_name=#{comboName},
+            group_id=#{groupId},
+            created_by=#{createdBy},
+            combo_status=#{comboStatus}
+        WHERE combo_id = #{comboId}
+
+    </update>
+    <delete id="deleteById">
+        select *
+        from lg_combo
+        where combo_id = #{comboId}
+    </delete>
+    <select id="selectAll" resultType="com.group8.entity.LgCombo">
+        select *
+        from lg_combo
+    </select>
+    <select id="selectById" resultType="com.group8.entity.LgCombo">
+        select *
+        from lg_combo
+        where combo_id = #{comboId}
+    </select>
+
+</mapper>
