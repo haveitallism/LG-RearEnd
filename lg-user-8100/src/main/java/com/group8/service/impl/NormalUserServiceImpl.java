@@ -6,6 +6,7 @@ import com.group8.dao.NormalUserDao;
 import com.group8.dto.UserCollects;
 import com.group8.dto.UserLoginForm;
 import com.group8.dto.UploadImg;
+import com.group8.dto.UserLoginForm;
 import com.group8.entity.LgGroup;
 import com.group8.entity.LgNormalUser;
 import com.group8.entity.LgNormalUserGroupCollect;
@@ -16,7 +17,7 @@ import com.group8.entity.LgTravelnotes;
 import com.group8.service.NormalUserService;
 import com.group8.utils.JWTUtils;
 import com.group8.utils.MD5Utils;
-import com.group8.utils.QiuniuUtils;
+import com.group8.utils.QiniuUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -79,10 +80,10 @@ public class NormalUserServiceImpl implements NormalUserService {
     }
 
     @Override
-    public String login(LgNormalUser lgNormalUser) {
+    public String login(UserLoginForm userLoginForm) {
         // 密码加密后查询
-        String encryptedPwd = MD5Utils.encrypt(lgNormalUser.getUserPassword(), lgNormalUser.getUserName() + "lg");
-        LgNormalUser normalUser = normalUserDao.findByUsernameAndPwd(lgNormalUser.getUserName(), encryptedPwd);
+        String encryptedPwd = MD5Utils.encrypt(userLoginForm.getPassword(), userLoginForm.getUserName() + "lg");
+        LgNormalUser normalUser = normalUserDao.findByUsernameAndPwd(userLoginForm.getUserName(), encryptedPwd);
         if (normalUser != null) {
             String token = JWTUtils.sign(normalUser.getUserName(), normalUser.getUserPassword());
             redisTemplate.opsForValue().set(normalUser.getUserName(), token);
@@ -101,7 +102,7 @@ public class NormalUserServiceImpl implements NormalUserService {
 
     @Override
     public int updateHeadImg(UploadImg uploadImg) {
-        String url = QiuniuUtils.uploadPicture(uploadImg);
+        String url = QiniuUtils.uploadFile(uploadImg);
         System.out.println(url);
         return normalUserDao.updateHeadImg(uploadImg.getId(), url);
     }

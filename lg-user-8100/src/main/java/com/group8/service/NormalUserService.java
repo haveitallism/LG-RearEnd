@@ -29,6 +29,8 @@ public interface NormalUserService {
 
     int deleteById(int id);
 
+    String login(UserLoginForm userLoginForm);
+
     int addTravelCollect(LgNormalUserTravelnotesCollect notesCollect);
 
     int addGroupCollect(LgNormalUserGroupCollect groupCollect);
@@ -37,7 +39,6 @@ public interface NormalUserService {
 
     List<UserCollects> showAllCollects(int userId);
 
-    String login(LgNormalUser lgNormalUser);
 
     boolean logout(String token);
 

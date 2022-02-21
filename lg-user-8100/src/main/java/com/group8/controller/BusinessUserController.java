@@ -63,7 +63,6 @@ public class BusinessUserController {
     @PostMapping("/login")
     @ApiOperation(value = "用户登陆",notes = "用户登陆验证")
     public ResponseEntity<String> login(@RequestBody UserLoginForm userLoginForm){
-        System.out.println(userLoginForm);
         LgBussinessUser lgBussinessUser = businessUserService.login(userLoginForm.getUserName(),userLoginForm.getPassword());
         if(lgBussinessUser != null){
             String token = JWTUtils.sign(lgBussinessUser.getBussName(), lgBussinessUser.getBussPassword());

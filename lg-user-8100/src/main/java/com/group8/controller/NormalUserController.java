@@ -6,6 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.group8.dto.BrowseHistory;
 import com.group8.dto.UploadImg;
+import com.group8.dto.UserLoginForm;
 import com.group8.dto.UserQueryCondition;
 import com.group8.entity.*;
 import com.group8.feignClient.TourNoteClient;
@@ -86,15 +87,14 @@ public class NormalUserController {
     /**
      * 用户登陆获取token
      *
-     * @param lgNormalUser 用户信息类
+     * @param userLoginForm 用户信息类
      * @return 登陆结果
      */
     @PostMapping("/login")
     @ApiOperation(value = "用户登陆", notes = "用户登陆")
-    public ResponseEntity<String> login(@RequestBody LgNormalUser lgNormalUser) {
-        String token = normalUserService.login(lgNormalUser);
+    public ResponseEntity<String> login(@RequestBody UserLoginForm userLoginForm) {
+        String token = normalUserService.login(userLoginForm);
         if (token != null) {
-
             return new ResponseEntity<>(200, "登陆成功！", token);
         } else {
             return new ResponseEntity<>(500, "登陆失败！", "");
@@ -117,7 +117,6 @@ public class NormalUserController {
             return new ResponseEntity<>(500, "获取失败！", null);
         }
     }
-
     /**
      * 用户登出
      *
@@ -134,6 +133,7 @@ public class NormalUserController {
             return new ResponseEntity<>(500, "登出失败！", "");
         }
     }
+
 
     /**
      * 查询所有普通用户
