@@ -2,6 +2,7 @@ package com.group8.service.impl;
 
 import com.group8.dao.NormalUserDao;
 import com.group8.dto.UploadImg;
+import com.group8.dto.UserLoginForm;
 import com.group8.entity.LgGroup;
 import com.group8.entity.LgNormalUser;
 import com.group8.entity.LgScenicspot;
@@ -69,10 +70,10 @@ public class NormalUserServiceImpl implements NormalUserService {
     }
 
     @Override
-    public String login(LgNormalUser lgNormalUser) {
+    public String login(UserLoginForm userLoginForm) {
         // 密码加密后查询
-        String encryptedPwd = MD5Utils.encrypt(lgNormalUser.getUserPassword(), lgNormalUser.getUserName() + "lg");
-        LgNormalUser normalUser = normalUserDao.findByUsernameAndPwd(lgNormalUser.getUserName(), encryptedPwd);
+        String encryptedPwd = MD5Utils.encrypt(userLoginForm.getPassword(), userLoginForm.getUserName() + "lg");
+        LgNormalUser normalUser = normalUserDao.findByUsernameAndPwd(userLoginForm.getUserName(), encryptedPwd);
         if (normalUser != null) {
             String token = JWTUtils.sign(normalUser.getUserName(), normalUser.getUserPassword());
             redisTemplate.opsForValue().set(normalUser.getUserName(), token);

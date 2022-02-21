@@ -25,7 +25,7 @@ public interface NormalUserService {
 
     int deleteById(int id);
 
-    String login(LgNormalUser lgNormalUser);
+    String login(UserLoginForm userLoginForm);
 
     boolean logout(String token);
 
