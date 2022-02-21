@@ -39,10 +39,4 @@ public class OrderController {
         orderService.second();
         return "ok";
     }
-
-    @GetMapping("/get")
-    public String getOrder(){
-        orderService.getOrder();
-        return "ok";
-    }
 }

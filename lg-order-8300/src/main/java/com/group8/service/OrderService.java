@@ -10,5 +10,4 @@ public interface OrderService {
     public void start();
     public void second();
 
-    void getOrder();
 }

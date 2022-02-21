@@ -130,7 +130,7 @@
         </dependency>
         <dependency>
             <groupId>com.group8</groupId>
-            <artifactId>common-entity</artifactId>
+            <artifactId>lg-common-entity</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

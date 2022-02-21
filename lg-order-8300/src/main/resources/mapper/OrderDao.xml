@@ -4,12 +4,7 @@
 <mapper namespace="com.group8.dao.OrderDao">
 
     <insert id="addOrder" parameterType="com.group8.entity.LgTourOrder">
-        /*insert into lg_tour_order values (null,#{productId},#{userId},null,null,#{orderChoose},null,
-                                          null,null,null,#{orderPayoutStatus},null )*/
-        insert into lg_tour_order (product_id,user_id,order_choose,order_payout_status) values (#{productId},#{userId},#{orderChoose},#{orderPayoutStatus})
+        insert into lg_tour_order (order_id,product_id,order_choose,order_payout_status) values (null,#{productId},#{orderChoose},#{orderPayoutStatus})
     </insert>
 
-    <select id="getOrder">
-        select * from lg_tour_order
-    </select>
 </mapper>

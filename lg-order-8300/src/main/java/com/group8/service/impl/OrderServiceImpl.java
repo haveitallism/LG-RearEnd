@@ -76,7 +76,6 @@ public class OrderServiceImpl implements OrderService {
         }else {
             LgTourOrder lgTourOrder = new LgTourOrder();
             lgTourOrder.setProductId(1);
-            lgTourOrder.setUserId(1);
             lgTourOrder.setOrderChoose("冰火两重天");
             lgTourOrder.setOrderPayoutStatus(0);
             orderDao.addOrder(lgTourOrder);
@@ -84,11 +83,7 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    @Override
-    public void getOrder() {
-        orderDao.getOrder();
-        System.out.println("ok");
-    }
+
 
 
 }
