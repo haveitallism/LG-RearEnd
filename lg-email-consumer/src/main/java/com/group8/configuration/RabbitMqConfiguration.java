@@ -26,21 +26,42 @@ public class RabbitMqConfiguration {
         return new Jackson2JsonMessageConverter();
     }
 
+    /**
+     * 定义交换机
+     * @return
+     */
     @Bean
     public TopicExchange exchangeMail(){
         TopicExchange exchangeMail = new TopicExchange("LG-mail-exchange");
         return  exchangeMail;
     }
 
+    /**
+     * 定义注册普通用户发送邮件激活渠道
+     * @return
+     */
     @Bean
     public Queue queueMail(){
-        Queue queueMail = new Queue("LgMail");
-        return  queueMail;
+        return new Queue("LgMail");
+    }
+
+    /**
+     * 定义注册商铺用户发送邮件激活渠道
+     * @return
+     */
+    @Bean
+    public Queue queueBuMail(){
+        return new Queue("LgBuMail");
     }
 
     @Bean
     public Binding bindingQueueDelay(Queue queueMail, TopicExchange exchangeMail){
         return BindingBuilder.bind(queueMail).to(exchangeMail).with("#.LgMail.#");
+    }
+
+    @Bean
+    public Binding bindingQueueDelay1(Queue queueBuMail, TopicExchange exchangeMail){
+        return BindingBuilder.bind(queueBuMail).to(exchangeMail).with("#.LgMail1.#");
     }
 
 

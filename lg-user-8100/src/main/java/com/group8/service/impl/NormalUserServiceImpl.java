@@ -1,19 +1,30 @@
 package com.group8.service.impl;
 
+import cn.hutool.core.util.ArrayUtil;
 import com.group8.dao.NormalUserDao;
+import com.group8.dto.UserCollects;
 import com.group8.dto.UserLoginForm;
-import com.group8.dto.UserQueryCondition;
+import com.group8.dto.UploadImg;
+import com.group8.dto.UserLoginForm;
+import com.group8.entity.LgGroup;
 import com.group8.entity.LgNormalUser;
+import com.group8.entity.LgNormalUserGroupCollect;
+import com.group8.entity.LgNormalUserScenicspotCollect;
+import com.group8.entity.LgNormalUserTravelnotesCollect;
+import com.group8.entity.LgScenicspot;
+import com.group8.entity.LgTravelnotes;
 import com.group8.service.NormalUserService;
 import com.group8.utils.JWTUtils;
 import com.group8.utils.MD5Utils;
+import com.group8.utils.QiniuUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
+import java.sql.Array;
+import java.util.*;
 import java.util.*;
 
 import java.sql.Timestamp;
@@ -37,11 +48,12 @@ public class NormalUserServiceImpl implements NormalUserService {
     RedisTemplate redisTemplate;
 
     @Override
+    public LgNormalUser checkUserName(String userName) {
+        return normalUserDao.checkUserName(userName);
+    }
+
+    @Override
     public int addNormalUser(LgNormalUser lgNormalUser) {
-        LgNormalUser existUser = normalUserDao.checkUserName(lgNormalUser.getUserName());
-        if (existUser != null) {
-            return -1; // 用户名已存在
-        }
         // 密码使用MD5加密,重新设置回去
         String encryptedPwd = MD5Utils.encrypt(lgNormalUser.getUserPassword(), lgNormalUser.getUserName() + "lg");
         lgNormalUser.setUserPassword(encryptedPwd);
@@ -52,6 +64,8 @@ public class NormalUserServiceImpl implements NormalUserService {
         // 设置用户默认头像,用户后期自行修改
         String defaultAvatar = "https://gitee.com/cdlycode/oss/raw/master/uPic/2022-02/17-145600.jpeg";
         lgNormalUser.setUserHeadImg(defaultAvatar);
+        // 设置账号状态为'0'，用户前往邮件激活
+        lgNormalUser.setUserStatus("0");
         // 发送验证邮件
         // 生成随机验证码
         UUID uuid = UUID.randomUUID();
@@ -79,6 +93,20 @@ public class NormalUserServiceImpl implements NormalUserService {
     }
 
     @Override
+    public LgNormalUser getInfo(String token) {
+        String userName = JWTUtils.getUserName(token);
+        String encryptedPwd = JWTUtils.getPassword(token);
+        return normalUserDao.findByUsernameAndPwd(userName, encryptedPwd);
+    }
+
+    @Override
+    public int updateHeadImg(UploadImg uploadImg) {
+        String url = QiniuUtils.uploadFile(uploadImg);
+        System.out.println(url);
+        return normalUserDao.updateHeadImg(uploadImg.getId(), url);
+    }
+
+    @Override
     public boolean logout(String token) {
         // 删除redis中的token
         String userName = JWTUtils.getUserName(token);
@@ -87,8 +115,12 @@ public class NormalUserServiceImpl implements NormalUserService {
 
     @Override
     public List<LgNormalUser> findByCondition(LgNormalUser lgNormalUser) {
-        System.out.println(lgNormalUser);
         return normalUserDao.findByCondition(lgNormalUser);
+    }
+
+    @Override
+    public LgNormalUser findById(int id) {
+        return normalUserDao.findById(id);
     }
 
     @Override
@@ -140,9 +172,96 @@ public class NormalUserServiceImpl implements NormalUserService {
         List<Object> arrayList = new ArrayList<>();
         set.forEach(item -> {
             arrayList.add(item);
+            if (item instanceof LgGroup) {
+                System.out.println("LgGroup");
+            } else if (item instanceof LgTravelnotes) {
+                System.out.println("LgTravelnotes");
+            } else if (item instanceof LgScenicspot) {
+                System.out.println("LgScenicspot");
+            }
         });
         return arrayList;
     }
+    /**
+     * 收藏游记
+     * @param notesCollect
+     * @return
+     */
+    @Override
+    public int addTravelCollect(LgNormalUserTravelnotesCollect notesCollect) {
+        long currentTimeMillis = System.currentTimeMillis();
+        //把收藏内容存在Redis里面
+        ZSetOperations<String,String> opsForZSet = redisTemplate.opsForZSet();
+        opsForZSet.add("Collects-" + notesCollect.getUserId(),"notesId:"+ notesCollect.getNotesId(),currentTimeMillis);
+        //设置收藏时间
+        Timestamp timestamp = new Timestamp(currentTimeMillis);
+        notesCollect.setCollectTime(timestamp);
+        return normalUserDao.addTravelCollect(notesCollect);
+    }
 
+    /**
+     * 收藏团游
+     * @param groupCollect
+     * @return
+     */
+    @Override
+    public int addGroupCollect(LgNormalUserGroupCollect groupCollect) {
+        //设置收藏时间
+        long currentTimeMillis = System.currentTimeMillis();
+        //把收藏内容存在Redis里面
+        ZSetOperations<String,String> opsForZSet = redisTemplate.opsForZSet();
+        opsForZSet.add("Collects-" + groupCollect.getUserId(),"groupId:"+ groupCollect.getGroupId(),currentTimeMillis);
+        Timestamp timestamp = new Timestamp(currentTimeMillis);
+        groupCollect.setCollectTime(timestamp);
+        return normalUserDao.addGroupCollect(groupCollect);
+    }
+
+    /**
+     * 收藏景点攻略
+     * @param
+     * @return
+     */
+    @Override
+    public int addScenicCollect(LgNormalUserScenicspotCollect scenicCollect) {
+        //设置收藏时间
+        long currentTimeMillis = System.currentTimeMillis();
+        //把收藏内容存在Redis里面
+        ZSetOperations<String,String> opsForZSet = redisTemplate.opsForZSet();
+        opsForZSet.add("Collects-" + scenicCollect.getUserId(),"scenicId:"+ scenicCollect.getScenicId(),currentTimeMillis);
+        Timestamp timestamp = new Timestamp(currentTimeMillis);
+        scenicCollect.setCollectTime(timestamp);
+        return normalUserDao.addScenicCollect(scenicCollect);
+    }
+
+    /**
+     * 查询用户所有收藏项目
+     * @return
+     */
+    @Override
+    public List<UserCollects> showAllCollects(int userId) {
+        ZSetOperations<String,Object> opsForZSet = redisTemplate.opsForZSet();
+        //收藏时间越新的先排列出来
+        Set<Object> set = opsForZSet.reverseRange("Collects-" + userId, 0, 9);
+        for (Object typeName:set) {
+            String type = typeName.toString();
+            String[] split = type.split(":");
+            /*split[1].
+            if(type)*/
+        }
+        List<UserCollects> collectsList = new ArrayList<>();
+
+            //设置放入sql的list
+
+            System.out.println("新集合" + collectsList);
+            //List<UserCollects> collectsList  = normalUserDao.findUserCollects(set);
+            //System.out.println(collectsList);
+            //查询该用户所有的游记
+            //List<LgNormalUserTravelnotesCollect> travelCollects = normalUserDao.findTravelCollects(userId);
+            //查询该用户收藏的所有团游项目
+            //List<LgNormalUserGroupCollect> groupCollects = normalUserDao.findgroupCollects(userId);
+            //查询该用户收藏的所有景点攻略
+            //List<LgNormalUserScenicspotCollect> scenicCollects = normalUserDao.findscenicCollects(userId);
+            return null;
+        }
 
 }
