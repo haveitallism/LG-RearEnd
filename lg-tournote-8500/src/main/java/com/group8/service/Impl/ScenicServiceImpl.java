@@ -9,6 +9,8 @@ import com.group8.utils.QiniuUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+
 /**
  * @author acoffee
  * @create 2022-02-17 17:40
@@ -33,7 +35,31 @@ public class ScenicServiceImpl implements ScenicService {
         return uploadImg.getFile().getOriginalFilename();
     }
 
+    @Override
+    public boolean addScenicspot(LgScenicspot lgScenicspot) {
+        //加入当前时间
+        long nowTime = System.currentTimeMillis();
+        Timestamp timestamp = new Timestamp(nowTime);
+        lgScenicspot.setCreatedTime(timestamp);
+        boolean flag = scenicDao.addScenicspot(lgScenicspot);
+        return flag;
+    }
 
+
+    @Override
+    public boolean updateScenicspot(LgScenicspot lgScenicspot) {
+        long nowTime = System.currentTimeMillis();
+        Timestamp timestamp = new Timestamp(nowTime);
+        lgScenicspot.setUpdatedTime(timestamp);
+        boolean flag = scenicDao.updateScenicspot(lgScenicspot);
+        return flag;
+    }
+
+    @Override
+    public boolean deleteScenicspot(int scenicId) {
+        boolean flag = scenicDao.deleteScenicspot(scenicId);
+        return flag;
+    }
 
     @Override
     public String downloadStrategy(DownFile file) {
@@ -44,6 +70,4 @@ public class ScenicServiceImpl implements ScenicService {
         }
         return lgScenicspot.getScenicName() + ".pdf";
     }
-
-
 }

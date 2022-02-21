@@ -21,4 +21,9 @@ public interface ScenicDao {
 
     boolean updateDownloadsNum(int id);
 
+    boolean addScenicspot(LgScenicspot lgScenicspot);
+
+    boolean updateScenicspot(LgScenicspot lgScenicspot);
+
+    boolean deleteScenicspot(int scenicId);
 }
