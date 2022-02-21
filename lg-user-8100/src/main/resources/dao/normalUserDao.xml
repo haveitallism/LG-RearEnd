@@ -95,6 +95,16 @@
     </select>
 
     <!--<select id="findUserCollects" resultType="com.group8.dto.UserCollects">
+        <foreach collection="list" item="collect" separator=",">
+            <if test="collect.projectName.equals('scenic')">
+                select s.scenic_id,s.scenic_name
+                from lg_scenicspot s ,lg_normal_user_scenicspot_collect c
+                where c.user_id = #{userId} and c.scenic_id = s.scenic_id
+            </if>
+        </foreach>
+    </select>-->
+
+    <!--<select id="findUserCollects" resultType="com.group8.dto.UserCollects">
         <foreach collection="set" item="name" separator=",">
             <if test="name.contains('scenic')">
                 select s.scenic_id,s.scenic_name

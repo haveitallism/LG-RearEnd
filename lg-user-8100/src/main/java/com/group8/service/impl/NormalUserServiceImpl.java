@@ -1,6 +1,7 @@
 package com.group8.service.impl;
 
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 import com.group8.dao.NormalUserDao;
 import com.group8.dto.UserCollects;
 import com.group8.dto.UserLoginForm;
@@ -241,16 +242,23 @@ public class NormalUserServiceImpl implements NormalUserService {
         ZSetOperations<String,Object> opsForZSet = redisTemplate.opsForZSet();
         //收藏时间越新的先排列出来
         Set<Object> set = opsForZSet.reverseRange("Collects-" + userId, 0, 9);
-        for (Object typeName:set) {
-            String type = typeName.toString();
-            String[] split = type.split(":");
-            /*split[1].
-            if(type)*/
-        }
         List<UserCollects> collectsList = new ArrayList<>();
+        for (Object typeName:set) {
+            //得到xxxId：groupId
+            String type = typeName.toString();
+            //得到项目id
+            String[] split = type.split(":");
+            String groupId = split[1];
+            if(StrUtil.contains(type,"scenicId")){
 
+                collectsList.add(new UserCollects(Integer.parseInt(groupId),null,"scenic"));
+            }else if(StrUtil.contains(type,"notesId")) {
+                collectsList.add(new UserCollects(Integer.parseInt(groupId),null,"notes"));
+            }else {
+                collectsList.add(new UserCollects(Integer.parseInt(groupId),null,"group"));
+            }
+        }
             //设置放入sql的list
-
             System.out.println("新集合" + collectsList);
             //List<UserCollects> collectsList  = normalUserDao.findUserCollects(set);
             //System.out.println(collectsList);
