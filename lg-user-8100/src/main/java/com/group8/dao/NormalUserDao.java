@@ -29,4 +29,8 @@ public interface NormalUserDao {
     int deleteById(@Param("id") int id);
 
     LgNormalUser checkUserName(@Param("userName") String userName);
+
+    int updateHeadImg(@Param("id") int id, @Param("url") String url);
+
+    LgNormalUser findById(@Param("id") int id);
 }

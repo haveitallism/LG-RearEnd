@@ -1,19 +1,20 @@
 package com.group8.service.impl;
 
 import com.group8.dao.NormalUserDao;
-import com.group8.dto.UserLoginForm;
-import com.group8.dto.UserQueryCondition;
+import com.group8.dto.UploadImg;
+import com.group8.entity.LgGroup;
 import com.group8.entity.LgNormalUser;
+import com.group8.entity.LgScenicspot;
+import com.group8.entity.LgTravelnotes;
 import com.group8.service.NormalUserService;
 import com.group8.utils.JWTUtils;
 import com.group8.utils.MD5Utils;
+import com.group8.utils.QiuniuUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 
 import java.sql.Timestamp;
@@ -37,11 +38,12 @@ public class NormalUserServiceImpl implements NormalUserService {
     RedisTemplate redisTemplate;
 
     @Override
+    public LgNormalUser checkUserName(String userName) {
+        return normalUserDao.checkUserName(userName);
+    }
+
+    @Override
     public int addNormalUser(LgNormalUser lgNormalUser) {
-        LgNormalUser existUser = normalUserDao.checkUserName(lgNormalUser.getUserName());
-        if (existUser != null) {
-            return -1; // 用户名已存在
-        }
         // 密码使用MD5加密,重新设置回去
         String encryptedPwd = MD5Utils.encrypt(lgNormalUser.getUserPassword(), lgNormalUser.getUserName() + "lg");
         lgNormalUser.setUserPassword(encryptedPwd);
@@ -52,6 +54,8 @@ public class NormalUserServiceImpl implements NormalUserService {
         // 设置用户默认头像,用户后期自行修改
         String defaultAvatar = "https://gitee.com/cdlycode/oss/raw/master/uPic/2022-02/17-145600.jpeg";
         lgNormalUser.setUserHeadImg(defaultAvatar);
+        // 设置账号状态为'0'，用户前往邮件激活
+        lgNormalUser.setUserStatus("0");
         // 发送验证邮件
         // 生成随机验证码
         UUID uuid = UUID.randomUUID();
@@ -65,10 +69,10 @@ public class NormalUserServiceImpl implements NormalUserService {
     }
 
     @Override
-    public String login(UserLoginForm userLoginForm) {
+    public String login(LgNormalUser lgNormalUser) {
         // 密码加密后查询
-        String encryptedPwd = MD5Utils.encrypt(userLoginForm.getPassword(), userLoginForm.getUserName() + "lg");
-        LgNormalUser normalUser = normalUserDao.findByUsernameAndPwd(userLoginForm.getUserName(), encryptedPwd);
+        String encryptedPwd = MD5Utils.encrypt(lgNormalUser.getUserPassword(), lgNormalUser.getUserName() + "lg");
+        LgNormalUser normalUser = normalUserDao.findByUsernameAndPwd(lgNormalUser.getUserName(), encryptedPwd);
         if (normalUser != null) {
             String token = JWTUtils.sign(normalUser.getUserName(), normalUser.getUserPassword());
             redisTemplate.opsForValue().set(normalUser.getUserName(), token);
@@ -76,6 +80,20 @@ public class NormalUserServiceImpl implements NormalUserService {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public LgNormalUser getInfo(String token) {
+        String userName = JWTUtils.getUserName(token);
+        String encryptedPwd = JWTUtils.getPassword(token);
+        return normalUserDao.findByUsernameAndPwd(userName, encryptedPwd);
+    }
+
+    @Override
+    public int updateHeadImg(UploadImg uploadImg) {
+        String url = QiuniuUtils.uploadPicture(uploadImg);
+        System.out.println(url);
+        return normalUserDao.updateHeadImg(uploadImg.getId(), url);
     }
 
     @Override
@@ -87,8 +105,12 @@ public class NormalUserServiceImpl implements NormalUserService {
 
     @Override
     public List<LgNormalUser> findByCondition(LgNormalUser lgNormalUser) {
-        System.out.println(lgNormalUser);
         return normalUserDao.findByCondition(lgNormalUser);
+    }
+
+    @Override
+    public LgNormalUser findById(int id) {
+        return normalUserDao.findById(id);
     }
 
     @Override
@@ -140,9 +162,15 @@ public class NormalUserServiceImpl implements NormalUserService {
         List<Object> arrayList = new ArrayList<>();
         set.forEach(item -> {
             arrayList.add(item);
+            if (item instanceof LgGroup) {
+                System.out.println("LgGroup");
+            } else if (item instanceof LgTravelnotes) {
+                System.out.println("LgTravelnotes");
+            } else if (item instanceof LgScenicspot) {
+                System.out.println("LgScenicspot");
+            }
         });
         return arrayList;
     }
-
 
 }
