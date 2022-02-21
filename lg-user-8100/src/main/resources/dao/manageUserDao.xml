@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.group8.dao.ManageUserDao">
+
+    <insert id="addManageUser">
+        insert into lg.lg_manage_user values (null,
+                                              #{manageUser.userName},
+                                              #{manageUser.userPassword},
+                                              #{manageUser.userEmail},
+                                              #{manageUser.userTelphone},
+                                              #{manageUser.userHeadImg},
+                                              #{manageUser.userRole},
+                                              #{manageUser.userStatus},
+                                              #{manageUser.createdBy},
+                                              #{manageUser.createdTime},
+                                              #{manageUser.updatedBy},
+                                              #{manageUser.updatedTime}
+                                              )
+    </insert>
+
+    <delete id="deleteById">
+        delete from lg.lg_manage_user where user_id = #{id}
+    </delete>
+
+    <select id="findByUsernameAndPwd" resultType="com.group8.entity.LgManageUser">
+        select * from lg.lg_manage_user where user_name = #{userName} and user_password = #{password}
+    </select>
+
+    <select id="findByCondition" resultType="com.group8.entity.LgManageUser">
+        select * from lg.lg_manage_user
+        <where>
+            user_status = '1'
+            <if test="!manageUser.userName.equals('')">
+                and user_name = #{manageUser.userName}
+            </if>
+        </where>
+    </select>
+
+    <select id="checkUserName" resultType="com.group8.entity.LgManageUser">
+        select * from lg.lg_manage_user where user_name = #{userName}
+    </select>
+
+    <select id="findById" resultType="com.group8.entity.LgManageUser">
+        select * from lg.lg_manage_user where user_id = #{id}
+    </select>
+
+    <update id="updateHeadImg">
+        update lg.lg_manage_user set user_head_img = #{url} where user_id = #{id}
+    </update>
+
+</mapper>

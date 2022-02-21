@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.group8.dao.NormalUserDao">
+
+    <insert id="addNormalUser">
+        insert into lg.lg_normal_user values (null,
+                                              #{normalUser.userName},
+                                              #{normalUser.userPassword},
+                                              #{normalUser.userEmail},
+                                              #{normalUser.userTelphone},
+                                              #{normalUser.userHeadImg},
+                                              #{normalUser.userIntro},
+                                              #{normalUser.userStatus},
+                                              #{normalUser.activeCode},
+                                              #{normalUser.createdBy},
+                                              #{normalUser.createdTime},
+                                              #{normalUser.updatedBy},
+                                              #{normalUser.updatedTime}
+                                              )
+    </insert>
+
+    <update id="update">
+        update lg.lg_normal_user set user_name = #{normalUser.userName},
+                                     user_password = #{normalUser.userPassword},
+                                     user_email = #{normalUser.userEmail},
+                                     user_telphone = #{normalUser.userTelphone},
+                                     user_intro = #{normalUser.userIntro},
+                                     updated_time = #{normalUser.updatedTime}
+                               where user_id = #{normalUser.userId}
+    </update>
+
+    <delete id="deleteById">
+        delete from lg.lg_normal_user where user_id = #{id}
+    </delete>
+
+    <select id="findByUsernameAndPwd" resultType="com.group8.entity.LgNormalUser">
+        select * from lg.lg_normal_user where user_name = #{userName} and user_password = #{password}
+    </select>
+
+    <select id="findByCondition" resultType="com.group8.entity.LgNormalUser">
+        select * from lg.lg_normal_user
+        <where>
+            user_status = '1'
+            <if test="!lgNormalUser.userName.equals('')">
+                and user_name = #{lgNormalUser.userName}
+            </if>
+        </where>
+    </select>
+
+    <select id="checkActiveCode" resultType="com.group8.entity.LgNormalUser">
+        select * from lg.lg_normal_user where active_code = #{code}
+    </select>
+
+    <select id="checkUserName" resultType="com.group8.entity.LgNormalUser">
+        select * from lg.lg_normal_user where user_name = #{userName}
+    </select>
+
+    <select id="findById" resultType="com.group8.entity.LgNormalUser">
+        select * from lg.lg_normal_user where user_id = #{id}
+    </select>
+
+    <update id="updateUserStatus">
+        update lg.lg_normal_user set user_status = 1 where user_id = #{userId}
+    </update>
+
+    <update id="updateHeadImg">
+        update lg.lg_normal_user set user_head_img = #{url} where user_id = #{id}
+    </update>
+
+</mapper>
