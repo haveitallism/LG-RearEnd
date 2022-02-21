@@ -10,7 +10,14 @@ import com.group8.dto.UserLoginForm;
 import com.group8.dto.UserQueryCondition;
 import com.group8.entity.*;
 import com.group8.feignClient.TourNoteClient;
+import cn.hutool.core.util.ObjectUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.group8.dto.UserCollects;
+import com.group8.dto.UserLoginForm;
+import com.group8.entity.*;
 import com.group8.service.NormalUserService;
+import com.group8.util.CommonUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +43,7 @@ public class NormalUserController {
     TourNoteClient tourNoteClient;
 
     CircleCaptcha captcha;
+
 
     /**
      * 用户注册
@@ -87,6 +95,7 @@ public class NormalUserController {
     public ResponseEntity<String> login(@RequestBody UserLoginForm userLoginForm) {
         String token = normalUserService.login(userLoginForm);
         if (token != null) {
+
             return new ResponseEntity<>(200, "登陆成功！", token);
         } else {
             return new ResponseEntity<>(500, "登陆失败！", "");
@@ -250,6 +259,61 @@ public class NormalUserController {
             return new ResponseEntity<>(200, "true", "true！");
         } else {
             return new ResponseEntity<>(500, "false", "false！");
+        }
+    }
+
+    /**
+     * 用户收藏(团游，景点，游记）
+     */
+    @GetMapping("/collect")
+    public ResponseEntity<String> collectTravelNotes(@RequestBody Object collect){
+        String collectJson = JSONObject.toJSONString(collect);
+        //如果不包含userId
+        if(Boolean.FALSE.equals(CommonUtils.isExistField("userId",collect))){
+            return new ResponseEntity<>(500,"用户未登录");
+        }
+        //如果包含游记字段
+        if (Boolean.TRUE.equals(CommonUtils.isExistField("notesId", collect))){
+            int i = normalUserService.addTravelCollect(JSON.parseObject(collectJson, LgNormalUserTravelnotesCollect.class));
+            if (i > 0) {
+                return new ResponseEntity<>(200, "收藏游记成功！", "");
+            } else {
+                return new ResponseEntity<>(500, "收藏游记失败！", "");
+            }
+        }
+        //如果包含团游字段
+        if(Boolean.TRUE.equals(CommonUtils.isExistField("groupId", collect))){
+            int i = normalUserService.addGroupCollect(JSON.parseObject(collectJson,LgNormalUserGroupCollect.class));
+            if (i > 0) {
+                return new ResponseEntity<>(200, "收藏团游成功！", "");
+            } else {
+                return new ResponseEntity<>(500, "收藏团游失败！", "");
+            }
+        }
+        //如果包含景点
+        if(Boolean.TRUE.equals(CommonUtils.isExistField("scenicId", collect))){
+            int i = normalUserService.addScenicCollect(JSON.parseObject(collectJson,LgNormalUserScenicspotCollect.class));
+            if (i > 0) {
+                return new ResponseEntity<>(200, "收藏景点成功！", "");
+            } else {
+                return new ResponseEntity<>(500, "收藏景点失败！", "");
+            }
+        }
+        return new ResponseEntity<>(500, "收藏失败！", "");
+    }
+
+
+    /**
+     * 查询所有的收藏内容
+     * 根据不同的分类 放入Redis的ZSet里面 统一设置  -key:"collect"  -value:"项目名字"  -score:时间
+     */
+    @GetMapping("/showAllCollects/{userId}")
+    public ResponseEntity<List<UserCollects>> showAllCollects(@PathVariable("userId") int userId){
+        List<UserCollects> list = normalUserService.showAllCollects(userId);
+        if(!ObjectUtil.isNull(list)){
+            return new ResponseEntity<>(200,"查询所有收藏成功");
+        }else {
+            return new ResponseEntity<>(500,"查询所有收藏失败");
         }
     }
 
