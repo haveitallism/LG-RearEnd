@@ -1,14 +1,12 @@
 package com.group8.controller;
 
 import com.group8.dto.DownFile;
-import com.group8.entity.LgScenicspot;
-import com.group8.service.ScenicService;
 import com.group8.dto.UploadImg;
+import com.group8.entity.LgScenicspot;
 import com.group8.entity.ResponseEntity;
+import com.group8.service.ScenicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.*;
 
 /**
