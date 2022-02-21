@@ -62,6 +62,12 @@ public class ScenicServiceImpl implements ScenicService {
     }
 
     @Override
+    public LgScenicspot findScenicspot(int scenicId) {
+        LgScenicspot scenic = scenicDao.findScenic(scenicId);
+        return scenic;
+    }
+
+    @Override
     public String downloadStrategy(DownFile file) {
         LgScenicspot lgScenicspot = scenicDao.findScenic(file.getId());
         Boolean isFlag = QiniuUtils.downLoadFile(lgScenicspot.getStrategyUrl(), file.getSavePath() + lgScenicspot.getScenicName() + ".pdf");

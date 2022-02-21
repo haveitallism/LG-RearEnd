@@ -29,4 +29,6 @@
         delete from lg_scenicspot where scenic_id = #{scenicId}
     </delete>
 
+
+
 </mapper>

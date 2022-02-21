@@ -23,4 +23,6 @@ public interface ScenicService {
     boolean updateScenicspot(LgScenicspot lgScenicspot);
 
     boolean deleteScenicspot(int scenicId);
+
+    LgScenicspot findScenicspot(int scenicId);
 }

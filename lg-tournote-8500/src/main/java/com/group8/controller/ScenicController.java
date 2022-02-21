@@ -83,6 +83,17 @@ public class ScenicController {
     public ResponseEntity<String> test(@PathVariable("str") String str){
         return new ResponseEntity<>(200, "str", str);
     }
+
+    //根据Id查询景点信息
+    @RequestMapping("/findScenicspot/{scenicId}")
+    public ResponseEntity<LgScenicspot> findScenicspot(@PathVariable int scenicId){
+        LgScenicspot scenicspotInfo = scenicService.findScenicspot(scenicId);
+        if (scenicspotInfo != null) {
+            return new ResponseEntity<LgScenicspot>(200, "查询成功！", scenicspotInfo);
+        } else {
+            return new ResponseEntity<LgScenicspot>(500,"查询失败！",null);
+        }
+    }
 }
 
 
