@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.group8.dao.OrderDao">
+
+    <insert id="addOrder" parameterType="com.group8.entity.LgTourOrder">
+        /*insert into lg_tour_order values (null,#{productId},#{userId},null,null,#{orderChoose},null,
+                                          null,null,null,#{orderPayoutStatus},null )*/
+        insert into lg_tour_order (product_id,user_id,order_choose,order_payout_status) values (#{productId},#{userId},#{orderChoose},#{orderPayoutStatus})
+    </insert>
+
+    <select id="getOrder">
+        select * from lg_tour_order
+    </select>
+</mapper>

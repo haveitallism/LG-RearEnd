@@ -1,0 +1,66 @@
+server:
+  port: ${port:8300}
+  application:
+    name: alibaba-provider-user
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://162.14.112.78:3306/lg?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    username: travel
+    password: 123456
+    hikari:
+      max-lifetime: 0
+
+
+#    #文件上传大小限制
+#    servlet:
+#      multipart:
+#        enabled: true
+#        max-file-size: 100MB
+#        max-request-size: 100MB
+    #表单传递日期转换格式
+    mvc:
+      format:
+        date: yyyy-MM-dd'T'HH:mm:ss
+    #json传递日期转换格式
+    jackson:
+      date-format:
+        - yyyy-MM-dd'T'HH:mm:ss
+        - yyyy-MM-dd
+      time-zone: GMT+8 #和Asia/Shanghai一样
+    #配置允许循环依赖
+    main:
+      allow-circular-references: true
+    #关闭thymeleaf缓存，默认是开启的
+    thymeleaf:
+      cache: false
+    #redis配置
+    redis:
+      host: 162.14.112.78
+      database: 4
+      port: 6379
+      password: 123
+      jedis:
+        pool:
+          max-active: 8
+          max-idle: 5
+          min-idle: 0
+          max-wait: -1ms
+#mybatis配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.group8.entity
+  #下划线转驼峰配置
+  configuration:
+    map-underscore-to-camel-case: true
+
+#分页配置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  row-bounds-with-count: true
+
+#日志配置
+logging:
+  level:
+    com.group8.dao: debug
