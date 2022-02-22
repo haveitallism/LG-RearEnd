@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.Date;
 
-@SpringBootTest(classes = CommentsApplication.class)
+@SpringBootTest(classes = CommentsApplication8200.class)
 public class CommentTest {
     @Resource
     TravelNoteCommentService travelNoteCommentService;
