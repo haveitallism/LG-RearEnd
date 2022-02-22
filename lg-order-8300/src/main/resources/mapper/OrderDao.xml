@@ -7,4 +7,19 @@
         insert into lg_tour_order (order_id,product_id,order_choose,order_payout_status) values (null,#{productId},#{orderChoose},#{orderPayoutStatus})
     </insert>
 
+    <select id="getActivityById" parameterType="int" resultType="LgSalesPromotionActivity">
+        select * from lg_sales_promotion_activity where activity_id = #{activityId}
+    </select>
+
+    <update id="deductInventory" parameterType="int">
+        update lg_sales_promotion_activity set inventory = inventory -1 where activity_id = #{activityId} and inventory > 0
+    </update>
+    
+    <select id="getInventory" parameterType="int">
+        select inventory from lg_sales_promotion_activity where activity_id = #{activityId}
+    </select>
+
+    <select id="getAllActivity" resultType="LgSalesPromotionActivity">
+        select * from lg_sales_promotion_activity
+    </select>
 </mapper>
