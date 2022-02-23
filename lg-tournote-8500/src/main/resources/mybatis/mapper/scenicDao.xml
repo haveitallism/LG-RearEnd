@@ -5,4 +5,30 @@
     <update id="uploadImg">
         update lg_scenicspot set scenic_cover_url = #{scenicSpotUrl} where scenic_id = #{scenicId}
     </update>
+    <update id="uploadStrategy">
+        update lg_scenicspot set strategy_url = #{strategyUrl} where scenic_id = #{scenicId}
+    </update>
+    <update id="updateDownloadsNum">
+        update lg_scenicspot set downloads_num = IFNULL(downloads_num,0)+1 where scenic_id = #{scenicId}
+    </update>
+    <select id="findScenic" resultType="com.group8.entity.LgScenicspot">
+        select * from lg_scenicspot where scenic_id = #{scenicId}
+    </select>
+    <insert id="addScenicspot" parameterType="LgScenicspot">
+        insert into lg_scenicspot(scenic_id,scenic_name,scenic_description,scenic_cover_url,strategy_url,scenic_type,downloads_num,created_by,created_time)
+        values(null,#{scenicName},#{scenicDescription},#{scenicCoverUrl},#{strategyUrl},#{scenicType},#{downloadsNum},#{createdBy},#{createdTime})
+    </insert>
+
+    <update id="updateScenicspot" parameterType="LgScenicspot">
+        update lg_scenicspot set scenic_name=#{scenicName},scenic_description=#{scenicDescription},
+        scenic_cover_url=#{scenicCoverUrl},strategy_url=#{strategyUrl},scenic_type=#{scenicType},
+        updated_by=#{updatedBy},updated_time=#{updatedTime} where scenic_id = #{scenicId}
+    </update>
+
+    <delete id="deleteScenicspot">
+        delete from lg_scenicspot where scenic_id = #{scenicId}
+    </delete>
+
+
+
 </mapper>

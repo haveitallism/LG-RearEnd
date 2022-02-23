@@ -1,0 +1,24 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: lg-gateway-8000
+  cloud:
+    gateway:            #网关配置
+      routes:           #路由配置
+        - id: lg-user-8100   #路由ID,必须唯一，建议使用微服务名
+          uri: http://localhost:8100 #匹配的路径
+          predicates:
+            - Path=/nUser/**, /bUser/**    #具体的访问路径
+        - id: lg-tourNote-8500
+          uri: http://localhost:8500
+          predicates:
+            - Path=/scenic/**, /travelnotes/**
+
+
+#        不同的微服务有不同的路由
+#        - id: lg-user-8100   #路由ID,必须唯一，建议使用微服务名
+#          uri: http://localhost:8100 #匹配的路径
+#          predicates:
+#            - Path=/nUser/**, /bUser/**    #具体的访问路径

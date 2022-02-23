@@ -1,0 +1,22 @@
+server:
+  port: 8400
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://162.14.112.78:3306/lg
+    username: travel
+    password: 123456
+
+mybatis:
+  type-aliases-package: com.group8.entity
+  mapper-locations: classpath:/mybatis/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+pagehelper:
+  helper-dialect: mysql #指定用在什么数据库上
+  #配置分页合理化：默认是false，当页码<0  和当页码大于最大页数的时候，让它合理化，小于0就是查询第一页……
+  reasonable: true
+  row-bounds-with-count: true
+

@@ -8,7 +8,7 @@ import com.group8.entity.LgNormalUser;
 import com.group8.service.ManageUserService;
 import com.group8.utils.JWTUtils;
 import com.group8.utils.MD5Utils;
-import com.group8.utils.QiuniuUtils;
+import com.group8.utils.QiniuUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -96,7 +96,7 @@ public class ManageUserServiceImpl implements ManageUserService {
 
     @Override
     public int updateHeadImg(UploadImg uploadImg) {
-        String url = QiuniuUtils.uploadPicture(uploadImg);
+        String url = QiniuUtils.uploadFile(uploadImg);
         return manageUserDao.updateHeadImg(uploadImg.getId(), url);
     }
 

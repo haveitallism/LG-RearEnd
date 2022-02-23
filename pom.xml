@@ -16,6 +16,8 @@
         <module>lg-email-consumer</module>
         <module>lg-comments-8200</module>
         <module>lg-order-8300</module>
+        <module>lg-gateway-8000</module>
+        <module>lg-group-8400</module>
     </modules>
 
     <properties>

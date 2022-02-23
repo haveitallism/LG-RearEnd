@@ -1,9 +1,13 @@
 package com.group8.service;
 
+import com.group8.dto.UserCollects;
 import com.group8.dto.UploadImg;
 import com.group8.dto.UserLoginForm;
 import com.group8.dto.UserQueryCondition;
 import com.group8.entity.LgNormalUser;
+import com.group8.entity.LgNormalUserGroupCollect;
+import com.group8.entity.LgNormalUserScenicspotCollect;
+import com.group8.entity.LgNormalUserTravelnotesCollect;
 
 import java.util.List;
 
@@ -25,7 +29,16 @@ public interface NormalUserService {
 
     int deleteById(int id);
 
-    String login(LgNormalUser lgNormalUser);
+    String login(UserLoginForm userLoginForm);
+
+    int addTravelCollect(LgNormalUserTravelnotesCollect notesCollect);
+
+    int addGroupCollect(LgNormalUserGroupCollect groupCollect);
+
+    int addScenicCollect(LgNormalUserScenicspotCollect parseObject);
+
+    List<UserCollects> showAllCollects(int userId);
+
 
     boolean logout(String token);
 

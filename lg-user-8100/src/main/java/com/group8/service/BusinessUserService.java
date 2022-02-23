@@ -24,4 +24,8 @@ public interface BusinessUserService {
     int checkName(String username);
 
     boolean checkActiveCode(String code);
+
+    LgBussinessUser getInfo(String token);
+
+    boolean logout(String token);
 }

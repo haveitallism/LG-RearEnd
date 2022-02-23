@@ -11,6 +11,7 @@ public class LgTravelnotes {
 
     private long notesId;
     private String notesUrl;
+    private String notesTitle;
     private String passScenicspot;
     private String travelCost;
     private String travelDate;
