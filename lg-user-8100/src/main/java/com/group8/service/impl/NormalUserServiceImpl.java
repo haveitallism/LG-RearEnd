@@ -79,14 +79,15 @@ public class NormalUserServiceImpl implements NormalUserService {
     }
 
     @Override
-    public String login(UserLoginForm userLoginForm) {
+    public LgNormalUser login(UserLoginForm userLoginForm) {
         // 密码加密后查询
         String encryptedPwd = MD5Utils.encrypt(userLoginForm.getPassword(), userLoginForm.getUserName() + "lg");
         LgNormalUser normalUser = normalUserDao.findByUsernameAndPwd(userLoginForm.getUserName(), encryptedPwd);
         if (normalUser != null) {
             String token = JWTUtils.sign(normalUser.getUserName(), normalUser.getUserPassword());
             redisTemplate.opsForValue().set(normalUser.getUserName(), token);
-            return token;
+            normalUser.setToken(token);
+            return normalUser;
         } else {
             return null;
         }
@@ -100,10 +101,14 @@ public class NormalUserServiceImpl implements NormalUserService {
     }
 
     @Override
-    public int updateHeadImg(UploadImg uploadImg) {
+    public String updateHeadImg(UploadImg uploadImg) {
         String url = QiniuUtils.uploadFile(uploadImg);
-        System.out.println(url);
-        return normalUserDao.updateHeadImg(uploadImg.getId(), url);
+        int i = normalUserDao.updateHeadImg(uploadImg.getId(), url);
+        if (i > 0) {
+            return url;
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -182,8 +187,10 @@ public class NormalUserServiceImpl implements NormalUserService {
         });
         return arrayList;
     }
+
     /**
      * 收藏游记
+     *
      * @param notesCollect
      * @return
      */
@@ -191,8 +198,8 @@ public class NormalUserServiceImpl implements NormalUserService {
     public int addTravelCollect(LgNormalUserTravelnotesCollect notesCollect) {
         long currentTimeMillis = System.currentTimeMillis();
         //把收藏内容存在Redis里面
-        ZSetOperations<String,String> opsForZSet = redisTemplate.opsForZSet();
-        opsForZSet.add("Collects-" + notesCollect.getUserId(),"notesId:"+ notesCollect.getNotesId(),currentTimeMillis);
+        ZSetOperations<String, String> opsForZSet = redisTemplate.opsForZSet();
+        opsForZSet.add("Collects-" + notesCollect.getUserId(), "notesId:" + notesCollect.getNotesId(), currentTimeMillis);
         //设置收藏时间
         Timestamp timestamp = new Timestamp(currentTimeMillis);
         notesCollect.setCollectTime(timestamp);
@@ -201,6 +208,7 @@ public class NormalUserServiceImpl implements NormalUserService {
 
     /**
      * 收藏团游
+     *
      * @param groupCollect
      * @return
      */
@@ -209,8 +217,8 @@ public class NormalUserServiceImpl implements NormalUserService {
         //设置收藏时间
         long currentTimeMillis = System.currentTimeMillis();
         //把收藏内容存在Redis里面
-        ZSetOperations<String,String> opsForZSet = redisTemplate.opsForZSet();
-        opsForZSet.add("Collects-" + groupCollect.getUserId(),"groupId:"+ groupCollect.getGroupId(),currentTimeMillis);
+        ZSetOperations<String, String> opsForZSet = redisTemplate.opsForZSet();
+        opsForZSet.add("Collects-" + groupCollect.getUserId(), "groupId:" + groupCollect.getGroupId(), currentTimeMillis);
         Timestamp timestamp = new Timestamp(currentTimeMillis);
         groupCollect.setCollectTime(timestamp);
         return normalUserDao.addGroupCollect(groupCollect);
@@ -218,6 +226,7 @@ public class NormalUserServiceImpl implements NormalUserService {
 
     /**
      * 收藏景点攻略
+     *
      * @param
      * @return
      */
@@ -226,8 +235,8 @@ public class NormalUserServiceImpl implements NormalUserService {
         //设置收藏时间
         long currentTimeMillis = System.currentTimeMillis();
         //把收藏内容存在Redis里面
-        ZSetOperations<String,String> opsForZSet = redisTemplate.opsForZSet();
-        opsForZSet.add("Collects-" + scenicCollect.getUserId(),"scenicId:"+ scenicCollect.getScenicId(),currentTimeMillis);
+        ZSetOperations<String, String> opsForZSet = redisTemplate.opsForZSet();
+        opsForZSet.add("Collects-" + scenicCollect.getUserId(), "scenicId:" + scenicCollect.getScenicId(), currentTimeMillis);
         Timestamp timestamp = new Timestamp(currentTimeMillis);
         scenicCollect.setCollectTime(timestamp);
         return normalUserDao.addScenicCollect(scenicCollect);
@@ -235,14 +244,15 @@ public class NormalUserServiceImpl implements NormalUserService {
 
     /**
      * 查询用户所有收藏项目
+     *
      * @return
      */
     @Override
     public List<UserCollects> showAllCollects(int userId) {
-        ZSetOperations<String,Object> opsForZSet = redisTemplate.opsForZSet();
+        ZSetOperations<String, Object> opsForZSet = redisTemplate.opsForZSet();
         //收藏时间越新的先排列出来
         Set<Object> set = opsForZSet.reverseRange("Collects-" + userId, 0, 9);
-        for (Object typeName:set) {
+        for (Object typeName : set) {
             String type = typeName.toString();
             String[] split = type.split(":");
             /*split[1].
@@ -250,18 +260,18 @@ public class NormalUserServiceImpl implements NormalUserService {
         }
         List<UserCollects> collectsList = new ArrayList<>();
 
-            //设置放入sql的list
+        //设置放入sql的list
 
-            System.out.println("新集合" + collectsList);
-            //List<UserCollects> collectsList  = normalUserDao.findUserCollects(set);
-            //System.out.println(collectsList);
-            //查询该用户所有的游记
-            //List<LgNormalUserTravelnotesCollect> travelCollects = normalUserDao.findTravelCollects(userId);
-            //查询该用户收藏的所有团游项目
-            //List<LgNormalUserGroupCollect> groupCollects = normalUserDao.findgroupCollects(userId);
-            //查询该用户收藏的所有景点攻略
-            //List<LgNormalUserScenicspotCollect> scenicCollects = normalUserDao.findscenicCollects(userId);
-            return null;
-        }
+        System.out.println("新集合" + collectsList);
+        //List<UserCollects> collectsList  = normalUserDao.findUserCollects(set);
+        //System.out.println(collectsList);
+        //查询该用户所有的游记
+        //List<LgNormalUserTravelnotesCollect> travelCollects = normalUserDao.findTravelCollects(userId);
+        //查询该用户收藏的所有团游项目
+        //List<LgNormalUserGroupCollect> groupCollects = normalUserDao.findgroupCollects(userId);
+        //查询该用户收藏的所有景点攻略
+        //List<LgNormalUserScenicspotCollect> scenicCollects = normalUserDao.findscenicCollects(userId);
+        return null;
+    }
 
 }
