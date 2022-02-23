@@ -24,15 +24,15 @@ public class ScenicServiceImpl implements ScenicService {
     @Override
     public String uploadImg(UploadImg uploadImg) {
         String imgUrl = QiniuUtils.uploadFile(uploadImg);
-        boolean flag = scenicDao.uploadImg(imgUrl, uploadImg.getId());
+//        boolean flag = scenicDao.uploadImg(imgUrl, uploadImg.getId());
         return imgUrl;
     }
 
     @Override
     public String uploadStrategy(UploadImg uploadImg) {
-        String imgUrl = QiniuUtils.uploadFile(uploadImg);
-        boolean flag = scenicDao.uploadStrategy(imgUrl, uploadImg.getId());
-        return uploadImg.getFile().getOriginalFilename();
+        String fileUrl = QiniuUtils.uploadFile(uploadImg);
+//        boolean flag = scenicDao.uploadStrategy(fileUrl, uploadImg.getId());
+        return fileUrl;
     }
 
     @Override

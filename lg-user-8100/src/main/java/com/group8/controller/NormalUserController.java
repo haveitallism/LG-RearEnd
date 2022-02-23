@@ -23,6 +23,11 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -92,12 +97,16 @@ public class NormalUserController {
      */
     @PostMapping("/login")
     @ApiOperation(value = "用户登陆", notes = "用户登陆")
-    public ResponseEntity<String> login(@RequestBody UserLoginForm userLoginForm) {
-        String token = normalUserService.login(userLoginForm);
-        if (token != null) {
-            return new ResponseEntity<>(200, "登陆成功！", token);
+    public ResponseEntity<LgNormalUser> login(@RequestBody UserLoginForm userLoginForm) {
+        LgNormalUser normalUser = normalUserService.login(userLoginForm);
+        if (normalUser != null) {
+            if (normalUser.getUserStatus().equals("1")){
+                return new ResponseEntity<>(200, "登陆成功！", normalUser);
+            }else {
+                return new ResponseEntity<>(500, "账户未激活！", null);
+            }
         } else {
-            return new ResponseEntity<>(500, "登陆失败！", "");
+            return new ResponseEntity<>(500, "用户名或密码错误！", null);
         }
     }
 
@@ -180,12 +189,14 @@ public class NormalUserController {
 
     @PostMapping("/updateHeadImg")
     @ApiOperation(value = "修改头像", notes = "根据id修改用户头像")
-    public ResponseEntity<String> updateHeadImg(UploadImg uploadImg) {
-        int i = normalUserService.updateHeadImg(uploadImg);
-        if (i > 0) {
-            return new ResponseEntity<>(200, "修改成功！", "");
-        } else {
-            return new ResponseEntity<>(500, "修改失败！", "");
+    public String updateHeadImg(@RequestParam("id") int id,
+                                                @RequestParam("file") MultipartFile file) throws IOException {
+        //如果文件不为空，上传
+        if (!file.isEmpty()){
+            UploadImg uploadImg = new UploadImg(id, file);
+            return normalUserService.updateHeadImg(uploadImg);
+        }else {
+            return "请选择文件！";
         }
     }
 
@@ -310,7 +321,7 @@ public class NormalUserController {
     public ResponseEntity<List<UserCollects>> showAllCollects(@PathVariable("userId") int userId){
         List<UserCollects> list = normalUserService.showAllCollects(userId);
         if(!ObjectUtil.isNull(list)){
-            return new ResponseEntity<>(200,"查询所有收藏成功");
+            return new ResponseEntity<>(200,"查询所有收藏成功",list);
         }else {
             return new ResponseEntity<>(500,"查询所有收藏失败");
         }

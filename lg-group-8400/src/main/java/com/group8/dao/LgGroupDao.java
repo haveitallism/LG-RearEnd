@@ -1,5 +1,6 @@
 package com.group8.dao;
 
+import com.group8.dto.GroupAndComboDto;
 import com.group8.entity.LgGroup;
 import org.apache.ibatis.annotations.Param;
 
@@ -45,7 +46,7 @@ public interface LgGroupDao {
      * @param lgGroup 实例对象
      * @return 影响行数
      */
-    int insert(LgGroup lgGroup);
+    int insert(GroupAndComboDto comboDto);
 
     /**
      * 修改数据
@@ -63,4 +64,10 @@ public interface LgGroupDao {
      */
     int deleteById(Integer groupId);
 
+    //Integer avgmark(Integer pid);
+    int avgmark(Integer pid);
+
+    int upates(Integer pid);
+
+    LgGroup sorting(Integer groupSold);
 }

@@ -22,7 +22,7 @@ public class LgComboServiceImpl implements LgComboService {
     @Override
     public int insert(LgCombo lgCombo) {
 
-        return lgComboDao.insert(lgCombo);
+        return lgComboDao.insert((List<LgCombo>) lgCombo);
     }
 
     @Override

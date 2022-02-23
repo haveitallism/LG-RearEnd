@@ -2,9 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.group8.dao.LgComboDao">
 
-    <insert id="insert">
+    <insert id="insert" parameterType="com.group8.entity.LgCombo">
         insert into lg_combo(combo_id, combo_name, group_id, created_by, updated_time, combo_status)
-        values (null, #{comboName}, #{groupId}, #{createdBy}, #{createdTime}, #{comboStatus})
+        values
+        <foreach collection="lgCombo" item="listcombo" separator=",">
+            (null, #{listcombo.comboName}, #{listcombo.groupId}, #{listcombo.createdBy}, #{listcombo.createdTime},
+            #{listcombo.comboStatus})
+        </foreach>
     </insert>
     <update id="update" parameterType="com.group8.entity.LgCombo">
         UPDATE lg_combo

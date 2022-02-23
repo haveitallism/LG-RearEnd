@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 
 /**
  * description: GroupApplication <br>
@@ -46,7 +47,7 @@ public class GroupApplication {
         lgGroup.setGroupId(1);
         lgGroup.setGroupName("大理");
         lgGroup.setGroupScore("3.6");
-        lgGroupDao.update(lgGroup);
+        lgGroupService.update(lgGroup);
     }
 
     @Test
@@ -59,10 +60,9 @@ public class GroupApplication {
 //    public void test5() {
 //        LgGroup lgGroup = new LgGroup();
 //        lgGroup.setBussId(1);
-//        lgGroup.setGroupName("私家有");
 //        lgGroupService.insert(lgGroup);
 //    }
-//
+////
 //    @Test
 //    public void test06(){
 //        GroupAndComboDto groupAndComboDto = new GroupAndComboDto();
@@ -86,19 +86,67 @@ public class GroupApplication {
         LgCombo lgCombo = new LgCombo();
         lgCombo.setComboId(1);
         lgCombo.setComboName("sss12");
-        int i = lgComboService.update(lgCombo);
+        int i = lgComboService.insert(lgCombo);
         System.out.println(i);
     }
 
+//    @Test
+//    public void test09() {
+////        GroupAndComboDto groupAndComboDto = new GroupAndComboDto();
+//        LgGroup lgGroup = new LgGroup();
+//        lgGroup.setGroupName("出境跟团");
+//        lgGroupDao.insert(lgGroup);
+////        int groupId = (int) lgGroup.getGroupId();
+////        LgCombo lgCombo = new LgCombo();
+////        lgCombo.setComboName("四人游1");
+////        lgCombo.setGroupId(groupId);
+////        lgComboDao.insert(lgCombo);
+//    }
+
+//    @Test
+//    public void tets(){
+//        GroupAndComboDto groupAndComboDto = new GroupAndComboDto();
+//        LgGroup lgGroup = new LgGroup();
+//        lgGroup.setGroupName("出境3");
+//        LgCombo lgCombo = new LgCombo();
+//        lgCombo.setComboName("eee");
+//        groupAndComboDto.setLgGroup(lgGroup);
+//        groupAndComboDto.setLgCombo(lgCombo);
+//        lgGroupService.insert(groupAndComboDto);
+//    }
+
     @Test
-    public void test09() {
-        LgGroup lgGroup = new LgGroup();
-        lgGroup.setGroupName("出境跟团");
-        lgGroupService.insert(lgGroup);
-        int groupId = (int) lgGroup.getGroupId();
-        LgCombo lgCombo = new LgCombo();
-        lgCombo.setComboName("四人游1");
-        lgCombo.setGroupId(groupId);
-        lgComboDao.insert(lgCombo);
+    void ts() {
+        for (int i = 0; i < 100; i++) {
+            LgCombo lgCombo = new LgCombo();
+            lgCombo.setComboName("ss");
+            ArrayList<LgCombo> k = new ArrayList<>();
+            k.add(lgCombo);
+            lgComboDao.insert(k);
+        }
     }
+
+    @Test
+    void x() {
+//        AvgMark avgMark = new AvgMark();
+//        avgMark.setMark(1);
+        LgGroup lgGroup = new LgGroup();
+        lgGroup.setGroupId(1);
+        lgGroup.setBussId(1);
+        lgGroup.setPid(1);
+        lgGroup.setGroupName("中国");
+//        lgGroup.setBussId(1);
+//        lgGroup.setGroupName("ss");
+//        System.out.println(lgGroupDao.update(lgGroup));
+        //System.out.println(lgGroupDao.update(lgGroup));
+        System.out.println(lgGroupService.update(lgGroup));
+    }
+
+//    @Test
+//    void y(){
+////        int upates = lgGroupDao.upates(1);
+////        System.out.println(upates);
+//////      lgGroupService.upates(1);
+//        lgGroupDao.sorting();
+//    }
 }
