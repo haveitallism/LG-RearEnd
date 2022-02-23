@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @MapperScan("com.group8.dao")
-public class CommentsApplication {
+public class CommentsApplication8200 {
     public static void main(String[] args) {
-        SpringApplication.run(CommentsApplication.class,args);
+        SpringApplication.run(CommentsApplication8200.class,args);
     }
 }

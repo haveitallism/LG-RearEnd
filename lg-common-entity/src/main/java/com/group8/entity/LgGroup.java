@@ -12,7 +12,9 @@ public class LgGroup {
     private long groupId;
     private long bussId;
     private String groupName;
-    private String groupSold;
+    private String groupCover;
+    private double lowestPrice;
+    private long groupSold;
     private String groupScore;
     private String groupFavorites;
     private String groupIntroduce;

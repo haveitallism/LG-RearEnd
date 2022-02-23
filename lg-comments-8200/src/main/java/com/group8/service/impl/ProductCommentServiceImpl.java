@@ -1,7 +1,6 @@
 package com.group8.service.impl;
 
 import com.group8.dao.ProductCommentDao;
-import com.group8.dao.TravelNoteCommentDao;
 import com.group8.entity.LgComment;
 import com.group8.service.ProductCommentService;
 import org.springframework.stereotype.Service;
@@ -16,11 +15,11 @@ public class ProductCommentServiceImpl implements ProductCommentService {
     ProductCommentDao productCommentDao;
 
     @Override
-    public void addProductComment(int pid, int uid, int fid, String content) {
+    public void addProductComment(int pid, int uid, int fid, int mark, String content) {
         LgComment lgComment = new LgComment(0,content,Integer.toString(fid),"0",Integer.toString(uid),new Timestamp(System.currentTimeMillis()),null);
         productCommentDao.addProductCommentDao(lgComment);
         if(fid == 0){
-            productCommentDao.addMiddule(pid,lgComment.getCommentId());
+            productCommentDao.addMiddule(pid,lgComment.getCommentId(),mark);
         }
     }
 

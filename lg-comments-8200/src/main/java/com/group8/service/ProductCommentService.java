@@ -11,7 +11,7 @@ public interface ProductCommentService {
      * @param fid
      * @param content
      */
-    void addProductComment(int pid, int uid,int fid,String content);
+    void addProductComment(int pid, int uid,int fid,int mark,String content);
 
     List<LgComment> findAll(int id);
 

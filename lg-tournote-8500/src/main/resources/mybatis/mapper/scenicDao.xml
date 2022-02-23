@@ -14,7 +14,7 @@
     <select id="findScenic" resultType="com.group8.entity.LgScenicspot">
         select * from lg_scenicspot where scenic_id = #{scenicId}
     </select>
-    <insert id="addStrategy" parameterType="LgScenicspot">
+    <insert id="addScenicspot" parameterType="LgScenicspot">
         insert into lg_scenicspot(scenic_id,scenic_name,scenic_description,scenic_cover_url,strategy_url,scenic_type,downloads_num,created_by,created_time)
         values(null,#{scenicName},#{scenicDescription},#{scenicCoverUrl},#{strategyUrl},#{scenicType},#{downloadsNum},#{createdBy},#{createdTime})
     </insert>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.group8.dao.UserLikeCommentDao">
+    <insert id="save" parameterType="com.group8.entity.LgUserLike" useGeneratedKeys="true" keyProperty="id">
+        insert into lg_user_like (id,liked_user_id,liked_post_id,status,create_time) values (null,#{likedUserId},#{likedPostId},#{status},#{createTime})
+    </insert>
+    <update id="numUpdate" parameterType="com.group8.entity.LgComment">
+        update lg_comment set praise_num = #{praiseNum} where comment_id = #{commentId}
+    </update>
+    <update id="likeUpdate" parameterType="com.group8.entity.LgUserLike">
+        update lg_user_like set status = #{status} where id = #{id}
+    </update>
+    <select id="findById" resultType="com.group8.entity.LgComment">
+        select * from lg_comment where comment_id = #{cid}
+    </select>
+    <select id="findByLikedUserIdAndLikedPostId" resultType="com.group8.entity.LgUserLike">
+        select * from lg_user_like where liked_user_id = #{uid} and liked_post_id = #{pid}
+    </select>
+</mapper>

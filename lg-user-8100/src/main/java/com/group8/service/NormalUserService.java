@@ -29,7 +29,7 @@ public interface NormalUserService {
 
     int deleteById(int id);
 
-    String login(UserLoginForm userLoginForm);
+    LgNormalUser login(UserLoginForm userLoginForm);
 
     int addTravelCollect(LgNormalUserTravelnotesCollect notesCollect);
 
@@ -48,7 +48,7 @@ public interface NormalUserService {
 
     LgNormalUser getInfo(String token);
 
-    int updateHeadImg(UploadImg uploadImg);
+    String updateHeadImg(UploadImg uploadImg);
 
     LgNormalUser findById(int id);
 
