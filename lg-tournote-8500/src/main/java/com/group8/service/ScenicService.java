@@ -17,7 +17,6 @@ public interface ScenicService {
 
     String uploadStrategy(UploadImg uploadImg);
 
-
     boolean addScenicspot(LgScenicspot lgScenicspot);
 
     boolean updateScenicspot(LgScenicspot lgScenicspot);

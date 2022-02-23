@@ -24,7 +24,7 @@ public class ScenicController {
 
     //上传图片
     @PostMapping("/uploadImg")
-    public ResponseEntity<String> uploadImg(@RequestBody UploadImg uploadImg){
+    public ResponseEntity<String> uploadImg(UploadImg uploadImg){
         System.out.println(uploadImg);
         String imgUrl = scenicService.uploadImg(uploadImg);
         return new ResponseEntity(200, "上传成功！", imgUrl);
@@ -47,6 +47,7 @@ public class ScenicController {
     //添加景点攻略
     @PostMapping("/addScenicspot")
     public ResponseEntity<String> addScenicspot(@RequestBody LgScenicspot lgScenicspot) {
+        System.out.println(lgScenicspot);
         boolean flag = scenicService.addScenicspot(lgScenicspot);
         if (flag) {
             return new ResponseEntity<String>(200, "添加成功！", null);
