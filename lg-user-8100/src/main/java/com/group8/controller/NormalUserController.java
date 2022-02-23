@@ -181,6 +181,7 @@ public class NormalUserController {
     @PostMapping("/updateHeadImg")
     @ApiOperation(value = "修改头像", notes = "根据id修改用户头像")
     public ResponseEntity<String> updateHeadImg(UploadImg uploadImg) {
+        System.out.println(uploadImg);
         int i = normalUserService.updateHeadImg(uploadImg);
         if (i > 0) {
             return new ResponseEntity<>(200, "修改成功！", "");
@@ -310,7 +311,7 @@ public class NormalUserController {
     public ResponseEntity<List<UserCollects>> showAllCollects(@PathVariable("userId") int userId){
         List<UserCollects> list = normalUserService.showAllCollects(userId);
         if(!ObjectUtil.isNull(list)){
-            return new ResponseEntity<>(200,"查询所有收藏成功");
+            return new ResponseEntity<>(200,"查询所有收藏成功",list);
         }else {
             return new ResponseEntity<>(500,"查询所有收藏失败");
         }

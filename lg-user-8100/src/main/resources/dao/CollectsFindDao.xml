@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.group8.dao.CollectsFindDao">
+
+    <select id="groupFindById" resultType="com.group8.entity.LgGroup">
+        select * from lg_group where group_id = #{groupId}
+    </select>
+
+    <select id="notesFindById" resultType="com.group8.entity.LgTravelnotes">
+        select * from lg_travelnotes where notes_id = #{notesId}
+    </select>
+
+    <select id="scenicFindById" resultType="com.group8.entity.LgScenicspot">
+        select * from lg_scenicspot where scenic_id = #{scenicId}
+    </select>
+</mapper>

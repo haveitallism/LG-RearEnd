@@ -22,7 +22,6 @@
 
     <update id="update">
         update lg.lg_normal_user set user_name = #{normalUser.userName},
-                                     user_password = #{normalUser.userPassword},
                                      user_email = #{normalUser.userEmail},
                                      user_telphone = #{normalUser.userTelphone},
                                      user_intro = #{normalUser.userIntro},

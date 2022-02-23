@@ -2,6 +2,7 @@ package com.group8.service.impl;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
+import com.group8.dao.CollectsFindDao;
 import com.group8.dao.NormalUserDao;
 import com.group8.dto.UserCollects;
 import com.group8.dto.UserLoginForm;
@@ -24,8 +25,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
-import java.sql.Array;
-import java.util.*;
 import java.util.*;
 
 import java.sql.Timestamp;
@@ -42,6 +41,9 @@ public class NormalUserServiceImpl implements NormalUserService {
     @Autowired(required = false)
     NormalUserDao normalUserDao;
 
+    @Autowired(required = false)
+    CollectsFindDao collectsFindDao;
+
     @Autowired
     RabbitTemplate rabbitTemplate;
 
@@ -56,7 +58,7 @@ public class NormalUserServiceImpl implements NormalUserService {
     @Override
     public int addNormalUser(LgNormalUser lgNormalUser) {
         // 密码使用MD5加密,重新设置回去
-        String encryptedPwd = MD5Utils.encrypt(lgNormalUser.getUserPassword(), lgNormalUser.getUserName() + "lg");
+        String encryptedPwd = MD5Utils.encrypt(lgNormalUser.getUserPassword(), "lg");
         lgNormalUser.setUserPassword(encryptedPwd);
         // 获取当前时间为注册时间
         long currentTimeMillis = System.currentTimeMillis();
@@ -82,7 +84,7 @@ public class NormalUserServiceImpl implements NormalUserService {
     @Override
     public String login(UserLoginForm userLoginForm) {
         // 密码加密后查询
-        String encryptedPwd = MD5Utils.encrypt(userLoginForm.getPassword(), userLoginForm.getUserName() + "lg");
+        String encryptedPwd = MD5Utils.encrypt(userLoginForm.getPassword(),  "lg");
         LgNormalUser normalUser = normalUserDao.findByUsernameAndPwd(userLoginForm.getUserName(), encryptedPwd);
         if (normalUser != null) {
             String token = JWTUtils.sign(normalUser.getUserName(), normalUser.getUserPassword());
@@ -127,8 +129,8 @@ public class NormalUserServiceImpl implements NormalUserService {
     @Override
     public int update(LgNormalUser lgNormalUser) {
         // 密码使用MD5加密,重新设置回去
-        String encryptedPwd = MD5Utils.encrypt(lgNormalUser.getUserPassword(), lgNormalUser.getUserName() + "lg");
-        lgNormalUser.setUserPassword(encryptedPwd);
+        //String encryptedPwd = MD5Utils.encrypt(lgNormalUser.getUserPassword(), lgNormalUser.getUserName() + "lg");
+        //lgNormalUser.setUserPassword(encryptedPwd);
         // 获取当前时间为更新时间
         long currentTimeMillis = System.currentTimeMillis();
         Timestamp timestamp = new Timestamp(currentTimeMillis);
@@ -249,27 +251,22 @@ public class NormalUserServiceImpl implements NormalUserService {
             String type = typeName.toString();
             //得到项目id
             String[] split = type.split(":");
-            String groupId = split[1];
+            int groupId = Integer.parseInt(split[1]);
             if(StrUtil.contains(type,"scenicId")){
-
-                collectsList.add(new UserCollects(Integer.parseInt(groupId),null,"scenic"));
-            }else if(StrUtil.contains(type,"notesId")) {
-                collectsList.add(new UserCollects(Integer.parseInt(groupId),null,"notes"));
-            }else {
-                collectsList.add(new UserCollects(Integer.parseInt(groupId),null,"group"));
+                LgScenicspot lgScenicspot = collectsFindDao.scenicFindById(groupId);
+                //在新list中添加单条记录
+                collectsList.add(new UserCollects(groupId,"景点攻略：" + lgScenicspot.getScenicName(),"scenic"));
+            }
+            if(StrUtil.contains(type,"notesId")) {
+                LgTravelnotes lgTravelnotes = collectsFindDao.notesFindById(groupId);
+                collectsList.add(new UserCollects(groupId,"用户游记：" + lgTravelnotes.getNotesTitle(),"notes"));
+            }
+            if(StrUtil.contains(type,"groupId")) {
+                LgGroup lgGroup = collectsFindDao.groupFindById(groupId);
+                collectsList.add(new UserCollects(groupId,"团游项目：" +lgGroup.getGroupName() ,"group"));
             }
         }
-            //设置放入sql的list
-            System.out.println("新集合" + collectsList);
-            //List<UserCollects> collectsList  = normalUserDao.findUserCollects(set);
-            //System.out.println(collectsList);
-            //查询该用户所有的游记
-            //List<LgNormalUserTravelnotesCollect> travelCollects = normalUserDao.findTravelCollects(userId);
-            //查询该用户收藏的所有团游项目
-            //List<LgNormalUserGroupCollect> groupCollects = normalUserDao.findgroupCollects(userId);
-            //查询该用户收藏的所有景点攻略
-            //List<LgNormalUserScenicspotCollect> scenicCollects = normalUserDao.findscenicCollects(userId);
-            return null;
+            return collectsList;
         }
 
 }
