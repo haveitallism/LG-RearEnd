@@ -18,7 +18,7 @@ public class ScenicSpotCommentController {
     ScenicSpotCommentService scenicSpotCommentService;
 
     /**
-     * 游记评论添加
+     * 攻略评论添加
      * @param commentAddDto
      * @return
      */

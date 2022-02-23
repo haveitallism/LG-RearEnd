@@ -18,13 +18,13 @@ public class ProductCommentController {
     ProductCommentService productCommentService;
 
     /**
-     * 游记评论添加
+     * 商品评论添加
      * @param commentAddDto
      * @return
      */
     @PostMapping("add")
     public ResponseEntity add(@RequestBody CommentAddDto commentAddDto){
-        productCommentService.addProductComment(commentAddDto.getId(), commentAddDto.getUid(), commentAddDto.getFid(), commentAddDto.getContent());
+        productCommentService.addProductComment(commentAddDto.getId(), commentAddDto.getUid(), commentAddDto.getFid(), commentAddDto.getMark(), commentAddDto.getContent());
         return new ResponseEntity(200,"ok","success");
     }
 
