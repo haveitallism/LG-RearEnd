@@ -5,4 +5,8 @@
     <select id="findTravelNotesById" resultType="LgTravelnotes">
         select * from lg_travelnotes where notes_id=#{notesId}
     </select>
+
+    <select id="findTravelNotesByPraiseNum" resultType="LgTravelnotes">
+        SELECT * FROM `lg_travelnotes` order by praise_num DESC
+    </select>
 </mapper>

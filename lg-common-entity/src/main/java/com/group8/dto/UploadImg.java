@@ -13,6 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UploadImg {
-//    int id;
+    int id;
     MultipartFile file;
 }
