@@ -255,29 +255,27 @@ public class NormalUserServiceImpl implements NormalUserService {
         ZSetOperations<String, Object> opsForZSet = redisTemplate.opsForZSet();
         //收藏时间越新的先排列出来
         Set<Object> set = opsForZSet.reverseRange("Collects-" + userId, 0, 9);
-        for (Object typeName : set) {
         List<UserCollects> collectsList = new ArrayList<>();
-        for (Object typeName:set) {
+        for (Object typeName : set) {
             //得到xxxId：groupId
             String type = typeName.toString();
             //得到项目id
             String[] split = type.split(":");
             int groupId = Integer.parseInt(split[1]);
-            if(StrUtil.contains(type,"scenicId")){
+            if (StrUtil.contains(type, "scenicId")) {
                 LgScenicspot lgScenicspot = collectsFindDao.scenicFindById(groupId);
                 //在新list中添加单条记录
-                collectsList.add(new UserCollects(groupId,"景点攻略：" + lgScenicspot.getScenicName(),"scenic"));
+                collectsList.add(new UserCollects(groupId, "景点攻略：" + lgScenicspot.getScenicName(), "scenic"));
             }
-            if(StrUtil.contains(type,"notesId")) {
+            if (StrUtil.contains(type, "notesId")) {
                 LgTravelnotes lgTravelnotes = collectsFindDao.notesFindById(groupId);
-                collectsList.add(new UserCollects(groupId,"用户游记：" + lgTravelnotes.getNotesTitle(),"notes"));
+                collectsList.add(new UserCollects(groupId, "用户游记：" + lgTravelnotes.getNotesTitle(), "notes"));
             }
-            if(StrUtil.contains(type,"groupId")) {
+            if (StrUtil.contains(type, "groupId")) {
                 LgGroup lgGroup = collectsFindDao.groupFindById(groupId);
-                collectsList.add(new UserCollects(groupId,"团游项目：" +lgGroup.getGroupName() ,"group"));
+                collectsList.add(new UserCollects(groupId, "团游项目：" + lgGroup.getGroupName(), "group"));
             }
         }
-            return collectsList;
-        }
-
+        return collectsList;
+    }
 }
