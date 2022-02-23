@@ -22,4 +22,9 @@
     <select id="getAllActivity" resultType="LgSalesPromotionActivity">
         select * from lg_sales_promotion_activity
     </select>
+    
+    <update id="updateInventory" parameterType="long">
+        update lg_sales_promotion_activity set inventory = #{size} where activity_id = #{activityId}
+
+    </update>
 </mapper>

@@ -15,7 +15,9 @@ public interface OrderService {
 
     void addOrder(LgTourOrder lgTourOrder);
 
-    long deductInventory(int activityId);
+
 
     List<LgSalesPromotionActivity> getAllActivity();
+
+    void updateInventory();
 }

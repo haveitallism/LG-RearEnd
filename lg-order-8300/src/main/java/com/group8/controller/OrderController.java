@@ -26,7 +26,7 @@ public class OrderController {
 
 
     @PostConstruct
-    public String start(){
+    public ResponseEntity<String> start(){
         List<LgSalesPromotionActivity> activities = orderService.getAllActivity();
         ListOperations opsForList = redisTemplate.opsForList();
         for(LgSalesPromotionActivity activity : activities){
@@ -36,7 +36,7 @@ public class OrderController {
                 opsForList.leftPush("activity"+activity.getActivityId(),i);
             }
         }
-        return "ok";
+        return new ResponseEntity(200,"加载缓存",null);
     }
 
     //秒杀

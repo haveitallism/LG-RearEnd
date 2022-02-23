@@ -32,10 +32,7 @@ public class OrderServiceImpl implements OrderService {
     //将数据从数据库存到redis
     @Override
     public void start(){
-        ListOperations<String, Object> opsForList = redisTemplate.opsForList();
-        for(int i = 1 ; i <= 1000; i++){
-            opsForList.leftPush("list", i);
-        }
+
     }
 
     //秒杀
@@ -53,17 +50,7 @@ public class OrderServiceImpl implements OrderService {
             lgTourOrder.setOrderChoose("冰火两重天");
             lgTourOrder.setOrderPayoutStatus(0);
             rabbitTemplate.convertAndSend("exchangeadd", "add", lgTourOrder);
-            System.out.println("啦啦啦");
-//        ListOperations<String, Object> opsForList = redisTemplate.opsForList();
-//        opsForList.leftPush("acticityOrder"+activityId, lgTourOrder);
-            //orderDao.addOrder(lgTourOrder);
 
-            //减库存
-            //long num = orderService.deductInventory(activityId);
-//        long num = redisTemplate.opsForValue().decrement("activity"+activityId);
-//        if(num < 0){
-//            throw new RuntimeException("商品已售罄");
-//        }
         }
 
     }
@@ -78,16 +65,29 @@ public class OrderServiceImpl implements OrderService {
         orderDao.addOrder(lgTourOrder);
     }
 
-    @Override
-    public long deductInventory(int activityId) {
-        orderDao.deductInventory(activityId);
-        LgSalesPromotionActivity lgSalesPromotionActivity = orderDao.getActivityById(activityId);
-        return lgSalesPromotionActivity.getInventory();
-    }
 
     @Override
     public List<LgSalesPromotionActivity> getAllActivity() {
         return orderDao.getAllActivity();
+    }
+
+    @Override
+    public void updateInventory() {
+        List<LgSalesPromotionActivity> allActivity = orderDao.getAllActivity();
+        for(LgSalesPromotionActivity activity : allActivity){
+            Long size = redisTemplate.opsForList().size("activity" + activity.getActivityId());
+            orderDao.updateInventory(size,activity.getActivityId());
+        }
+
+//        ListOperations opsForList = redisTemplate.opsForList();
+//        long size1 = opsForList.size("activity"+lgTourOrder.getProductId());
+//        for(long i = 0; i < size1; i++){
+//            opsForList.rightPop("activity"+lgTourOrder.getProductId());
+//        }
+//        LgSalesPromotionActivity activity = orderDao.getActivityById((int) lgTourOrder.getProductId());
+//        for(int i = 1; i <= activity.getInventory(); i++){
+//            opsForList.leftPush("activity"+activity.getActivityId(),i);
+//        }
     }
 
 
