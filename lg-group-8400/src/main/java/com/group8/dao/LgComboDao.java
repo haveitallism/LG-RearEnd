@@ -1,6 +1,7 @@
 package com.group8.dao;
 
 import com.group8.entity.LgCombo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * version: 1.0 <br>
  */
 public interface LgComboDao {
-    int insert(LgCombo lgCombo);
+    int insert(@Param("lgCombo") List<LgCombo> lgCombo);
 
     LgCombo selectById(Integer comboId);
 

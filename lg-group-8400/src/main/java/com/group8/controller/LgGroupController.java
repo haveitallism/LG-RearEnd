@@ -1,6 +1,8 @@
 package com.group8.controller;
 
 import com.group8.dao.LgComboDao;
+import com.group8.dto.GroupAndComboDto;
+import com.group8.entity.LgCombo;
 import com.group8.entity.LgGroup;
 import com.group8.entity.ResponseEntity;
 import com.group8.service.LgComboService;
@@ -54,12 +56,12 @@ public class LgGroupController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<LgGroup> update(@RequestBody LgGroup lgGroup) {
-        LgGroup update = lgGroupService.update(lgGroup);
+    public ResponseEntity<Integer> update(@RequestBody LgGroup lgGroup) {
+        Integer update = lgGroupService.update(lgGroup);
         if (update != null) {
-            return new ResponseEntity<>(200, "更新成功", lgGroup);
+            return new ResponseEntity(200, "更新成功", lgGroup);
         } else {
-            return new ResponseEntity<>(400, "更1新失败", lgGroup);
+            return new ResponseEntity(400, "更1新失败", lgGroup);
         }
     }
 
@@ -74,21 +76,22 @@ public class LgGroupController {
             return new ResponseEntity(400, "删除失败！", groupId);
         }
     }
+    //同时新增2个表的数据
 
     @PostMapping("/insert")
-    public ResponseEntity<LgGroup> insert(@RequestBody LgGroup lgGroup) {
-        LgGroup group = lgGroupService.insert(lgGroup);
-        if (group != null) {
-            return new ResponseEntity<>(200, "新增成功", lgGroup);
+    public ResponseEntity<LgGroup> insert(@RequestBody GroupAndComboDto dto) {
+        lgGroupService.insert(dto);
+        if (dto != null) {
+            return new ResponseEntity(200, "新增成功", dto);
         } else {
-            return new ResponseEntity<>(400, "新增失败", lgGroup);
+            return new ResponseEntity(400, "新增失败", dto);
         }
     }
 
-//    public ResponseEntity<LgGroup> insets(@RequestBody GroupAndComboDto groupAndComboDto){
-//        lgGroupService.insert(groupAndComboDto.getLgGroup());
-//        long groupId = groupAndComboDto.getLgGroup().getGroupId();
-//        groupAndComboDto.getLgCombo().setGroupId(groupId);
-//        lgComboService.insert(groupAndComboDto.getLgCombo());
-//    }
+    //计算平均分
+    @PostMapping("/upates/{pid}")
+    public ResponseEntity<Integer> upates(@PathVariable Integer pid) {
+        int i = lgGroupService.upates(pid);
+        return new ResponseEntity<>(200, "cg", i);
+    }
 }

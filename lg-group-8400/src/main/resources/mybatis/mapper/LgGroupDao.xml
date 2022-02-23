@@ -74,25 +74,29 @@
         from lg.lg_group
 
     </select>
+    <select id="avgmark" resultType="integer">
+        SELECT AVG(mark)
+        FROM lg_comment_group
+        WHERE pid = #{pid};
+    </select>
+    <select id="sorting" resultType="com.group8.entity.LgGroup">
+        SELECT *
+        FROM lg_group
+        ORDER BY group_sold = #{groupSold} DESC;
+    </select>
 
     <!--新增所有列-->
-    <insert id="insert" keyProperty="groupId" useGeneratedKeys="true">
+    <insert id="insert" keyProperty="lgGroup.groupId" useGeneratedKeys="true">
         insert into lg.lg_group(buss_id, group_name, group_sold, group_score, group_favorites, group_introduce,
                                 group_route, group_fee_explanation, group_destine_notice, group_purchase_notice,
                                 group_departure, group_status, created_by, created_time, updated_by, updated_time)
-        values (#{bussId}, #{groupName}, #{groupSold}, #{groupScore}, #{groupFavorites}, #{groupIntroduce},
-                #{groupRoute}, #{groupFeeExplanation}, #{groupDestineNotice}, #{groupPurchaseNotice}, #{groupDeparture},
-                #{groupStatus}, #{createdBy}, #{createdTime}, #{updatedBy}, #{updatedTime})
+        values (#{lgGroup.bussId}, #{lgGroup.groupName}, #{lgGroup.groupSold}, #{lgGroup.groupScore},
+                #{lgGroup.groupFavorites}, #{lgGroup.groupIntroduce},
+                #{lgGroup.groupRoute}, #{lgGroup.groupFeeExplanation}, #{lgGroup.groupDestineNotice},
+                #{lgGroup.groupPurchaseNotice}, #{lgGroup.groupDeparture},
+                #{lgGroup.groupStatus}, #{lgGroup.createdBy}, #{lgGroup.createdTime}, #{lgGroup.updatedBy},
+                #{lgGroup.updatedTime})
     </insert>
-    <!--    <insert id="inserts" keyProperty="lgGroup.groupId" useGeneratedKeys="true">-->
-    <!--        insert into lg.lg_group(buss_id, group_name, group_sold, group_score, group_favorites, group_introduce,-->
-    <!--                                group_route, group_fee_explanation, group_destine_notice, group_purchase_notice,-->
-    <!--                                group_departure, group_status, created_by, created_time, updated_by, updated_time)-->
-    <!--        values (#{lgGroup.bussId}, #{lgGroup.groupName}, #{lgGroup.groupSold}, #{lgGroup.groupScore},-->
-    <!--                #{lgGroup.groupFavorites}, #{lgGroup.groupIntroduce},#{lgGroup.groupRoute}, #{lgGroup.groupFeeExplanation},-->
-    <!--                #{lgGroup.groupDestineNotice}, #{lgGroup.groupPurchaseNotice}, #{lgGroup.groupDeparture},-->
-    <!--                #{lgGroup.groupStatus}, #{lgGroup.createdBy}, #{lgGroup.createdTime}, #{lgGroup.updatedBy}, #{lgGroup.updatedTime})-->
-    <!--    </insert>-->
 
     <!--通过主键修改数据-->
     <update id="update">
@@ -111,7 +115,7 @@
                 group_score = #{groupScore},
             </if>
             <if test="groupFavorites != null and groupFavorites != ''">
-                group_favorites = #{groupFavorites},
+                group_favorites = #{groupFavorites}
             </if>
             <if test="groupIntroduce != null and groupIntroduce != ''">
                 group_introduce = #{groupIntroduce},
@@ -148,6 +152,11 @@
             </if>
         </set>
         where group_id = #{groupId}
+    </update>
+    <update id="upates">
+        update lg_group
+        set group_score = (select cast(AVG(mark) AS DECIMAL(10, 2)) from lg_comment_group where pid = #{pid})
+        where group_id = #{pid}
     </update>
 
     <!--通过主键删除-->
