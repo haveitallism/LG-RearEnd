@@ -1,6 +1,7 @@
 package com.group8.controller;
 
 import com.group8.dto.CommentAddDto;
+import com.group8.dto.CommentResponse;
 import com.group8.entity.LgComment;
 import com.group8.entity.ResponseEntity;
 import com.group8.service.ProductCommentService;
@@ -44,7 +45,7 @@ public class ProductCommentController {
      */
     @GetMapping("findAll/{id}")
     public ResponseEntity findAll(@PathVariable int id){
-        List<LgComment> all = productCommentService.findAll(id);
+        List<CommentResponse> all = productCommentService.findAll(id);
         return new ResponseEntity(200,"ok",all);
     }
 
