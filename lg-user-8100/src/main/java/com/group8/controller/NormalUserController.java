@@ -321,7 +321,7 @@ public class NormalUserController {
     public ResponseEntity<List<UserCollects>> showAllCollects(@PathVariable("userId") int userId){
         List<UserCollects> list = normalUserService.showAllCollects(userId);
         if(!ObjectUtil.isNull(list)){
-            return new ResponseEntity<>(200,"查询所有收藏成功");
+            return new ResponseEntity<>(200,"查询所有收藏成功",list);
         }else {
             return new ResponseEntity<>(500,"查询所有收藏失败");
         }

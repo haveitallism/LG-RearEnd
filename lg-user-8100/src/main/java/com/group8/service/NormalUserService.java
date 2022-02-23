@@ -39,7 +39,6 @@ public interface NormalUserService {
 
     List<UserCollects> showAllCollects(int userId);
 
-
     boolean logout(String token);
 
     void browse(long userId, Object browsed);
