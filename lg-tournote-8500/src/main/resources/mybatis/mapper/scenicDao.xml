@@ -14,6 +14,14 @@
     <select id="findScenic" resultType="com.group8.entity.LgScenicspot">
         select * from lg_scenicspot where scenic_id = #{scenicId}
     </select>
+    <select id="findScenicByDownloadsNum" resultType="com.group8.entity.LgScenicspot">
+        SELECT * FROM lg_scenicspot order by downloads_num DESC
+    </select>
+
+    <select id="findLatestScenic" resultType="com.group8.entity.LgScenicspot">
+        SELECT * FROM lg_scenicspot order by created_time DESC
+    </select>
+
     <insert id="addScenicspot" parameterType="LgScenicspot">
         insert into lg_scenicspot(scenic_id,scenic_name,scenic_description,scenic_cover_url,strategy_url,scenic_type,downloads_num,created_by,created_time)
         values(null,#{scenicName},#{scenicDescription},#{scenicCoverUrl},#{strategyUrl},#{scenicType},#{downloadsNum},#{createdBy},#{createdTime})

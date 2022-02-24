@@ -21,29 +21,42 @@
         <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
         <result property="updatedBy" column="updated_by" jdbcType="VARCHAR"/>
         <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
+        <collection property="comboList" column="group_id" ofType="com.group8.entity.LgCombo">
+            <id property="comboId" column="combo_id"/>
+            <result property="comboName" column="combo_name"/>
+            <result property="comboStatus" column="combo_status"/>
+        </collection>
+        <collection property="dailyStockList" column="group_id" ofType="com.group8.entity.LgDailyStock">
+            <result property="price" column="price"/>
+            <result property="dailyStockDate" column="daily_stock_date"/>
+            <result property="dailyStockQuantity" column="daily_stock_quantity"/>
+        </collection>
     </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
-        select group_id,
-               buss_id,
-               group_name,
-               group_sold,
-               group_score,
-               group_favorites,
-               group_introduce,
-               group_route,
-               group_fee_explanation,
-               group_destine_notice,
-               group_purchase_notice,
-               group_departure,
-               group_status,
-               created_by,
-               created_time,
-               updated_by,
-               updated_time
-        from lg.lg_group
-        where group_id = #{groupId}
+        select g.group_id,
+               g.buss_id,
+               g.group_name,
+               g.group_sold,
+               g.group_score,
+               g.group_favorites,
+               g.group_introduce,
+               g.group_route,
+               g.group_fee_explanation,
+               g.group_destine_notice,
+               g.group_purchase_notice,
+               g.group_departure,
+               g.group_status,
+               g.created_by,
+               g.created_time,
+               g.updated_by,
+               g.updated_time,
+               c.combo_id, c.combo_name, c.group_id, c.combo_status,
+               ds.daily_stock_date, ds.price, ds.daily_stock_quantity
+        from lg.lg_group g left join lg.lg_combo c on c.group_id = g.group_id
+                           left join lg.lg_daily_stock ds on ds.group_id = g.group_id
+        where g.group_id = #{groupId}
     </select>
 
     <!--查询指定行数据-->
@@ -69,9 +82,13 @@
     </select>
 
 
-    <select id="queryAll" resultMap="BaseResultMap">
-        select *
-        from lg.lg_group
+    <select id="queryAll" resultMap="BaseResultMap" parameterType="string">
+        select * from lg.lg_group group_name
+        <where>
+            <if test="keyword != null">
+                and group_name like CONCAT('%', #{keyword}, '%')
+            </if>
+        </where>
 
     </select>
     <select id="avgmark" resultType="integer">
@@ -84,6 +101,7 @@
         FROM lg_group
         ORDER BY group_sold = #{groupSold} DESC;
     </select>
+
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="lgGroup.groupId" useGeneratedKeys="true">
@@ -165,5 +183,45 @@
         from lg.lg_group
         where group_id = #{groupId}
     </delete>
+
+    <resultMap id="GroupComboMap" type="com.group8.entity.LgGroup">
+        <id property="groupId" column="group_id"/>
+        <result property="groupName" column="group_name"/>
+        <result property="groupSold" column="group_sold"/>
+        <result property="groupScore" column="group_score"/>
+        <result property="groupFavorites" column="group_favorites"/>
+        <result property="groupCover" column="group_cover"/>
+        <collection property="dailyStockList" column="group_id" ofType="com.group8.entity.LgDailyStock">
+            <result property="price" column="price"/>
+        </collection>
+    </resultMap>
+
+    <select id="queryByCollectedDesc" resultMap="GroupComboMap">
+        select g.group_id,
+               g.group_name,
+               g.group_sold,
+               g.group_score,
+               g.group_favorites,
+               g.group_cover,
+               ds.price from lg.lg_group g left join lg.lg_daily_stock ds on ds.group_id = g.group_id order by g.group_favorites desc
+    </select>
+    <select id="queryByScoreDesc" resultType="com.group8.entity.LgGroup">
+        select g.group_id,
+               g.group_name,
+               g.group_sold,
+               g.group_score,
+               g.group_favorites,
+               g.group_cover,
+               ds.price from lg.lg_group g left join lg.lg_daily_stock ds on ds.group_id = g.group_id order by g.group_score desc
+    </select>
+    <select id="queryBySlodDesc" resultType="com.group8.entity.LgGroup">
+        select g.group_id,
+               g.group_name,
+               g.group_sold,
+               g.group_score,
+               g.group_favorites,
+               g.group_cover,
+               ds.price from lg.lg_group g left join lg.lg_daily_stock ds on ds.group_id = g.group_id order by g.group_sold desc
+    </select>
 
 </mapper>

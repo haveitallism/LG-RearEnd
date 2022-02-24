@@ -11,11 +11,26 @@ spring:
           uri: http://localhost:8100 #匹配的路径
           predicates:
             - Path=/nUser/**, /bUser/**, /index/**    #具体的访问路径
+
         - id: lg-tourNote-8500
           uri: http://localhost:8500
           predicates:
             - Path=/scenic/**, /travelnotes/**
 
+        - id: lg-group-8400
+          uri: http://localhost:8400
+          predicates:
+            - Path=/combo/**, /group/**
+
+        - id: lg-order-8300
+          uri: http://localhost:8300
+          predicates:
+            - Path=/order/**
+
+        - id: lg-comments-8200
+          uri: http://localhost:8200
+          predicates:
+            - Path=/click/**, /productcomment/**, /scenicspotcomment/**, /travelnotecomment/**
 
 #        不同的微服务有不同的路由
 #        - id: lg-user-8100   #路由ID,必须唯一，建议使用微服务名
