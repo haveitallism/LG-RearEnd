@@ -49,6 +49,7 @@ public class OrderServiceImpl implements OrderService {
             lgTourOrder.setProductId(activityId);
             lgTourOrder.setOrderChoose("冰火两重天");
             lgTourOrder.setOrderPayoutStatus(0);
+            lgTourOrder.setCommentId(0);
             rabbitTemplate.convertAndSend("exchangeadd", "add", lgTourOrder);
 
         }
@@ -88,6 +89,31 @@ public class OrderServiceImpl implements OrderService {
 //        for(int i = 1; i <= activity.getInventory(); i++){
 //            opsForList.leftPush("activity"+activity.getActivityId(),i);
 //        }
+    }
+
+    @Override
+    public List<LgTourOrder> getAllOrder(LgTourOrder lgTourOrder) {
+        return orderDao.getAllOrder(lgTourOrder);
+    }
+
+    @Override
+    public List<LgTourOrder> getNotPayOrder(int userId) {
+        return orderDao.getNotPayOrder(userId);
+    }
+
+    @Override
+    public List<LgTourOrder> getPayOrder(int userId) {
+        return orderDao.getPayOrder(userId);
+    }
+
+    @Override
+    public List<LgTourOrder> getAllOrderById(int userId) {
+        return orderDao.getAllOrderById(userId);
+    }
+
+    @Override
+    public List<LgTourOrder> getNoCommentOrder(int userId) {
+        return orderDao.getNoCommentOrder(userId);
     }
 
 

@@ -25,5 +25,6 @@ public class LgTourOrder {
     private java.sql.Timestamp createdTime;
     private String updatedBy;
     private java.sql.Timestamp updatedTime;
+    private long commentId;
 
 }

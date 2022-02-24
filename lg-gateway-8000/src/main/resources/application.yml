@@ -15,6 +15,10 @@ spring:
           uri: http://localhost:8500
           predicates:
             - Path=/scenic/**, /travelnotes/**
+        - id: lg-order-8300
+          uri: http://localhost:8300
+          predicates:
+            - Path=/order/**
 
 
 #        不同的微服务有不同的路由
