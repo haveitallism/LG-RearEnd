@@ -1,9 +1,6 @@
 package com.group8.service;
 
-import com.group8.dto.UserCollects;
-import com.group8.dto.UploadImg;
-import com.group8.dto.UserLoginForm;
-import com.group8.dto.UserQueryCondition;
+import com.group8.dto.*;
 import com.group8.entity.LgNormalUser;
 import com.group8.entity.LgNormalUserGroupCollect;
 import com.group8.entity.LgNormalUserScenicspotCollect;
@@ -23,6 +20,8 @@ public interface NormalUserService {
     List<LgNormalUser> findByCondition(LgNormalUser lgNormalUser);
 
     int update(LgNormalUser lgNormalUser);
+
+    int update(UserPasswords userPasswords);
 
     //验证激活码
     boolean checkActiveCode(String code);

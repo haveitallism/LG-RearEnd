@@ -4,9 +4,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.group8.dao.CollectsFindDao;
 import com.group8.dao.NormalUserDao;
-import com.group8.dto.UserCollects;
-import com.group8.dto.UserLoginForm;
-import com.group8.dto.UploadImg;
+import com.group8.dto.*;
 import com.group8.dto.UserLoginForm;
 import com.group8.entity.LgGroup;
 import com.group8.entity.LgNormalUser;
@@ -133,14 +131,33 @@ public class NormalUserServiceImpl implements NormalUserService {
 
     @Override
     public int update(LgNormalUser lgNormalUser) {
-        // 密码使用MD5加密,重新设置回去
-        //String encryptedPwd = MD5Utils.encrypt(lgNormalUser.getUserPassword(), lgNormalUser.getUserName() + "lg");
-        //lgNormalUser.setUserPassword(encryptedPwd);
         // 获取当前时间为更新时间
         long currentTimeMillis = System.currentTimeMillis();
         Timestamp timestamp = new Timestamp(currentTimeMillis);
         lgNormalUser.setUpdatedTime(timestamp);
         return normalUserDao.update(lgNormalUser);
+    }
+
+    /**
+     * 修改密码
+     * @param userPasswords
+     * @return
+     */
+    @Override
+    public int update(UserPasswords userPasswords) {
+        int userId = userPasswords.getUserId();
+        LgNormalUser lgNormalUser = normalUserDao.findById(userId);
+        if (MD5Utils.encrypt(userPasswords.getOldPassword(), "lg").equals(lgNormalUser.getUserPassword())){
+            //设置修改时间
+            long currentTimeMillis = System.currentTimeMillis();
+            // 密码使用MD5加密,重新设置回去
+            String encryptedPwd = MD5Utils.encrypt(userPasswords.getNewPassword(), "lg");
+            Timestamp timestamp = new Timestamp(currentTimeMillis);
+            normalUserDao.updatePassword(userId,encryptedPwd,timestamp);
+            return 1;
+        }else {
+            return 0;
+        }
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.group8.entity.LgNormalUserTravelnotesCollect;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.redis.core.ZSetOperations;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
 
@@ -31,6 +32,7 @@ public interface NormalUserDao {
     List<LgNormalUser> findByCondition(@Param("lgNormalUser") LgNormalUser lgNormalUser);
 
     int update(@Param("normalUser") LgNormalUser lgNormalUser);
+    int updatePassword(@Param("userId") int userId,@Param("password")String password,@Param("updatedTime")Timestamp updatedTime );
 
     int deleteById(@Param("id") int id);
 
