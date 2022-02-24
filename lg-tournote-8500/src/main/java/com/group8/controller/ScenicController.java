@@ -1,13 +1,20 @@
 package com.group8.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.group8.dto.DownFile;
+import com.group8.dto.FormInLine;
+import com.group8.dto.LikeScenicName;
 import com.group8.dto.UploadImg;
 import com.group8.entity.LgScenicspot;
 import com.group8.entity.ResponseEntity;
 import com.group8.service.ScenicService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author acoffee
@@ -71,6 +78,7 @@ public class ScenicController {
     @RequestMapping("/deleteScenicspot/{scenicId}")
     public ResponseEntity<String> deleteScenicspot(@PathVariable int scenicId){
         boolean flag = scenicService.deleteScenicspot(scenicId);
+        System.out.println(flag);
         if (flag) {
             return new ResponseEntity<String>(200, "删除成功！", null);
         } else {
@@ -92,6 +100,22 @@ public class ScenicController {
         } else {
             return new ResponseEntity<LgScenicspot>(500,"查询失败！",null);
         }
+    }
+
+    //查询全部景点
+    @RequestMapping("/findAllScenicspot")
+    public ResponseEntity<List<LgScenicspot>> findAllScenicspot(){
+        List<LgScenicspot> list = scenicService.findAllScenicspot();
+        return new ResponseEntity<>(200,"查询成功",list);
+    }
+
+    //根据名称模糊查询景点
+    @PostMapping("/findAllScenicspotByKeyword")
+    public ResponseEntity<List<LgScenicspot>> findAllScenicspotByKeyword(@RequestBody LikeScenicName input){
+        System.out.println(input);
+        List<LgScenicspot> list = scenicService.findAllScenicspotByName(input.getInput());
+        System.out.println(list);
+        return new ResponseEntity<>(200,"查询成功",list);
     }
 }
 
