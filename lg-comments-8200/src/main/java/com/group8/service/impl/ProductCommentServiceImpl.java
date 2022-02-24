@@ -18,9 +18,14 @@ public class ProductCommentServiceImpl implements ProductCommentService {
     public void addProductComment(int pid, int uid, int fid, int mark, String content) {
         LgComment lgComment = new LgComment(0,content,Integer.toString(fid),"0",Integer.toString(uid),new Timestamp(System.currentTimeMillis()),null);
         productCommentDao.addProductCommentDao(lgComment);
-        if(fid == 0){
-            productCommentDao.addMiddule(pid,lgComment.getCommentId(),mark);
-        }
+        productCommentDao.addMiddule(pid,lgComment.getCommentId(),mark);
+        productCommentDao.updateProductMark(pid);
+    }
+
+    @Override
+    public void replayProductComment(int id, int uid, int fid, int mark, String content) {
+        LgComment lgComment = new LgComment(0,content,Integer.toString(fid),"0",Integer.toString(uid),new Timestamp(System.currentTimeMillis()),null);
+        productCommentDao.addProductCommentDao(lgComment);
     }
 
     @Override
@@ -37,4 +42,6 @@ public class ProductCommentServiceImpl implements ProductCommentService {
     public void delete(int cid) {
         productCommentDao.delete(cid);
     }
+
+
 }

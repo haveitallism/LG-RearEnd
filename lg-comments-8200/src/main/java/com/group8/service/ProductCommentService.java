@@ -18,4 +18,6 @@ public interface ProductCommentService {
     void update(int cid);
 
     void delete(int cid);
+
+    void replayProductComment(int id, int uid, int fid, int mark, String content);
 }
