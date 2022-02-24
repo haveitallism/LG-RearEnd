@@ -41,7 +41,7 @@ public class BusinessUserServiceImpl implements BusinessUserService {
     @Override
     public int addBusinessUser(LgBussinessUser lgBussinessUser) {
         // 密码使用MD5加密,重新设置回去
-        String encryptedPwd = MD5Utils.encrypt(lgBussinessUser.getBussPassword(), lgBussinessUser.getBussPassword() + "lg");
+        String encryptedPwd = MD5Utils.encrypt(lgBussinessUser.getBussPassword(),  "lg");
         lgBussinessUser.setBussPassword(encryptedPwd);
         // 获取当前时间为注册时间
         long currentTimeMillis = System.currentTimeMillis();
@@ -123,7 +123,7 @@ public class BusinessUserServiceImpl implements BusinessUserService {
     @Override
     public LgBussinessUser login(String userName, String password) {
         // 密码加密后查询
-        String encryptedPwd = MD5Utils.encrypt(password, password + "lg");
+        String encryptedPwd = MD5Utils.encrypt(password,  "lg");
         return businessUserDao.findByUsernameAndPwd(userName, encryptedPwd);
     }
 

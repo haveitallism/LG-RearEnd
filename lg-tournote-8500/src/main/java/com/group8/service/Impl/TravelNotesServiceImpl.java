@@ -29,4 +29,9 @@ public class TravelNotesServiceImpl implements TravelNotesService {
         List<LgTravelnotes> lgTravelnotesList =  travelNotesDao.findTravelNotesByPraiseNum();
         return lgTravelnotesList;
     }
+
+    @Override
+    public List<LgTravelnotes> findLatestTravelNotes() {
+        return travelNotesDao.findLatestTravelNotes();
+    }
 }

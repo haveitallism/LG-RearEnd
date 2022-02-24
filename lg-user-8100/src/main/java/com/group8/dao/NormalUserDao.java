@@ -48,11 +48,9 @@ public interface NormalUserDao {
 
     List<LgNormalUserScenicspotCollect> findscenicCollects(int userId);
 
-    //List<UserCollects> findUserCollects(Set set);
+    //List<UserCollects> findUserCollects(List list);
 
     //List<UserCollects> findUserCollects(@Param("typeName") String typeName ,@Param("userId") int userId);
-
-
 
     int updateHeadImg(@Param("id") int id, @Param("url") String url);
 

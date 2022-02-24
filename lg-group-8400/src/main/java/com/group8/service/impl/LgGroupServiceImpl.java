@@ -1,12 +1,18 @@
 package com.group8.service.impl;
 
+import cn.hutool.core.util.ArrayUtil;
 import com.group8.dao.LgComboDao;
 import com.group8.dao.LgGroupDao;
+import com.group8.dto.GroupAndComboDto;
+import com.group8.entity.LgDailyStock;
 import com.group8.entity.LgGroup;
 import com.group8.service.LgGroupService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -47,21 +53,27 @@ public class LgGroupServiceImpl implements LgGroupService {
     }
 
     @Override
-    public List<LgGroup> queryAll() {
-        return lgGroupDao.queryAll();
+    public List<LgGroup> queryAll(String keyword) {
+        return lgGroupDao.queryAll(keyword);
     }
 
 
     /**
      * 新增数据
      *
-     * @param lgGroup 实例对象
+     * @param dto 实例对象
      * @return 实例对象
      */
     @Override
-    public LgGroup insert(LgGroup lgGroup) {
-        this.lgGroupDao.insert(lgGroup);
-        return lgGroup;
+    public void insert(GroupAndComboDto dto) {
+        lgGroupDao.insert(dto);
+        long groupId = dto.getLgGroup().getGroupId();
+        for (int i = 0; i < dto.getLgCombo().size(); i++) {
+            dto.getLgCombo().get(i).setGroupId(groupId);
+        }
+
+        lgComboDao.insert(dto.getLgCombo());
+        System.out.println(dto);
     }
 
     /**
@@ -71,9 +83,9 @@ public class LgGroupServiceImpl implements LgGroupService {
      * @return 实例对象
      */
     @Override
-    public LgGroup update(LgGroup lgGroup) {
-        this.lgGroupDao.update(lgGroup);
-        return this.queryById((int) lgGroup.getGroupId());
+    public Integer update(LgGroup lgGroup) {
+
+        return lgGroupDao.update(lgGroup);
     }
 
     /**
@@ -87,14 +99,40 @@ public class LgGroupServiceImpl implements LgGroupService {
         return this.lgGroupDao.deleteById(groupId) > 0;
     }
 
-//    @Override
-//    public int inserts(GroupAndComboDto groupAndComboDto) {
-//        lgComboDao.insert(groupAndComboDto.getLgCombo());
-//        long groupId = groupAndComboDto.getLgGroup().getGroupId();
-//        LgCombo lgCombo = new LgCombo();
-//        lgCombo.setGroupId(groupId);
-//        lgComboDao.insert(lgCombo);
-//        return 1;
-//    }
+    @Override
+    public int upates(Integer pid) {
+        return lgGroupDao.upates(pid);
+    }
+
+    @Override
+    public List<LgGroup> featuredGroup(String currentSortType) {
+        List<LgGroup> groupList = null;
+        switch (currentSortType) {
+            case "default":
+                groupList = lgGroupDao.queryByCollectedDesc();
+                break;
+            case "score":
+                groupList = lgGroupDao.queryByScoreDesc();
+                break;
+            case "sales":
+                groupList = lgGroupDao.queryBySlodDesc();
+                break;
+        }
+        if(!groupList.isEmpty()){
+            // 获取group最低价格设置回对象中
+            for (LgGroup group : groupList) {
+                int[] priceArr = new int[group.getDailyStockList().size()];
+                if(!group.getDailyStockList().isEmpty()){
+                    for (int i = 0; i < group.getDailyStockList().size(); i++) {
+                        priceArr[i] = group.getDailyStockList().get(i).getPrice();
+                    }
+                    int min = ArrayUtil.min(priceArr);
+                    group.setLowestPrice(min);
+                }
+            }
+        }
+        return groupList;
+    }
+
 
 }

@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author acoffee
  * @create 2022-02-17 17:41
@@ -26,4 +28,8 @@ public interface ScenicDao {
     boolean updateScenicspot(LgScenicspot lgScenicspot);
 
     boolean deleteScenicspot(int scenicId);
+
+    List<LgScenicspot> findScenicByDownloadsNum();
+
+    List<LgScenicspot> findLatestScenic();
 }

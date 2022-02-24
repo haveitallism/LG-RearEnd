@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @author acoffee
@@ -65,6 +66,16 @@ public class ScenicServiceImpl implements ScenicService {
     public LgScenicspot findScenicspot(int scenicId) {
         LgScenicspot scenic = scenicDao.findScenic(scenicId);
         return scenic;
+    }
+
+    @Override
+    public List<LgScenicspot> findScenicByDownloadsNum() {
+        return scenicDao.findScenicByDownloadsNum();
+    }
+
+    @Override
+    public List<LgScenicspot> findLatestScenic() {
+        return scenicDao.findLatestScenic();
     }
 
     @Override

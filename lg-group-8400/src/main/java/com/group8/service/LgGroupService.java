@@ -1,5 +1,6 @@
 package com.group8.service;
 
+import com.group8.dto.GroupAndComboDto;
 import com.group8.entity.LgGroup;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public interface LgGroupService {
      */
     List<LgGroup> queryAllByLimit(int offset, int limit);
 
-    List<LgGroup> queryAll();
+    List<LgGroup> queryAll(String keyword);
 
     /**
      * 新增数据
@@ -37,8 +38,7 @@ public interface LgGroupService {
      * @param lgGroup 实例对象
      * @return 实例对象
      */
-    LgGroup insert(LgGroup lgGroup);
-    //int insert(GroupAndComboDto groupAndComboDto);
+    void insert(GroupAndComboDto dto);
 
     /**
      * 修改数据
@@ -46,7 +46,7 @@ public interface LgGroupService {
      * @param lgGroup 实例对象
      * @return 实例对象
      */
-    LgGroup update(LgGroup lgGroup);
+    Integer update(LgGroup lgGroup);
 
     /**
      * 通过主键删除数据
@@ -56,5 +56,7 @@ public interface LgGroupService {
      */
     boolean deleteById(Integer groupId);
 
-    //int inserts(GroupAndComboDto groupAndComboDto);
+    int upates(Integer pid);
+
+    List<LgGroup> featuredGroup(String currentSortType);
 }

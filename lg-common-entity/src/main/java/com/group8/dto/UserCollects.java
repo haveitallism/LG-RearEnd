@@ -14,10 +14,10 @@ import java.security.PrivateKey;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserCollects<T> {
+public class UserCollects {
 
     private int projectId;
     private String projectName;
     private String typeName;
-    private T collect;
+
 }

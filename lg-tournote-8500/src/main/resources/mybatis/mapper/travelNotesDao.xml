@@ -9,4 +9,7 @@
     <select id="findTravelNotesByPraiseNum" resultType="LgTravelnotes">
         SELECT * FROM `lg_travelnotes` order by praise_num DESC
     </select>
+    <select id="findLatestTravelNotes" resultType="com.group8.entity.LgTravelnotes">
+        select * from lg_scenicspot order by created_time desc
+    </select>
 </mapper>
