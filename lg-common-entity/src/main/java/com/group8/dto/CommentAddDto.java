@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 
 @Data
 @AllArgsConstructor
@@ -14,4 +16,6 @@ public class CommentAddDto {
     int fid;
     int mark;//商品分数
     String content;
+    Date date;
+    int praiseNum;
 }

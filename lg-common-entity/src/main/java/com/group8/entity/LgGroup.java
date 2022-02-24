@@ -12,7 +12,9 @@ public class LgGroup {
     private long groupId;
     private long bussId;
     private String groupName;
-    private String groupSold;
+    private String groupCover;
+    private double lowestPrice;
+    private long groupSold;
     private String groupScore;
     private String groupFavorites;
     private String groupIntroduce;
@@ -26,5 +28,6 @@ public class LgGroup {
     private java.sql.Timestamp createdTime;
     private String updatedBy;
     private java.sql.Timestamp updatedTime;
-
+    private LgCombo lgCombo;
+    private Integer pid;
 }

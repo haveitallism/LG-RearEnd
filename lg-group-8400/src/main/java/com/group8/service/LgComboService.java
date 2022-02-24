@@ -20,4 +20,5 @@ public interface LgComboService {
     boolean deleteById(int comboId);
 
     LgCombo selectById(Integer comboId);
+
 }

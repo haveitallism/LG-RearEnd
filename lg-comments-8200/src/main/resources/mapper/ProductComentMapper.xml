@@ -8,7 +8,7 @@
     </insert>
     <!--  添加关联表数据  -->
     <insert id="addMiddule">
-        insert into lg_conmment_group values (#{pid},#{cid},#{mark})
+        insert into lg_comment_group values (#{pid},#{cid},#{mark})
     </insert>
     <!-- 查询评论   -->
     <resultMap id="findAllMap" type="com.group8.entity.LgComment">
@@ -16,7 +16,7 @@
         <collection property="lgComments" column="comment_id" ofType="com.group8.entity.LgComment" select="findSon"></collection>
     </resultMap>
     <select id="findAll" resultMap="findAllMap">
-        select * from lg_comment where comment_id in (select cid from lg_conmment_group where pid = #{pid} )
+        select * from lg_comment where comment_id in (select cid from lg_comment_group where pid = #{pid} )
     </select>
     <select id="findSon" resultMap="findAllMap">
         select * from lg_comment where comment_fid =#{id}
@@ -29,4 +29,7 @@
     <delete id="delete">
         delete from lg_comment where comment_id = #{cid}
     </delete>
+    <update id="updateProductMark">
+        update lg_group set group_score = (select cast(AVG(mark) AS DECIMAL(10,2)) from lg_comment_group where pid = #{pid}) where group_id = #{pid}
+    </update>
 </mapper>

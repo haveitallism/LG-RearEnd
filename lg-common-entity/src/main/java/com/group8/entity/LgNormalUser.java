@@ -22,5 +22,7 @@ public class LgNormalUser {
     private java.sql.Timestamp createdTime;
     private String updatedBy;
     private java.sql.Timestamp updatedTime;
+    // 用户token
+    private String token;
 
 }
