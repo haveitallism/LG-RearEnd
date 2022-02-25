@@ -1,5 +1,6 @@
 package com.group8.service;
 
+import com.group8.entity.LgGroup;
 import com.group8.entity.LgSalesPromotionActivity;
 import com.group8.entity.LgTourOrder;
 
@@ -30,4 +31,6 @@ public interface OrderService {
     List<LgTourOrder> getAllOrderById(int userId);
 
     List<LgTourOrder> getNoCommentOrder(int userId);
+
+    List<LgGroup> findGroup(String groupName);
 }

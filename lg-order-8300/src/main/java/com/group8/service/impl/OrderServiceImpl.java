@@ -1,6 +1,7 @@
 package com.group8.service.impl;
 
 import com.group8.dao.OrderDao;
+import com.group8.entity.LgGroup;
 import com.group8.entity.LgSalesPromotionActivity;
 import com.group8.entity.LgTourOrder;
 import com.group8.service.OrderService;
@@ -114,6 +115,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<LgTourOrder> getNoCommentOrder(int userId) {
         return orderDao.getNoCommentOrder(userId);
+    }
+
+    @Override
+    public List<LgGroup> findGroup(String groupName) {
+        return orderDao.findGroup(groupName);
     }
 
 
