@@ -6,6 +6,7 @@ import com.group8.entity.ResponseEntity;
 import com.group8.service.TravelNotesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,4 +45,18 @@ public class TravelNotesController {
             return new ResponseEntity<List<LgTravelnotes>>(500,"查询失败！",null);
         }
     }
+
+    //添加游记的方法
+    @RequestMapping("/addTravelNotes")
+    public ResponseEntity<Boolean> addTravelNotes(@RequestBody LgTravelnotes travelnotes){
+        System.out.println(travelnotes);
+        boolean flag = travelNotesService.addTravelNotes(travelnotes);
+        if (flag) {
+            return new ResponseEntity<Boolean>(200, "发表成功！", flag);
+        } else {
+            return new ResponseEntity<Boolean>(500,"发表失败！",!flag);
+        }
+    }
+
+
 }

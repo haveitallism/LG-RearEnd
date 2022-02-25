@@ -9,4 +9,9 @@
     <select id="findTravelNotesByPraiseNum" resultType="LgTravelnotes">
         SELECT * FROM `lg_travelnotes` order by praise_num DESC
     </select>
+
+    <insert id="addTravelNotes">
+        insert into lg_travelnotes(notes_id,notes_url,notes_title,pass_scenicspot,travel_cost,travel_date,travel_time,notes_status,create_by,create_time)
+        values(null,#{notesUrl},#{notesTitle},#{passScenicspot},#{travelCost},#{travelDate},#{travelTime},#{notesStatus},#{createBy},#{createTime})
+    </insert>
 </mapper>

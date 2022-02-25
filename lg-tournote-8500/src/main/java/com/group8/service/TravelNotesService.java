@@ -12,4 +12,6 @@ public interface TravelNotesService {
     LgTravelnotes findTravelNotesById(int notesId);
 
     List<LgTravelnotes> findTravelNotesByPraiseNum();
+
+    boolean addTravelNotes(LgTravelnotes travelnotes);
 }

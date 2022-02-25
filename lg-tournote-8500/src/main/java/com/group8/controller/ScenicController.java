@@ -66,6 +66,7 @@ public class ScenicController {
     //修改景点信息
     @PostMapping("/updateScenicspot")
     public ResponseEntity<String> updateScenicspot(@RequestBody LgScenicspot lgScenicspot){
+        System.out.println(lgScenicspot);
         boolean flag = scenicService.updateScenicspot(lgScenicspot);
         if (flag) {
             return new ResponseEntity<String>(200, "更新成功！", null);

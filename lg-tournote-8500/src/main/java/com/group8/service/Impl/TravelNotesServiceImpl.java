@@ -6,6 +6,7 @@ import com.group8.service.TravelNotesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -26,7 +27,16 @@ public class TravelNotesServiceImpl implements TravelNotesService {
 
     @Override
     public List<LgTravelnotes> findTravelNotesByPraiseNum() {
-        List<LgTravelnotes> lgTravelnotesList =  travelNotesDao.findTravelNotesByPraiseNum();
+        List<LgTravelnotes> lgTravelnotesList = travelNotesDao.findTravelNotesByPraiseNum();
         return lgTravelnotesList;
+    }
+
+    @Override
+    public boolean addTravelNotes(LgTravelnotes travelnotes) {
+        long nowTime = System.currentTimeMillis();
+        Timestamp timestamp = new Timestamp(nowTime);
+        travelnotes.setCreateTime(timestamp);
+        boolean flag = travelNotesDao.addTravelNotes(travelnotes);
+        return flag;
     }
 }

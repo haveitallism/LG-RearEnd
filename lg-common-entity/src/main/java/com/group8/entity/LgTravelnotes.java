@@ -19,7 +19,8 @@ public class LgTravelnotes {
     private String praiseNum;
     private String collectNum;
     private String browseNum;
-    private String createBy;
+    private int  notesStatus;
+    private int createBy;
     private java.sql.Timestamp createTime;
 
 }
