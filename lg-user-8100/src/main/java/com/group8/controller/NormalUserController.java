@@ -2,6 +2,7 @@ package com.group8.controller;
 
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.CircleCaptcha;
+import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.group8.dto.*;
@@ -10,6 +11,9 @@ import com.group8.entity.*;
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.group8.dto.UserCollects;
+import com.group8.dto.UserLoginForm;
+import com.group8.entity.*;
 import com.group8.feignClient.GroupClient;
 import com.group8.feignClient.OrderClient;
 import com.group8.feignClient.TravelNoteClient;
@@ -191,6 +195,20 @@ public class NormalUserController {
         }
     }
 
+    /**
+     *修改密码
+     */
+    @PostMapping("/updatePassword")
+    @ApiOperation(value = "修改密码", notes = "根据id更新用户信息")
+    public ResponseEntity<String> updatePassword(@RequestBody UserPasswords userPasswords) {
+        int i = normalUserService.update(userPasswords);
+        if (i > 0) {
+            return new ResponseEntity<>(200, "修改成功！", "");
+        } else {
+            return new ResponseEntity<>(500, "修改失败！", "");
+        }
+    }
+
     @PostMapping("/updateHeadImg")
     @ApiOperation(value = "修改头像", notes = "根据id修改用户头像")
     public String updateHeadImg(@RequestParam("id") int id,
@@ -201,6 +219,17 @@ public class NormalUserController {
             return normalUserService.updateHeadImg(uploadImg);
         }else {
             return "请选择文件！";
+        }
+    }
+
+    @PostMapping("/updateHeadImgWeb")
+    @ApiOperation(value = "web端修改头像", notes = "根据id修改用户头像")
+    public ResponseEntity<String> updateHeadImg( UploadImg uploadImg) throws IOException {
+        String url = normalUserService.updateHeadImg(uploadImg);
+        if(!StrUtil.isBlank(url)){
+            return new ResponseEntity<>(200,"修改头像成功",url);
+        } else {
+            return new ResponseEntity<>(200,"修改头像失败");
         }
     }
 
@@ -392,6 +421,19 @@ public class NormalUserController {
         List<UserCollects> list = normalUserService.showAllCollects(userId);
         if(!ObjectUtil.isNull(list)){
             return new ResponseEntity<>(200,"查询所有收藏成功",list);
+        }else {
+            return new ResponseEntity<>(500,"查询所有收藏失败");
+        }
+    }
+
+    /**
+     * 查询不同类别的收藏内容
+     */
+    @PostMapping("/showOthersCollects")
+    public ResponseEntity<List<UserCollects>> showTypesCollects(@RequestBody UserCollects userCollects){
+        List<UserCollects> list = normalUserService.showTypesCollects(userCollects);
+        if(!ObjectUtil.isNull(list)){
+            return new ResponseEntity<>(200,"查询类别收藏成功",list);
         }else {
             return new ResponseEntity<>(500,"查询所有收藏失败");
         }

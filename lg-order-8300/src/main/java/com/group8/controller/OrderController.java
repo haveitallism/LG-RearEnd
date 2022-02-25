@@ -3,6 +3,7 @@ package com.group8.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.group8.dto.OrderFindByPage;
+import com.group8.entity.LgGroup;
 import com.group8.entity.LgSalesPromotionActivity;
 import com.group8.entity.LgTourOrder;
 import com.group8.entity.ResponseEntity;
@@ -82,5 +83,11 @@ public class OrderController {
     public ResponseEntity<List<LgTourOrder>> getNoCommentOrder(@PathVariable("userId")int userId){
         List<LgTourOrder> list = orderService.getNoCommentOrder(userId);
         return new ResponseEntity<>(200,"查询成功",list);
+    }
+
+    @RequestMapping("/findGroup/{groupName}")
+    public ResponseEntity<LgGroup> findGroup(@PathVariable("groupName") String groupName){
+        List<LgGroup> list = orderService.findGroup(groupName);
+        return new ResponseEntity(200,"搜索成功",list);
     }
 }
