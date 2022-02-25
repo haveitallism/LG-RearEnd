@@ -15,6 +15,7 @@ import java.util.List;
  * @apiNote
  */
 public interface NormalUserService {
+
     int addNormalUser(LgNormalUser lgNormalUser);
 
     List<LgNormalUser> findByCondition(LgNormalUser lgNormalUser);
@@ -22,7 +23,6 @@ public interface NormalUserService {
     int update(LgNormalUser lgNormalUser);
 
     int update(UserPasswords userPasswords);
-
     //验证激活码
     boolean checkActiveCode(String code);
 
@@ -51,4 +51,6 @@ public interface NormalUserService {
     LgNormalUser findById(int id);
 
     LgNormalUser checkUserName(String userName);
+
+    List<UserCollects> showTypesCollects(UserCollects userCollects);
 }

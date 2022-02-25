@@ -53,6 +53,7 @@ public class NormalUserServiceImpl implements NormalUserService {
         return normalUserDao.checkUserName(userName);
     }
 
+
     @Override
     public int addNormalUser(LgNormalUser lgNormalUser) {
         // 密码使用MD5加密,重新设置回去
@@ -282,17 +283,50 @@ public class NormalUserServiceImpl implements NormalUserService {
             if (StrUtil.contains(type, "scenicId")) {
                 LgScenicspot lgScenicspot = collectsFindDao.scenicFindById(groupId);
                 //在新list中添加单条记录
-                collectsList.add(new UserCollects(groupId, "景点攻略：" + lgScenicspot.getScenicName(), "scenic"));
+                collectsList.add(new UserCollects(userId,groupId, lgScenicspot.getScenicName(), "景点攻略"));
             }
             if (StrUtil.contains(type, "notesId")) {
                 LgTravelnotes lgTravelnotes = collectsFindDao.notesFindById(groupId);
-                collectsList.add(new UserCollects(groupId, "用户游记：" + lgTravelnotes.getNotesTitle(), "notes"));
+                collectsList.add(new UserCollects(userId,groupId, lgTravelnotes.getNotesTitle(), "用户游记"));
             }
             if (StrUtil.contains(type, "groupId")) {
                 LgGroup lgGroup = collectsFindDao.groupFindById(groupId);
-                collectsList.add(new UserCollects(groupId, "团游项目：" + lgGroup.getGroupName(), "group"));
+                collectsList.add(new UserCollects(userId,groupId, lgGroup.getGroupName(), "团游项目"));
             }
         }
         return collectsList;
+    }
+
+    /**
+     * 查询不同类别的收藏
+     * @param userCollects
+     * @return
+     */
+    @Override
+    public List<UserCollects> showTypesCollects(UserCollects userCollects) {
+        int userId = userCollects.getUserId();
+        String typeName = userCollects.getTypeName();
+        List<UserCollects> list = new ArrayList<>();
+        switch (typeName){
+            case "景点攻略":
+                List<LgScenicspot> lgScenicspots = normalUserDao.findscenicCollects(userId);
+                for (LgScenicspot scenic:lgScenicspots){
+                    list.add(new UserCollects(0,(int)scenic.getScenicId(),scenic.getScenicName(),null));
+                }
+                return list;
+            case "团游项目":
+                List<LgGroup> lgGroups = normalUserDao.findgroupCollects(userId);
+                for(LgGroup group:lgGroups ){
+                    list.add(new UserCollects(0,(int)group.getGroupId(),group.getGroupName(),null));
+                }
+                return list;
+            case "用户游记":
+                List<LgTravelnotes> travelCollects = normalUserDao.findTravelCollects(userId);
+                for(LgTravelnotes travel : travelCollects){
+                    list.add(new UserCollects(0,(int) travel.getNotesId(),travel.getNotesTitle(),null));
+                }
+                return list;
+        }
+        return null;
     }
 }

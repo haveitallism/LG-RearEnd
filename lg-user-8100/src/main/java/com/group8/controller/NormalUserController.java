@@ -349,4 +349,17 @@ public class NormalUserController {
         }
     }
 
+    /**
+     * 查询不同类别的收藏内容
+     */
+    @PostMapping("/showOthersCollects")
+    public ResponseEntity<List<UserCollects>> showTypesCollects(@RequestBody UserCollects userCollects){
+        List<UserCollects> list = normalUserService.showTypesCollects(userCollects);
+        if(!ObjectUtil.isNull(list)){
+            return new ResponseEntity<>(200,"查询类别收藏成功",list);
+        }else {
+            return new ResponseEntity<>(500,"查询所有收藏失败");
+        }
+    }
+
 }
