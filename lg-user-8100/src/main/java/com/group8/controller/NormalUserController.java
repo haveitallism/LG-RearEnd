@@ -1,6 +1,5 @@
 package com.group8.controller;
 
-import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.CircleCaptcha;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
