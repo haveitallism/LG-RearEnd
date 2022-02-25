@@ -3,11 +3,14 @@ package com.group8.controller;
 import com.group8.dto.DownFile;
 import com.group8.dto.UploadImg;
 import com.group8.entity.LgScenicspot;
+import com.group8.entity.LgTravelnotes;
 import com.group8.entity.ResponseEntity;
 import com.group8.service.ScenicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author acoffee
@@ -91,6 +94,28 @@ public class ScenicController {
             return new ResponseEntity<LgScenicspot>(200, "查询成功！", scenicspotInfo);
         } else {
             return new ResponseEntity<LgScenicspot>(500,"查询失败！",null);
+        }
+    }
+
+    //根据下载量查询攻略并降序排列
+    @RequestMapping("/findScenicByDownloadsNum")
+    public ResponseEntity<List<LgScenicspot>> findScenicByDownloadsNum(){
+        List<LgScenicspot> scenicSpotList = scenicService.findScenicByDownloadsNum();
+        if (scenicSpotList != null) {
+            return new ResponseEntity<>(200, "查询成功！", scenicSpotList);
+        } else {
+            return new ResponseEntity<>(500,"查询失败！",null);
+        }
+    }
+
+    //根据发布时间查询攻略并降序排列
+    @RequestMapping("/findLatestScenic")
+    public ResponseEntity<List<LgScenicspot>> findLatestScenic(){
+        List<LgScenicspot> scenicSpotList = scenicService.findLatestScenic();
+        if (scenicSpotList != null) {
+            return new ResponseEntity<>(200, "查询成功！", scenicSpotList);
+        } else {
+            return new ResponseEntity<>(500,"查询失败！",null);
         }
     }
 }

@@ -16,7 +16,10 @@ public class ProductCommentController {
 
     @Resource
     ProductCommentService productCommentService;
-
+    @PostMapping("test")
+    public ResponseEntity test(@RequestBody CommentAddDto commentAddDto){
+        return new ResponseEntity(200,"ok","success");
+    }
     /**
      * 商品评论添加
      * @param commentAddDto
@@ -25,6 +28,12 @@ public class ProductCommentController {
     @PostMapping("add")
     public ResponseEntity add(@RequestBody CommentAddDto commentAddDto){
         productCommentService.addProductComment(commentAddDto.getId(), commentAddDto.getUid(), commentAddDto.getFid(), commentAddDto.getMark(), commentAddDto.getContent());
+        return new ResponseEntity(200,"ok","success");
+    }
+
+    @PostMapping("replay")
+    public ResponseEntity replay(@RequestBody CommentAddDto commentAddDto){
+        productCommentService.replayProductComment(commentAddDto.getId(), commentAddDto.getUid(), commentAddDto.getFid(), commentAddDto.getMark(), commentAddDto.getContent());
         return new ResponseEntity(200,"ok","success");
     }
 

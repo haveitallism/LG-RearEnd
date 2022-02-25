@@ -14,6 +14,10 @@ spring:
     host: 192.168.174.158
   application:
     name: lg-order-8300
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://162.14.112.78:3306/lg?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
@@ -21,9 +25,6 @@ spring:
     password: 123456
     hikari:
       max-lifetime: 0
-#  cloud:
-#    nacos:
-#      server-addr: 127.0.0.1:8848
 
 
 #    #文件上传大小限制

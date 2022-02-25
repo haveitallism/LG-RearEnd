@@ -7,10 +7,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.group8.dto.*;
 import com.group8.entity.*;
-import com.group8.feignClient.TourNoteClient;
+//import com.group8.feignClient.TravelNoteClient;
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.group8.dto.UserCollects;
 import com.group8.dto.UserLoginForm;
 import com.group8.entity.*;
 import com.group8.service.NormalUserService;
@@ -21,9 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -41,8 +39,8 @@ public class NormalUserController {
     @Autowired
     NormalUserService normalUserService;
 
-    @Autowired
-    TourNoteClient tourNoteClient;
+    //@Autowired
+    //TravelNoteClient tourNoteClient;
 
     CircleCaptcha captcha;
 

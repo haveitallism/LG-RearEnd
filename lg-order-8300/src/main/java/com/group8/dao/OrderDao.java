@@ -22,4 +22,14 @@ public interface OrderDao {
     List<LgSalesPromotionActivity> getAllActivity();
 
     void updateInventory(@Param("size") Long size, @Param("activityId") Long activityId);
+
+    List<LgTourOrder> getAllOrder(LgTourOrder lgTourOrder);
+
+    List<LgTourOrder> getNotPayOrder(int userId);
+
+    List<LgTourOrder> getPayOrder(int userId);
+
+    List<LgTourOrder> getAllOrderById(int userId);
+
+    List<LgTourOrder> getNoCommentOrder(int userId);
 }

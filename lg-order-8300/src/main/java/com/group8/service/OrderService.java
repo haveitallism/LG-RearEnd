@@ -20,4 +20,14 @@ public interface OrderService {
     List<LgSalesPromotionActivity> getAllActivity();
 
     void updateInventory();
+
+    List<LgTourOrder> getAllOrder(LgTourOrder lgTourOrder);
+
+    List<LgTourOrder> getNotPayOrder(int userId);
+
+    List<LgTourOrder> getPayOrder(int userId);
+
+    List<LgTourOrder> getAllOrderById(int userId);
+
+    List<LgTourOrder> getNoCommentOrder(int userId);
 }

@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface ProductCommentDao {
-    LgComment addProductCommentDao(LgComment lgComment);
+    void addProductCommentDao(LgComment lgComment);
 
     void addMiddule(@Param("pid") int pid, @Param("cid") long commentId, @Param("mark") int mark);
 
@@ -16,4 +16,6 @@ public interface ProductCommentDao {
     void update(int cid);
 
     void delete(int cid);
+
+    void updateProductMark(int pid);
 }

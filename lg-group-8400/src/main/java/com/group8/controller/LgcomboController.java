@@ -15,7 +15,7 @@ import java.util.List;
  * version: 1.0 <br>
  */
 @RestController
-@RequestMapping("lgcombo")
+@RequestMapping("combo")
 public class LgcomboController {
     @Resource
     LgComboService lgComboService;
