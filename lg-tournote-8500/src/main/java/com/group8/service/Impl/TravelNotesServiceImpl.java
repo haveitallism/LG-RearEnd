@@ -34,4 +34,9 @@ public class TravelNotesServiceImpl implements TravelNotesService {
     public List<LgTravelnotes> findLatestTravelNotes() {
         return travelNotesDao.findLatestTravelNotes();
     }
+
+    @Override
+    public List<LgTravelnotes> searchByKeyword(String keyword) {
+        return travelNotesDao.searchByKeyword(keyword);
+    }
 }

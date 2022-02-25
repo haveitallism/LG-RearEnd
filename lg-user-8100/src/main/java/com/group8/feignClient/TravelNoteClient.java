@@ -1,5 +1,6 @@
 package com.group8.feignClient;
 
+import com.group8.dto.SearchHistory;
 import com.group8.entity.LgScenicspot;
 import com.group8.entity.LgTravelnotes;
 import com.group8.entity.ResponseEntity;
@@ -20,5 +21,8 @@ public interface TravelNoteClient {
     //根据点赞量查询游记并降序排列
     @RequestMapping("/findTravelNotesByPraiseNum")
     public ResponseEntity<List<LgTravelnotes>> findTravelNotesByPraiseNum();
+
+    @PostMapping("/searchByKeyword")
+    public ResponseEntity<List<LgTravelnotes>> searchByKeyword(@RequestBody SearchHistory searchHistory);
 
 }

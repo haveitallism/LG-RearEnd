@@ -52,4 +52,6 @@ public interface NormalUserService {
     LgNormalUser findById(int id);
 
     LgNormalUser checkUserName(String userName);
+
+    List<String> selectSearched(long userId);
 }

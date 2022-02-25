@@ -20,4 +20,6 @@ public interface TravelNotesDao {
     List<LgTravelnotes> findTravelNotesByPraiseNum();
 
     List<LgTravelnotes> findLatestTravelNotes();
+
+    List<LgTravelnotes> searchByKeyword(@Param("keyword") String keyword);
 }

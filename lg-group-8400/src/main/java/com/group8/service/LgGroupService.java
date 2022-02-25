@@ -59,4 +59,6 @@ public interface LgGroupService {
     int upates(Integer pid);
 
     List<LgGroup> featuredGroup(String currentSortType);
+
+    List<LgGroup> searchByKeyword(String keyword);
 }

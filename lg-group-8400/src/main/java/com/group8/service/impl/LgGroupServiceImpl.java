@@ -134,5 +134,10 @@ public class LgGroupServiceImpl implements LgGroupService {
         return groupList;
     }
 
+    @Override
+    public List<LgGroup> searchByKeyword(String keyword) {
+        return lgGroupDao.searchByKeyword(keyword);
+    }
+
 
 }
