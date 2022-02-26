@@ -19,4 +19,7 @@ public interface ScenicSpotCommentService {
     void update(int cid);
 
     void delete(int cid);
+
+
+    void replayScenicSpotComment(int id, int uid, int fid, int mark, String content);
 }

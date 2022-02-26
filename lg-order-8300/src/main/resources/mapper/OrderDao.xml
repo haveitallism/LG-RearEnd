@@ -43,22 +43,31 @@
             </where>
     </select>
     
-    <select id="getNotPayOrder" parameterType="int" resultType="LgTourOrder">
-        select * from lg_tour_order where user_id = #{userId} and order_payout_status = 0
+    <select id="getNotPayOrder" parameterType="int" resultType="com.group8.dto.UserOrders">
+        select g.group_name,o.order_starting_time,o.order_amount,o.order_status from lg_tour_order o,lg_group g
+        where o.user_id = #{userId} and o.product_id = g.group_id and o.order_payout_status = 0
     </select>
 
-    <select id="getPayOrder" parameterType="int" resultType="LgTourOrder">
-        select * from lg_tour_order where user_id = #{userId} and order_payout_status = 1
+    <select id="getPayOrder" parameterType="int" resultType="com.group8.dto.UserOrders">
+        select g.group_name,o.order_starting_time,o.order_amount,o.order_status from lg_tour_order o,lg_group g
+        where o.user_id = #{userId} and o.product_id = g.group_id and o.order_payout_status = 1
     </select>
 
-    <select id="getAllOrderById" parameterType="int" resultType="LgTourOrder">
-        select * from lg_tour_order where user_id = #{userId}
+    <select id="getAllOrderById" parameterType="int" resultType="com.group8.dto.UserOrders">
+        select g.group_name,o.order_starting_time,o.order_amount,o.order_status from lg_tour_order o,lg_group g
+        where o.user_id = #{userId} and o.product_id = g.group_id
     </select>
 
-    <select id="getNoCommentOrder" parameterType="int" resultType="LgTourOrder">
-        select * from lg_tour_order where user_id = #{userId} and comment_id = 0
+    <select id="getNoCommentOrder" parameterType="int" resultType="com.group8.dto.UserOrders">
+        select g.group_name,o.order_starting_time,o.order_amount,o.order_status from lg_tour_order o,lg_group g
+        where o.user_id = #{userId} and o.product_id = g.group_id and o.comment_id = 0
     </select>
-    
+
+    <select id="getNOGoOrder" parameterType="int" resultType="com.group8.dto.UserOrders">
+        select g.group_name,o.order_starting_time,o.order_amount,o.order_status from lg_tour_order o,lg_group g
+        where o.user_id = #{userId} and o.product_id = g.group_id and o.order_status = 0
+    </select>
+
     <select id="findGroup" parameterType="string" resultType="LgGroup">
         select * from lg_group where group_name like '%#{groupName}%'
     </select>

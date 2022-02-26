@@ -17,4 +17,6 @@ public interface TravelNoteCommentService {
     void update(int cid);
 
     void delete(int cid);
+
+    void replayTravelNoteComment(int id, int uid, int fid, int mark, String content);
 }

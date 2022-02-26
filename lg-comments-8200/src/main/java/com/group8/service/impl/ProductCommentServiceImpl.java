@@ -1,6 +1,7 @@
 package com.group8.service.impl;
 
 import com.group8.dao.ProductCommentDao;
+import com.group8.dto.CommentResponse;
 import com.group8.entity.LgComment;
 import com.group8.service.ProductCommentService;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class ProductCommentServiceImpl implements ProductCommentService {
     }
 
     @Override
-    public List<LgComment> findAll(int id) {
+    public List<CommentResponse> findAll(int id) {
         return productCommentDao.findAll(id);
     }
 
