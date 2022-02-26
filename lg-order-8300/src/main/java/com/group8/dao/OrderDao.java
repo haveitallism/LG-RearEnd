@@ -1,5 +1,7 @@
 package com.group8.dao;
 
+import com.group8.dto.UserOrders;
+import com.group8.entity.LgGroup;
 import com.group8.entity.LgSalesPromotionActivity;
 import com.group8.entity.LgTourOrder;
 import org.apache.ibatis.annotations.Mapper;
@@ -22,4 +24,18 @@ public interface OrderDao {
     List<LgSalesPromotionActivity> getAllActivity();
 
     void updateInventory(@Param("size") Long size, @Param("activityId") Long activityId);
+
+    List<LgTourOrder> getAllOrder(LgTourOrder lgTourOrder);
+
+    List<UserOrders> getNotPayOrder(int userId);
+
+    List<UserOrders> getPayOrder(int userId);
+
+    List<UserOrders> getAllOrderById(int userId);
+
+    List<UserOrders> getNoCommentOrder(int userId);
+
+    List<LgGroup> findGroup(String groupName);
+
+    List<UserOrders> getNOGoOrder(int userId);
 }

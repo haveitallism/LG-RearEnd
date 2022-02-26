@@ -1,10 +1,12 @@
 package com.group8.feignClient;
 
+import com.group8.dto.SearchHistory;
+import com.group8.entity.LgGroup;
 import com.group8.entity.ResponseEntity;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author laiyong
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/group")
 public interface GroupClient {
 
-    @PostMapping("/test/{str}")
-    ResponseEntity<String> test(@PathVariable("str") String str);
+    @GetMapping("/featuredGroup")
+    public ResponseEntity<List<LgGroup>> featuredGroup(@RequestParam("currentSortType") String currentSortType);
 
+    @PostMapping("/searchByKeyword")
+    public ResponseEntity<List<LgGroup>> searchByKeyword(@RequestBody SearchHistory searchHistory);
 }

@@ -4,9 +4,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.group8.dao.CollectsFindDao;
 import com.group8.dao.NormalUserDao;
-import com.group8.dto.UserCollects;
-import com.group8.dto.UserLoginForm;
-import com.group8.dto.UploadImg;
+import com.group8.dto.*;
 import com.group8.dto.UserLoginForm;
 import com.group8.entity.LgGroup;
 import com.group8.entity.LgNormalUser;
@@ -55,6 +53,7 @@ public class NormalUserServiceImpl implements NormalUserService {
         return normalUserDao.checkUserName(userName);
     }
 
+
     @Override
     public int addNormalUser(LgNormalUser lgNormalUser) {
         // 密码使用MD5加密,重新设置回去
@@ -84,7 +83,7 @@ public class NormalUserServiceImpl implements NormalUserService {
     @Override
     public LgNormalUser login(UserLoginForm userLoginForm) {
         // 密码加密后查询
-        String encryptedPwd = MD5Utils.encrypt(userLoginForm.getPassword(),  "lg");
+        String encryptedPwd = MD5Utils.encrypt(userLoginForm.getPassword(), "lg");
         LgNormalUser normalUser = normalUserDao.findByUsernameAndPwd(userLoginForm.getUserName(), encryptedPwd);
         if (normalUser != null) {
             String token = JWTUtils.sign(normalUser.getUserName(), normalUser.getUserPassword());
@@ -133,14 +132,33 @@ public class NormalUserServiceImpl implements NormalUserService {
 
     @Override
     public int update(LgNormalUser lgNormalUser) {
-        // 密码使用MD5加密,重新设置回去
-        //String encryptedPwd = MD5Utils.encrypt(lgNormalUser.getUserPassword(), lgNormalUser.getUserName() + "lg");
-        //lgNormalUser.setUserPassword(encryptedPwd);
         // 获取当前时间为更新时间
         long currentTimeMillis = System.currentTimeMillis();
         Timestamp timestamp = new Timestamp(currentTimeMillis);
         lgNormalUser.setUpdatedTime(timestamp);
         return normalUserDao.update(lgNormalUser);
+    }
+
+    /**
+     * 修改密码
+     * @param userPasswords
+     * @return
+     */
+    @Override
+    public int update(UserPasswords userPasswords) {
+        int userId = userPasswords.getUserId();
+        LgNormalUser lgNormalUser = normalUserDao.findById(userId);
+        if (MD5Utils.encrypt(userPasswords.getOldPassword(), "lg").equals(lgNormalUser.getUserPassword())){
+            //设置修改时间
+            long currentTimeMillis = System.currentTimeMillis();
+            // 密码使用MD5加密,重新设置回去
+            String encryptedPwd = MD5Utils.encrypt(userPasswords.getNewPassword(), "lg");
+            Timestamp timestamp = new Timestamp(currentTimeMillis);
+            normalUserDao.updatePassword(userId,encryptedPwd,timestamp);
+            return 1;
+        }else {
+            return 0;
+        }
     }
 
     @Override
@@ -167,7 +185,7 @@ public class NormalUserServiceImpl implements NormalUserService {
     @Override
     public void browse(long userId, Object browsed) {
         ZSetOperations<String, Object> zSetOperations = redisTemplate.opsForZSet();
-        Boolean add = zSetOperations.add(Long.toString(userId), browsed, System.currentTimeMillis());
+        Boolean add = zSetOperations.add("browse-" + userId, browsed, System.currentTimeMillis());
     }
 
     @Override
@@ -176,7 +194,7 @@ public class NormalUserServiceImpl implements NormalUserService {
             return Collections.emptyList();
         }
         // 获取用户最近浏览的项目
-        Set<Object> set = redisTemplate.opsForZSet().reverseRange(Long.toString(userId), 0, 7);
+        Set<Object> set = redisTemplate.opsForZSet().reverseRange("browse-" + userId, 0, 7);
         List<Object> arrayList = new ArrayList<>();
         set.forEach(item -> {
             arrayList.add(item);
@@ -187,6 +205,20 @@ public class NormalUserServiceImpl implements NormalUserService {
             } else if (item instanceof LgScenicspot) {
                 System.out.println("LgScenicspot");
             }
+        });
+        return arrayList;
+    }
+
+    @Override
+    public List<String> selectSearched(long userId) {
+        if (userId <= 0) {
+            return Collections.emptyList();
+        }
+        // 获取用户最近搜索的关键字
+        Set<String> set = redisTemplate.opsForZSet().reverseRange("search-" + userId, 0, 7);
+        List<String> arrayList = new ArrayList<>();
+        set.forEach(item -> {
+            arrayList.add(item);
         });
         return arrayList;
     }
@@ -265,17 +297,50 @@ public class NormalUserServiceImpl implements NormalUserService {
             if (StrUtil.contains(type, "scenicId")) {
                 LgScenicspot lgScenicspot = collectsFindDao.scenicFindById(groupId);
                 //在新list中添加单条记录
-                collectsList.add(new UserCollects(groupId, "景点攻略：" + lgScenicspot.getScenicName(), "scenic"));
+                collectsList.add(new UserCollects(userId,groupId, lgScenicspot.getScenicName(), "景点攻略"));
             }
             if (StrUtil.contains(type, "notesId")) {
                 LgTravelnotes lgTravelnotes = collectsFindDao.notesFindById(groupId);
-                collectsList.add(new UserCollects(groupId, "用户游记：" + lgTravelnotes.getNotesTitle(), "notes"));
+                collectsList.add(new UserCollects(userId,groupId, lgTravelnotes.getNotesTitle(), "用户游记"));
             }
             if (StrUtil.contains(type, "groupId")) {
                 LgGroup lgGroup = collectsFindDao.groupFindById(groupId);
-                collectsList.add(new UserCollects(groupId, "团游项目：" + lgGroup.getGroupName(), "group"));
+                collectsList.add(new UserCollects(userId,groupId, lgGroup.getGroupName(), "团游项目"));
             }
         }
         return collectsList;
+    }
+
+    /**
+     * 查询不同类别的收藏
+     * @param userCollects
+     * @return
+     */
+    @Override
+    public List<UserCollects> showTypesCollects(UserCollects userCollects) {
+        int userId = userCollects.getUserId();
+        String typeName = userCollects.getTypeName();
+        List<UserCollects> list = new ArrayList<>();
+        switch (typeName){
+            case "景点攻略":
+                List<LgScenicspot> lgScenicspots = normalUserDao.findscenicCollects(userId);
+                for (LgScenicspot scenic:lgScenicspots){
+                    list.add(new UserCollects(0,(int)scenic.getScenicId(),scenic.getScenicName(),null));
+                }
+                return list;
+            case "团游项目":
+                List<LgGroup> lgGroups = normalUserDao.findgroupCollects(userId);
+                for(LgGroup group:lgGroups ){
+                    list.add(new UserCollects(0,(int)group.getGroupId(),group.getGroupName(),null));
+                }
+                return list;
+            case "用户游记":
+                List<LgTravelnotes> travelCollects = normalUserDao.findTravelCollects(userId);
+                for(LgTravelnotes travel : travelCollects){
+                    list.add(new UserCollects(0,(int) travel.getNotesId(),travel.getNotesTitle(),null));
+                }
+                return list;
+        }
+        return null;
     }
 }

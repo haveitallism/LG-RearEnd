@@ -30,7 +30,7 @@ public interface LgGroupService {
      */
     List<LgGroup> queryAllByLimit(int offset, int limit);
 
-    List<LgGroup> queryAll();
+    List<LgGroup> queryAll(String keyword);
 
     /**
      * 新增数据
@@ -39,7 +39,6 @@ public interface LgGroupService {
      * @return 实例对象
      */
     void insert(GroupAndComboDto dto);
-    //int insert(GroupAndComboDto groupAndComboDto);
 
     /**
      * 修改数据
@@ -58,5 +57,8 @@ public interface LgGroupService {
     boolean deleteById(Integer groupId);
 
     int upates(Integer pid);
-    //int inserts(GroupAndComboDto groupAndComboDto);
+
+    List<LgGroup> featuredGroup(String currentSortType);
+
+    List<LgGroup> searchByKeyword(String keyword);
 }

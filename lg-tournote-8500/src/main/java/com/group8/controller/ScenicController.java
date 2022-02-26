@@ -1,13 +1,18 @@
 package com.group8.controller;
 
 import com.group8.dto.DownFile;
+import com.group8.dto.FormInLine;
+import com.group8.dto.LikeScenicName;
 import com.group8.dto.UploadImg;
 import com.group8.entity.LgScenicspot;
 import com.group8.entity.ResponseEntity;
 import com.group8.service.ScenicService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author acoffee
@@ -91,6 +96,44 @@ public class ScenicController {
             return new ResponseEntity<LgScenicspot>(200, "查询成功！", scenicspotInfo);
         } else {
             return new ResponseEntity<LgScenicspot>(500,"查询失败！",null);
+        }
+    }
+
+    //查询全部景点
+    @RequestMapping("/findAllScenicspot")
+    public ResponseEntity<List<LgScenicspot>> findAllScenicspot(){
+        List<LgScenicspot> list = scenicService.findAllScenicspot();
+        return new ResponseEntity<>(200,"查询成功",list);
+    }
+
+    //根据名称模糊查询景点
+    @PostMapping("/findAllScenicspotByKeyword")
+    public ResponseEntity<List<LgScenicspot>> findAllScenicspotByKeyword(@RequestBody LikeScenicName input){
+        System.out.println(input);
+        List<LgScenicspot> list = scenicService.findAllScenicspotByName(input.getInput());
+        System.out.println(list);
+        return new ResponseEntity<>(200,"查询成功",list);
+    }
+
+    //根据下载量查询攻略并降序排列
+    @RequestMapping("/findScenicByDownloadsNum")
+    public ResponseEntity<List<LgScenicspot>> findScenicByDownloadsNum(){
+        List<LgScenicspot> scenicSpotList = scenicService.findScenicByDownloadsNum();
+        if (scenicSpotList != null) {
+            return new ResponseEntity<>(200, "查询成功！", scenicSpotList);
+        } else {
+            return new ResponseEntity<>(500,"查询失败！",null);
+        }
+    }
+
+    //根据发布时间查询攻略并降序排列
+    @RequestMapping("/findLatestScenic")
+    public ResponseEntity<List<LgScenicspot>> findLatestScenic(){
+        List<LgScenicspot> scenicSpotList = scenicService.findLatestScenic();
+        if (scenicSpotList != null) {
+            return new ResponseEntity<>(200, "查询成功！", scenicSpotList);
+        } else {
+            return new ResponseEntity<>(500,"查询失败！",null);
         }
     }
 }

@@ -12,8 +12,10 @@ spring:
       server-addr: 127.0.0.1:8848
   application:
     name: lg-user-8100 # 注册到注册中心的名字
-  # 分页插件允许循环依赖
   main:
+    # 允许存在多个Feign调用相同Service的接口
+    allow-bean-definition-overriding: true
+    # 分页插件允许循环依赖
     allow-circular-references: true
   rabbitmq:
     host: localhost

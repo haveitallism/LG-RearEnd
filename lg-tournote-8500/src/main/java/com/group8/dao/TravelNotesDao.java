@@ -18,4 +18,10 @@ public interface TravelNotesDao {
     LgTravelnotes findTravelNotesById(@Param("notesId") int notesId);
 
     List<LgTravelnotes> findTravelNotesByPraiseNum();
+
+    boolean addTravelNotes(LgTravelnotes travelnotes);
+
+    List<LgTravelnotes> findLatestTravelNotes();
+
+    List<LgTravelnotes> searchByKeyword(@Param("keyword") String keyword);
 }

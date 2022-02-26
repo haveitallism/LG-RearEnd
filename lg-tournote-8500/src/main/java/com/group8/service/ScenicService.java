@@ -5,6 +5,7 @@ import com.group8.dto.UploadImg;
 import com.group8.entity.LgScenicspot;
 
 import java.net.MalformedURLException;
+import java.util.List;
 
 /**
  * @author acoffee
@@ -24,4 +25,12 @@ public interface ScenicService {
     boolean deleteScenicspot(int scenicId);
 
     LgScenicspot findScenicspot(int scenicId);
+
+    List<LgScenicspot> findAllScenicspot();
+
+    List<LgScenicspot> findAllScenicspotByName(String keyword);
+
+    List<LgScenicspot> findScenicByDownloadsNum();
+
+    List<LgScenicspot> findLatestScenic();
 }

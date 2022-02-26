@@ -2,13 +2,11 @@ package com.group8.dao;
 
 import com.group8.dto.UserCollects;
 import com.group8.dto.UserQueryCondition;
-import com.group8.entity.LgNormalUser;
-import com.group8.entity.LgNormalUserGroupCollect;
-import com.group8.entity.LgNormalUserScenicspotCollect;
-import com.group8.entity.LgNormalUserTravelnotesCollect;
+import com.group8.entity.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.redis.core.ZSetOperations;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
 
@@ -31,6 +29,7 @@ public interface NormalUserDao {
     List<LgNormalUser> findByCondition(@Param("lgNormalUser") LgNormalUser lgNormalUser);
 
     int update(@Param("normalUser") LgNormalUser lgNormalUser);
+    int updatePassword(@Param("userId") int userId,@Param("password")String password,@Param("updatedTime")Timestamp updatedTime );
 
     int deleteById(@Param("id") int id);
 
@@ -42,11 +41,11 @@ public interface NormalUserDao {
 
     int addScenicCollect(LgNormalUserScenicspotCollect scenicCollect);
 
-    List<LgNormalUserTravelnotesCollect> findTravelCollects(int userId);
+    List<LgTravelnotes> findTravelCollects(int userId);
 
-    List<LgNormalUserGroupCollect> findgroupCollects(int userId);
+    List<LgGroup> findgroupCollects(int userId);
 
-    List<LgNormalUserScenicspotCollect> findscenicCollects(int userId);
+    List<LgScenicspot> findscenicCollects(int userId);
 
     //List<UserCollects> findUserCollects(List list);
 
