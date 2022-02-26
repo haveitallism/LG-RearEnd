@@ -29,6 +29,18 @@ public class ScenicSpotCommentController {
     }
 
     /**
+     * 评论回复
+     * @param commentAddDto
+     * @return
+     */
+    @PostMapping("reply")
+    public ResponseEntity replay(@RequestBody CommentAddDto commentAddDto){
+        System.out.println(commentAddDto);
+        scenicSpotCommentService.replayScenicSpotComment(commentAddDto.getId(), commentAddDto.getUid(), commentAddDto.getFid(), commentAddDto.getMark(), commentAddDto.getContent());
+        return new ResponseEntity(200,"ok","success");
+    }
+
+    /**
      * 查询所有评论
      * @param id
      * @return
