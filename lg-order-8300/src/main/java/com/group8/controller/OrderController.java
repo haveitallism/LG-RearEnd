@@ -97,4 +97,10 @@ public class OrderController {
         List<UserOrders> list = orderService.getNOGoOrder(userId);
         return new ResponseEntity(200,"查询成功",list);
     }
+
+    @RequestMapping("/deleteOrder/{orderId}")
+    public ResponseEntity<String> deleteOrder(@PathVariable("orderId") int orderId){
+        orderService.deleteOrder(orderId);
+        return new ResponseEntity<>(200,"删除成功","删除成功");
+    }
 }

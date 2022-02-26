@@ -10,6 +10,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserOrders {
+    private long orderId;
     private String groupName;
     private Date orderStartingTime;
     private double orderAmount;
