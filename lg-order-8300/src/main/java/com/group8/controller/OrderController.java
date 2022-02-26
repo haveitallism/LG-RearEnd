@@ -3,6 +3,7 @@ package com.group8.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.group8.dto.OrderFindByPage;
+import com.group8.dto.UserOrders;
 import com.group8.entity.LgGroup;
 import com.group8.entity.LgSalesPromotionActivity;
 import com.group8.entity.LgTourOrder;
@@ -61,27 +62,27 @@ public class OrderController {
         return new ResponseEntity(200,"查询成功",lgTourOrderPageInfo);
     }
 
-    @RequestMapping("/getNotPayOrder/{useId}")
-    public ResponseEntity<LgTourOrder> getNotPayOrder(@PathVariable("userId")int userId){
-        List<LgTourOrder> list = orderService.getNotPayOrder(userId);
+    @RequestMapping("/getNotPayOrder/{userId}")
+    public ResponseEntity<List<UserOrders>> getNotPayOrder(@PathVariable("userId")int userId){
+        List<UserOrders> list = orderService.getNotPayOrder(userId);
         return new ResponseEntity(200,"查询成功",list);
     }
 
-    @RequestMapping("/getPayOrder/{useId}")
-    public ResponseEntity<LgTourOrder> getPayOrder(@PathVariable("userId")int userId){
-        List<LgTourOrder> list = orderService.getPayOrder(userId);
+    @RequestMapping("/getPayOrder/{userId}")
+    public ResponseEntity<List<UserOrders>> getPayOrder(@PathVariable("userId")int userId){
+        List<UserOrders> list = orderService.getPayOrder(userId);
         return new ResponseEntity(200,"查询成功",list);
     }
 
-    @RequestMapping("/getAllOrderById")
-    public ResponseEntity<LgTourOrder> getAllOrderById(@PathVariable("userId")int userId){
-        List<LgTourOrder> list = orderService.getAllOrderById(userId);
+    @RequestMapping("/getAllOrderById/{userId}")
+    public ResponseEntity<List<UserOrders>> getAllOrderById(@PathVariable("userId")int userId){
+        List<UserOrders> list = orderService.getAllOrderById(userId);
         return new ResponseEntity(200,"查询成功",list);
     }
 
-    @RequestMapping("/getNoCommentOrder")
-    public ResponseEntity<List> getNoCommentOrder(@PathVariable("userId")int userId){
-        List<LgTourOrder> list = orderService.getNoCommentOrder(userId);
+    @RequestMapping("/getNoCommentOrder/{userId}")
+    public ResponseEntity<List<UserOrders>> getNoCommentOrder(@PathVariable("userId")int userId){
+        List<UserOrders> list = orderService.getNoCommentOrder(userId);
         return new ResponseEntity(200,"查询成功",list);
     }
 
@@ -89,5 +90,11 @@ public class OrderController {
     public ResponseEntity<LgGroup> findGroup(@PathVariable("groupName") String groupName){
         List<LgGroup> list = orderService.findGroup(groupName);
         return new ResponseEntity(200,"搜索成功",list);
+    }
+
+    @RequestMapping("/getNoGoOrder/{userId}")
+    public ResponseEntity<List<UserOrders>> getNOGoOrder(@PathVariable("userId")int userId){
+        List<UserOrders> list = orderService.getNOGoOrder(userId);
+        return new ResponseEntity(200,"查询成功",list);
     }
 }

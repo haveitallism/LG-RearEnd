@@ -1,6 +1,7 @@
 package com.group8.service.impl;
 
 import com.group8.dao.OrderDao;
+import com.group8.dto.UserOrders;
 import com.group8.entity.LgGroup;
 import com.group8.entity.LgSalesPromotionActivity;
 import com.group8.entity.LgTourOrder;
@@ -13,6 +14,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -51,6 +54,7 @@ public class OrderServiceImpl implements OrderService {
             lgTourOrder.setOrderChoose("冰火两重天");
             lgTourOrder.setOrderPayoutStatus(0);
             lgTourOrder.setCommentId(0);
+            lgTourOrder.setCreatedTime((Timestamp) new Date("yyyy-MM-dd'T'HH-mm-ss"));
             rabbitTemplate.convertAndSend("exchangeadd", "add", lgTourOrder);
 
         }
@@ -98,28 +102,33 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<LgTourOrder> getNotPayOrder(int userId) {
+    public List<UserOrders> getNotPayOrder(int userId) {
         return orderDao.getNotPayOrder(userId);
     }
 
     @Override
-    public List<LgTourOrder> getPayOrder(int userId) {
+    public List<UserOrders> getPayOrder(int userId) {
         return orderDao.getPayOrder(userId);
     }
 
     @Override
-    public List<LgTourOrder> getAllOrderById(int userId) {
+    public List<UserOrders> getAllOrderById(int userId) {
         return orderDao.getAllOrderById(userId);
     }
 
     @Override
-    public List<LgTourOrder> getNoCommentOrder(int userId) {
+    public List<UserOrders> getNoCommentOrder(int userId) {
         return orderDao.getNoCommentOrder(userId);
     }
 
     @Override
     public List<LgGroup> findGroup(String groupName) {
         return orderDao.findGroup(groupName);
+    }
+
+    @Override
+    public List<UserOrders> getNOGoOrder(int userId) {
+        return orderDao.getNOGoOrder(userId);
     }
 
 
