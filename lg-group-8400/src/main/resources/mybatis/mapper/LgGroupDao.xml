@@ -35,6 +35,7 @@
             <result property="comboStatus" column="combo_status"/>
         </collection>
         <collection property="dailyStockList" column="group_id" ofType="com.group8.entity.LgDailyStock">
+            <result property="comboId" column="combo_id"/>
             <result property="price" column="price"/>
             <result property="dailyStockDate" column="daily_stock_date"/>
             <result property="dailyStockQuantity" column="daily_stock_quantity"/>
@@ -62,12 +63,14 @@
                g.updated_by,
                g.updated_time,
                bu.buss_id, bu.buss_name, bu.buss_telphone, bu.buss_head_img, bu.buss_intro, bu.buss_company_name,
-               c.combo_id, c.combo_name, c.group_id, c.combo_status,
-               ds.daily_stock_date, ds.price, ds.daily_stock_quantity
+               c.combo_id, c.combo_name, c.group_id, c.combo_status
         from lg.lg_group g left join lg.lg_combo c on c.group_id = g.group_id
-                           left join lg.lg_daily_stock ds on ds.group_id = g.group_id
                            left join lg.lg_bussiness_user bu on bu.buss_id = g.buss_id
         where g.group_id = #{groupId}
+    </select>
+
+    <select id="getDailyStock" resultType="com.group8.entity.LgDailyStock">
+        select * from lg.lg_daily_stock where group_id = #{groupId}
     </select>
 
     <!--查询指定行数据-->

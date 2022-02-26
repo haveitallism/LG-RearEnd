@@ -32,7 +32,7 @@ public class OrderController {
 
 
 
-    @PostConstruct
+    @RequestMapping("/start")
     public ResponseEntity<String> start(){
         List<LgSalesPromotionActivity> activities = orderService.getAllActivity();
         ListOperations opsForList = redisTemplate.opsForList();
