@@ -16,8 +16,12 @@ import java.security.PrivateKey;
 @NoArgsConstructor
 public class UserCollects {
 
+    private int userId;
     private int projectId;
     private String projectName;
     private String typeName;
 
+    public UserCollects(int projectId, String projectName, String typeName) {}
+
+    public UserCollects(int projectId,String projectName) {}
 }

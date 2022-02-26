@@ -1,7 +1,5 @@
 package com.group8.controller;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.group8.dto.DownFile;
 import com.group8.dto.FormInLine;
 import com.group8.dto.LikeScenicName;
@@ -66,7 +64,6 @@ public class ScenicController {
     //修改景点信息
     @PostMapping("/updateScenicspot")
     public ResponseEntity<String> updateScenicspot(@RequestBody LgScenicspot lgScenicspot){
-        System.out.println(lgScenicspot);
         boolean flag = scenicService.updateScenicspot(lgScenicspot);
         if (flag) {
             return new ResponseEntity<String>(200, "更新成功！", null);
@@ -79,7 +76,6 @@ public class ScenicController {
     @RequestMapping("/deleteScenicspot/{scenicId}")
     public ResponseEntity<String> deleteScenicspot(@PathVariable int scenicId){
         boolean flag = scenicService.deleteScenicspot(scenicId);
-        System.out.println(flag);
         if (flag) {
             return new ResponseEntity<String>(200, "删除成功！", null);
         } else {
@@ -117,6 +113,28 @@ public class ScenicController {
         List<LgScenicspot> list = scenicService.findAllScenicspotByName(input.getInput());
         System.out.println(list);
         return new ResponseEntity<>(200,"查询成功",list);
+    }
+
+    //根据下载量查询攻略并降序排列
+    @RequestMapping("/findScenicByDownloadsNum")
+    public ResponseEntity<List<LgScenicspot>> findScenicByDownloadsNum(){
+        List<LgScenicspot> scenicSpotList = scenicService.findScenicByDownloadsNum();
+        if (scenicSpotList != null) {
+            return new ResponseEntity<>(200, "查询成功！", scenicSpotList);
+        } else {
+            return new ResponseEntity<>(500,"查询失败！",null);
+        }
+    }
+
+    //根据发布时间查询攻略并降序排列
+    @RequestMapping("/findLatestScenic")
+    public ResponseEntity<List<LgScenicspot>> findLatestScenic(){
+        List<LgScenicspot> scenicSpotList = scenicService.findLatestScenic();
+        if (scenicSpotList != null) {
+            return new ResponseEntity<>(200, "查询成功！", scenicSpotList);
+        } else {
+            return new ResponseEntity<>(500,"查询失败！",null);
+        }
     }
 }
 

@@ -59,4 +59,15 @@ public class TravelNotesController {
     }
 
 
+
+    //根据发布时间查询游记并降序排列
+    @RequestMapping("/findLatestTravelNotes")
+    public ResponseEntity<List<LgTravelnotes>> findLatestTravelNotes(){
+        List<LgTravelnotes> lgTravelnotesList = travelNotesService.findLatestTravelNotes();
+        if (lgTravelnotesList != null) {
+            return new ResponseEntity<List<LgTravelnotes>>(200, "查询成功！", lgTravelnotesList);
+        } else {
+            return new ResponseEntity<List<LgTravelnotes>>(500,"查询失败！",null);
+        }
+    }
 }

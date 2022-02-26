@@ -39,4 +39,9 @@ public class TravelNotesServiceImpl implements TravelNotesService {
         boolean flag = travelNotesDao.addTravelNotes(travelnotes);
         return flag;
     }
+
+    @Override
+    public List<LgTravelnotes> findLatestTravelNotes() {
+        return travelNotesDao.findLatestTravelNotes();
+    }
 }

@@ -31,7 +31,7 @@ public class QiniuUtils {
         String secretKey = "9olNhZCBABDA9fl5WmPjeniPkdCZ-gnTK439CKCl";
         String bucket = "group8";
         String key = null;
-        if (uploadImg.getFile().getOriginalFilename().endsWith(".jpg") || uploadImg.getFile().getOriginalFilename().endsWith(".jpeg")){
+        if (uploadImg.getFile().getOriginalFilename().endsWith(".jpg") || uploadImg.getFile().getOriginalFilename().endsWith(".jpeg") || uploadImg.getFile().getOriginalFilename().endsWith(".png")){
             key = getRandomCharacterAndNumber(10) + ".jpg";//生成随机文件名
         }else{
             key = getRandomCharacterAndNumber(10) + ".pdf";//生成随机文件名

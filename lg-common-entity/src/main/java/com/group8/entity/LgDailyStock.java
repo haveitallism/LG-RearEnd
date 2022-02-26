@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LgDailyStock {
 
-    private long dailyStockId;
-    private String comboId;
-    private java.sql.Timestamp dailyStockDate;
-    private String price;
+    private long groupId;
+    private long comboId;
+    private java.sql.Date dailyStockDate;
+    private int price;
     private String dailyStockQuantity;
     private String createdBy;
     private java.sql.Timestamp createdTime;

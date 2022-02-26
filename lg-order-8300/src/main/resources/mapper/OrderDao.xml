@@ -4,7 +4,7 @@
 <mapper namespace="com.group8.dao.OrderDao">
 
     <insert id="addOrder" parameterType="com.group8.entity.LgTourOrder">
-        insert into lg_tour_order (order_id,product_id,order_choose,order_payout_status) values (null,#{productId},#{orderChoose},#{orderPayoutStatus})
+        insert into lg_tour_order (order_id,product_id,order_choose,order_payout_status,comment_id) values (null,#{productId},#{orderChoose},#{orderPayoutStatus},#{commentId})
     </insert>
 
     <select id="getActivityById" parameterType="int" resultType="LgSalesPromotionActivity">
@@ -27,4 +27,39 @@
         update lg_sales_promotion_activity set inventory = #{size} where activity_id = #{activityId}
 
     </update>
+
+    <select id="getAllOrder" parameterType="LgTourOrder" resultType="LgTourOrder">
+        select * from lg_tour_order l
+            <where>
+                <if test="userId == null">
+                    and l.user_id = #{userId}
+                </if>
+                <if test="productId == null">
+                    and l.product_id = #{productId}
+                </if>
+                <if test="orderStatus == null">
+                    and l.order_status = #{orderStatus}
+                </if>
+            </where>
+    </select>
+    
+    <select id="getNotPayOrder" parameterType="int" resultType="LgTourOrder">
+        select * from lg_tour_order where user_id = #{userId} and order_payout_status = 0
+    </select>
+
+    <select id="getPayOrder" parameterType="int" resultType="LgTourOrder">
+        select * from lg_tour_order where user_id = #{userId} and order_payout_status = 1
+    </select>
+
+    <select id="getAllOrderById" parameterType="int" resultType="LgTourOrder">
+        select * from lg_tour_order where user_id = #{userId}
+    </select>
+
+    <select id="getNoCommentOrder" parameterType="int" resultType="LgTourOrder">
+        select * from lg_tour_order where user_id = #{userId} and comment_id = 0
+    </select>
+    
+    <select id="findGroup" parameterType="string" resultType="LgGroup">
+        select * from lg_group where group_name like '%#{groupName}%'
+    </select>
 </mapper>

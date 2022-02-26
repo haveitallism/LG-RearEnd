@@ -14,4 +14,7 @@
         insert into lg_travelnotes(notes_id,notes_url,notes_title,pass_scenicspot,travel_cost,travel_date,travel_time,notes_status,create_by,create_time)
         values(null,#{notesUrl},#{notesTitle},#{passScenicspot},#{travelCost},#{travelDate},#{travelTime},#{notesStatus},#{createBy},#{createTime})
     </insert>
+    <select id="findLatestTravelNotes" resultType="com.group8.entity.LgTravelnotes">
+        select * from lg_scenicspot order by created_time desc
+    </select>
 </mapper>

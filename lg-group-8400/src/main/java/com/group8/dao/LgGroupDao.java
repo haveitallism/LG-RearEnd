@@ -38,7 +38,7 @@ public interface LgGroupDao {
      * @param lgGroup 实例对象
      * @return 对象列表
      */
-    List<LgGroup> queryAll();
+    List<LgGroup> queryAll(@Param("keyword") String keyword);
 
     /**
      * 新增数据
@@ -70,4 +70,10 @@ public interface LgGroupDao {
     int upates(Integer pid);
 
     LgGroup sorting(Integer groupSold);
+
+    List<LgGroup> queryByCollectedDesc();
+
+    List<LgGroup> queryByScoreDesc();
+
+    List<LgGroup> queryBySlodDesc();
 }

@@ -15,7 +15,7 @@ spring:
     nacos:
       server-addr: 127.0.0.1:8848
   application:
-    name: lg-comment-8200 # 注册到注册中心的名字
+    name: lg-comments-8200 # 注册到注册中心的名字
 #mybatis配置
 mybatis:
   mapper-locations: classpath:mapper/*.xml

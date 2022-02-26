@@ -32,4 +32,8 @@ public interface ScenicDao {
     List<LgScenicspot> findAllScenicspot();
 
     List<LgScenicspot> findAllScenicspotByName(@Param("keyword") String keyword);
+
+    List<LgScenicspot> findScenicByDownloadsNum();
+
+    List<LgScenicspot> findLatestScenic();
 }

@@ -29,6 +29,10 @@
                                where user_id = #{normalUser.userId}
     </update>
 
+    <update id="updatePassword">
+        update lg_normal_user set user_password = #{password},updated_time = #{updatedTime} where user_id = #{userId}
+    </update>
+
     <delete id="deleteById">
         delete from lg.lg_normal_user where user_id = #{id}
     </delete>
@@ -75,19 +79,19 @@
         insert into lg_normal_user_scenicspot_collect values (#{userId},#{scenicId},#{collectTime})
     </insert>
 
-    <select id="findTravelCollects" resultType="com.group8.entity.LgNormalUserTravelnotesCollect">
-        select t.notes_id,t.pass_scenicspot
+    <select id="findTravelCollects" resultType="com.group8.entity.LgTravelnotes">
+        select t.notes_id,t.notes_title
         from lg_travelnotes t ,lg_normal_user_travelnotes_collect c
         where c.user_id = #{userId} and c.notes_id = t.notes_id
     </select>
 
-    <select id="findgroupCollects" resultType="com.group8.entity.LgNormalUserGroupCollect">
+    <select id="findgroupCollects" resultType="com.group8.entity.LgGroup">
         select g.group_id,g.group_name
         from lg_group g ,lg_normal_user_group_collect c
         where c.user_id = #{userId} and c.group_id = g.group_id
     </select>
 
-    <select id="findscenicCollects" resultType="com.group8.entity.LgNormalUserScenicspotCollect">
+    <select id="findscenicCollects" resultType="com.group8.entity.LgScenicspot">
         select s.scenic_id,s.scenic_name
         from lg_scenicspot s ,lg_normal_user_scenicspot_collect c
         where c.user_id = #{userId} and c.scenic_id = s.scenic_id
@@ -127,5 +131,6 @@
     <update id="updateHeadImg">
         update lg.lg_normal_user set user_head_img = #{url} where user_id = #{id}
     </update>
+
 
 </mapper>

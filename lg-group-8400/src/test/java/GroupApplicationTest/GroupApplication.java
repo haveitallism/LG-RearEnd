@@ -34,20 +34,20 @@ public class GroupApplication {
 
     @Test
     public void test() {
-        LgGroup lgGroup = new LgGroup();
-        for (LgGroup group : lgGroupService.queryAll()) {
-            System.out.println(group);
-        }
+        //LgGroup lgGroup = new LgGroup();
+        //for (LgGroup group : lgGroupService.queryAll()) {
+        //    System.out.println(group);
+        //}
 
     }
 
     @Test
     public void test1() {
-        LgGroup lgGroup = new LgGroup();
-        lgGroup.setGroupId(1);
-        lgGroup.setGroupName("大理");
-        lgGroup.setGroupScore("3.6");
-        lgGroupService.update(lgGroup);
+        //LgGroup lgGroup = new LgGroup();
+        //lgGroup.setGroupId(1);
+        //lgGroup.setGroupName("大理");
+        //lgGroup.setGroupScore("3.6");
+        //lgGroupService.update(lgGroup);
     }
 
     @Test
@@ -133,7 +133,7 @@ public class GroupApplication {
         LgGroup lgGroup = new LgGroup();
         lgGroup.setGroupId(1);
         lgGroup.setBussId(1);
-        lgGroup.setPid(1);
+        //lgGroup.setPid(1);
         lgGroup.setGroupName("中国");
 //        lgGroup.setBussId(1);
 //        lgGroup.setGroupName("ss");
