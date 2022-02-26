@@ -26,9 +26,13 @@ public class TravelNoteCommentServiceImpl implements TravelNoteCommentService {
     public void addTravelNotesComment(int nid,int uid, int fid, String content) {
         LgComment lgComment = new LgComment(0,content,Integer.toString(fid),"0",Integer.toString(uid),new Timestamp(System.currentTimeMillis()),null);
         travelNoteCommentDao.addTravelNoteCommentDao(lgComment);
-        if(fid == 0){
-            travelNoteCommentDao.addMiddule(nid,lgComment.getCommentId());
-        }
+        travelNoteCommentDao.addMiddule(nid,lgComment.getCommentId());
+    }
+
+    @Override
+    public void replayTravelNoteComment(int id, int uid, int fid, int mark, String content) {
+        LgComment lgComment = new LgComment(0,content,Integer.toString(fid),"0",Integer.toString(uid),new Timestamp(System.currentTimeMillis()),null);
+        travelNoteCommentDao.addTravelNoteCommentDao(lgComment);
     }
 
     /**
@@ -59,6 +63,8 @@ public class TravelNoteCommentServiceImpl implements TravelNoteCommentService {
     public void delete(int cid) {
         travelNoteCommentDao.delete(cid);
     }
+
+
 
 
 }

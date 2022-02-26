@@ -12,7 +12,8 @@
     </insert>
     <!-- 查询评论   -->
     <resultMap id="findAllMap" type="com.group8.dto.CommentResponse">
-        <id property="id" column="create_by" javaType="Integer"></id>
+        <id property="cid" column="comment_id" javaType="Integer"></id>
+        <result property="id" column="create_by" javaType="Integer"></result>
         <result property="comment" column="comment_content" javaType="String"></result>
         <result property="time" column="create_time"></result>
         <result property="like" column="praise_num" javaType="Integer"></result>
@@ -22,7 +23,8 @@
         <collection property="reply" column="comment_id" ofType="com.group8.dto.CommentReplayResponse" select="findSon"></collection>
     </resultMap>
     <resultMap id="findAllSonMap" type="com.group8.dto.CommentReplayResponse">
-        <id property="id" column="create_by" javaType="Integer"></id>
+        <id property="cid" column="comment_id" javaType="Integer"></id>
+        <result property="id" column="create_by" javaType="Integer"></result>
         <result property="comment" column="comment_content" javaType="String"></result>
         <result property="time" column="create_time"></result>
         <result property="like" column="praise_num" javaType="Integer"></result>

@@ -32,8 +32,9 @@ public class ProductCommentController {
         return new ResponseEntity(200,"ok","success");
     }
 
-    @PostMapping("replay")
+    @PostMapping("reply")
     public ResponseEntity replay(@RequestBody CommentAddDto commentAddDto){
+        System.out.println(commentAddDto);
         productCommentService.replayProductComment(commentAddDto.getId(), commentAddDto.getUid(), commentAddDto.getFid(), commentAddDto.getMark(), commentAddDto.getContent());
         return new ResponseEntity(200,"ok","success");
     }

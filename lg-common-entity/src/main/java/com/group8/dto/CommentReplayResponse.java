@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentReplayResponse {
+    private int cid;
     private String from;
     private int id;
     private String fromHeadImg;

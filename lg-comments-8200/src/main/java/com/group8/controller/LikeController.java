@@ -23,7 +23,6 @@ public class LikeController {
             likeCommentRedisService.decrementLikedCount(lgUserLike.getLikedUserId());
         }
         return new ResponseEntity(200,"ok","success");
-
     }
 
 }

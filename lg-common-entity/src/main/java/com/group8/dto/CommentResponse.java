@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentResponse {
+    private int cid;
     private String name;
     private int id;
     private String headImg;
