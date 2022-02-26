@@ -5,12 +5,12 @@
     <resultMap id="BaseResultMap" type="com.group8.entity.LgGroup">
         <!--@Table lg_group-->
         <result property="groupId" column="group_id" jdbcType="INTEGER"/>
-        <result property="bussId" column="buss_id" jdbcType="INTEGER"/>
         <result property="groupName" column="group_name" jdbcType="VARCHAR"/>
         <result property="groupSold" column="group_sold" jdbcType="VARCHAR"/>
         <result property="groupScore" column="group_score" jdbcType="VARCHAR"/>
         <result property="groupFavorites" column="group_favorites" jdbcType="VARCHAR"/>
         <result property="groupIntroduce" column="group_introduce" jdbcType="VARCHAR"/>
+        <result property="groupCover" column="group_cover"/>
         <result property="groupRoute" column="group_route" jdbcType="VARCHAR"/>
         <result property="groupFeeExplanation" column="group_fee_explanation" jdbcType="VARCHAR"/>
         <result property="groupDestineNotice" column="group_destine_notice" jdbcType="VARCHAR"/>
@@ -21,6 +21,14 @@
         <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
         <result property="updatedBy" column="updated_by" jdbcType="VARCHAR"/>
         <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
+        <association property="bussinessUser" column="buss_id" javaType="com.group8.entity.LgBussinessUser">
+            <id property="bussId" column="buss_id"/>
+            <result property="bussName" column="buss_name"/>
+            <result property="bussHeadImg" column="buss_head_img"/>
+            <result property="bussCompanyName" column="buss_company_name"/>
+            <result property="bussIntro" column="buss_intro"/>
+            <result property="bussTelphone" column="buss_telphone"/>
+        </association>
         <collection property="comboList" column="group_id" ofType="com.group8.entity.LgCombo">
             <id property="comboId" column="combo_id"/>
             <result property="comboName" column="combo_name"/>
@@ -43,6 +51,7 @@
                g.group_favorites,
                g.group_introduce,
                g.group_route,
+               g.group_cover,
                g.group_fee_explanation,
                g.group_destine_notice,
                g.group_purchase_notice,
@@ -52,10 +61,12 @@
                g.created_time,
                g.updated_by,
                g.updated_time,
+               bu.buss_id, bu.buss_name, bu.buss_telphone, bu.buss_head_img, bu.buss_intro, bu.buss_company_name,
                c.combo_id, c.combo_name, c.group_id, c.combo_status,
                ds.daily_stock_date, ds.price, ds.daily_stock_quantity
         from lg.lg_group g left join lg.lg_combo c on c.group_id = g.group_id
                            left join lg.lg_daily_stock ds on ds.group_id = g.group_id
+                           left join lg.lg_bussiness_user bu on bu.buss_id = g.buss_id
         where g.group_id = #{groupId}
     </select>
 

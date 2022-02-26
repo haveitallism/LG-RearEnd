@@ -37,7 +37,19 @@ public class LgGroupServiceImpl implements LgGroupService {
      */
     @Override
     public LgGroup queryById(Integer groupId) {
-        return this.lgGroupDao.queryById(groupId);
+        LgGroup group = lgGroupDao.queryById(groupId);
+        if(group != null){
+            // 获取group最低价格设置回对象中
+            int[] priceArr = new int[group.getDailyStockList().size()];
+            if(!group.getDailyStockList().isEmpty()){
+                for (int i = 0; i < group.getDailyStockList().size(); i++) {
+                    priceArr[i] = group.getDailyStockList().get(i).getPrice();
+                }
+                int min = ArrayUtil.min(priceArr);
+                group.setLowestPrice(min);
+            }
+        }
+        return group;
     }
 
     /**
