@@ -26,6 +26,10 @@ public interface ScenicService {
 
     LgScenicspot findScenicspot(int scenicId);
 
+    List<LgScenicspot> findAllScenicspot();
+
+    List<LgScenicspot> findAllScenicspotByName(String keyword);
+
     List<LgScenicspot> findScenicByDownloadsNum();
 
     List<LgScenicspot> findLatestScenic();

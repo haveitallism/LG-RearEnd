@@ -83,7 +83,7 @@ public class NormalUserServiceImpl implements NormalUserService {
     @Override
     public LgNormalUser login(UserLoginForm userLoginForm) {
         // 密码加密后查询
-        String encryptedPwd = MD5Utils.encrypt(userLoginForm.getPassword(),  "lg");
+        String encryptedPwd = MD5Utils.encrypt(userLoginForm.getPassword(), "lg");
         LgNormalUser normalUser = normalUserDao.findByUsernameAndPwd(userLoginForm.getUserName(), encryptedPwd);
         if (normalUser != null) {
             String token = JWTUtils.sign(normalUser.getUserName(), normalUser.getUserPassword());
@@ -185,7 +185,7 @@ public class NormalUserServiceImpl implements NormalUserService {
     @Override
     public void browse(long userId, Object browsed) {
         ZSetOperations<String, Object> zSetOperations = redisTemplate.opsForZSet();
-        Boolean add = zSetOperations.add(Long.toString(userId), browsed, System.currentTimeMillis());
+        Boolean add = zSetOperations.add("browse-" + userId, browsed, System.currentTimeMillis());
     }
 
     @Override
@@ -194,7 +194,7 @@ public class NormalUserServiceImpl implements NormalUserService {
             return Collections.emptyList();
         }
         // 获取用户最近浏览的项目
-        Set<Object> set = redisTemplate.opsForZSet().reverseRange(Long.toString(userId), 0, 7);
+        Set<Object> set = redisTemplate.opsForZSet().reverseRange("browse-" + userId, 0, 7);
         List<Object> arrayList = new ArrayList<>();
         set.forEach(item -> {
             arrayList.add(item);
@@ -205,6 +205,20 @@ public class NormalUserServiceImpl implements NormalUserService {
             } else if (item instanceof LgScenicspot) {
                 System.out.println("LgScenicspot");
             }
+        });
+        return arrayList;
+    }
+
+    @Override
+    public List<String> selectSearched(long userId) {
+        if (userId <= 0) {
+            return Collections.emptyList();
+        }
+        // 获取用户最近搜索的关键字
+        Set<String> set = redisTemplate.opsForZSet().reverseRange("search-" + userId, 0, 7);
+        List<String> arrayList = new ArrayList<>();
+        set.forEach(item -> {
+            arrayList.add(item);
         });
         return arrayList;
     }

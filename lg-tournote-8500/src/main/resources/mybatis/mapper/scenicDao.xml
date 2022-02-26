@@ -37,6 +37,16 @@
         delete from lg_scenicspot where scenic_id = #{scenicId}
     </delete>
 
+    <select id="findAllScenicspot" resultType="LgScenicspot">
+        select * from lg_scenicspot
+    </select>
+
+    <select id="findAllScenicspotByName" resultType="LgScenicspot">
+        select * from lg_scenicspot
+        <if test="keyword!=null and keyword!=''">
+            where scenic_name like concat('%',#{keyword},'%')
+        </if>
+    </select>
 
 
 </mapper>

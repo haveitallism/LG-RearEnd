@@ -5,13 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * dto类，用于辅助分页查询
+ * @author laiyong
+ * @date 2022/2/25 10:03 星期五
+ * @apiNote 记录用户搜索历史
  */
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class FormInLine {
-    private int currentPage;
-    private int pageSize;
+@AllArgsConstructor
+public class SearchHistory {
     private int id;
+    private String keyword;
 }

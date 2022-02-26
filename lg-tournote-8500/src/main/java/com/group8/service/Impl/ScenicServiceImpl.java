@@ -69,6 +69,18 @@ public class ScenicServiceImpl implements ScenicService {
     }
 
     @Override
+    public List<LgScenicspot> findAllScenicspot() {
+        List<LgScenicspot> scenicspotList = scenicDao.findAllScenicspot();
+        return scenicspotList;
+    }
+
+    @Override
+    public List<LgScenicspot> findAllScenicspotByName(String keyword) {
+        List<LgScenicspot> scenicspotList = scenicDao.findAllScenicspotByName(keyword);
+        return scenicspotList;
+    }
+
+    @Override
     public List<LgScenicspot> findScenicByDownloadsNum() {
         return scenicDao.findScenicByDownloadsNum();
     }

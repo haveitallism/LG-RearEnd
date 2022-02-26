@@ -13,5 +13,9 @@ public interface TravelNotesService {
 
     List<LgTravelnotes> findTravelNotesByPraiseNum();
 
+    boolean addTravelNotes(LgTravelnotes travelnotes);
+
     List<LgTravelnotes> findLatestTravelNotes();
+
+    List<LgTravelnotes> searchByKeyword(String keyword);
 }

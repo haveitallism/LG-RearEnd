@@ -6,10 +6,60 @@
         select * from lg_travelnotes where notes_id=#{notesId}
     </select>
 
-    <select id="findTravelNotesByPraiseNum" resultType="LgTravelnotes">
-        SELECT * FROM `lg_travelnotes` order by praise_num DESC
+    <select id="findTravelNotesByPraiseNum" resultMap="noteUserMap">
+        select n.notes_id,
+               n.notes_title,
+               n.praise_num,
+               n.collect_num,
+               n.browse_num,
+               n.create_time,
+               u.user_id,
+               u.user_name,
+               u.user_head_img from lg.lg_travelnotes n left join lg.lg_normal_user u on u.user_id = n.create_by order by praise_num DESC
     </select>
+
+    <insert id="addTravelNotes">
+        insert into lg_travelnotes(notes_id,notes_url,notes_title,pass_scenicspot,travel_cost,travel_date,travel_time,notes_status,create_by,create_time)
+        values(null,#{notesUrl},#{notesTitle},#{passScenicspot},#{travelCost},#{travelDate},#{travelTime},#{notesStatus},#{createBy},#{createTime})
+    </insert>
     <select id="findLatestTravelNotes" resultType="com.group8.entity.LgTravelnotes">
         select * from lg_scenicspot order by created_time desc
+
+    <select id="findLatestTravelNotes" resultMap="noteUserMap">
+        select n.notes_id,
+               n.notes_title,
+               n.praise_num,
+               n.collect_num,
+               n.browse_num,
+               n.create_time,
+               u.user_id,
+               u.user_name,
+               u.user_head_img from lg.lg_travelnotes n left join lg.lg_normal_user u on u.user_id = n.create_by order by create_time desc
     </select>
+    <select id="searchByKeyword" resultMap="noteUserMap">
+        select n.notes_id,
+               n.notes_title,
+               n.praise_num,
+               n.collect_num,
+               n.browse_num,
+               n.create_time,
+               u.user_id,
+               u.user_name,
+               u.user_head_img from lg.lg_travelnotes n left join lg.lg_normal_user u on u.user_id = n.create_by where n.notes_title like concat('%', #{keyword}, '%')
+    </select>
+
+    <resultMap id="noteUserMap" type="com.group8.entity.LgTravelnotes">
+        <id property="notesId" column="notes_id"/>
+        <result property="browseNum" column="browse_num"/>
+        <result property="collectNum" column="collect_num"/>
+        <result property="praiseNum" column="praise_num"/>
+        <result property="notesTitle" column="notes_title"/>
+        <result property="travelDate" column="travel_date"/>
+        <result property="createTime" column="create_time"/>
+        <association property="user" column="created_by" javaType="com.group8.entity.LgNormalUser">
+            <id property="userId" column="user_id"/>
+            <result property="userName" column="user_name"/>
+            <result property="userHeadImg" column="user_head_img"/>
+        </association>
+    </resultMap>
 </mapper>

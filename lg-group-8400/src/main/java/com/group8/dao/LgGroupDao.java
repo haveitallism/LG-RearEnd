@@ -76,4 +76,6 @@ public interface LgGroupDao {
     List<LgGroup> queryByScoreDesc();
 
     List<LgGroup> queryBySlodDesc();
+
+    List<LgGroup> searchByKeyword(@Param("keyword") String keyword);
 }
