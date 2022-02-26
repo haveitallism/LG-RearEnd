@@ -205,7 +205,7 @@
                g.group_cover,
                ds.price from lg.lg_group g left join lg.lg_daily_stock ds on ds.group_id = g.group_id order by g.group_favorites desc
     </select>
-    <select id="queryByScoreDesc" resultType="com.group8.entity.LgGroup">
+    <select id="queryByScoreDesc" resultMap="GroupComboMap">
         select g.group_id,
                g.group_name,
                g.group_sold,
@@ -214,7 +214,7 @@
                g.group_cover,
                ds.price from lg.lg_group g left join lg.lg_daily_stock ds on ds.group_id = g.group_id order by g.group_score desc
     </select>
-    <select id="queryBySlodDesc" resultType="com.group8.entity.LgGroup">
+    <select id="queryBySlodDesc" resultMap="GroupComboMap">
         select g.group_id,
                g.group_name,
                g.group_sold,
@@ -222,6 +222,15 @@
                g.group_favorites,
                g.group_cover,
                ds.price from lg.lg_group g left join lg.lg_daily_stock ds on ds.group_id = g.group_id order by g.group_sold desc
+    </select>
+    <select id="searchByKeyword" resultMap="GroupComboMap">
+        select g.group_id,
+               g.group_name,
+               g.group_sold,
+               g.group_score,
+               g.group_favorites,
+               g.group_cover,
+               ds.price from lg.lg_group g left join lg.lg_daily_stock ds on ds.group_id = g.group_id where g.group_name like concat('%', #{keyword}, '%')
     </select>
 
 </mapper>

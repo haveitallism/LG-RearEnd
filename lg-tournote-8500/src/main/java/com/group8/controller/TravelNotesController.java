@@ -1,5 +1,6 @@
 package com.group8.controller;
 
+import com.group8.dto.SearchHistory;
 import com.group8.entity.LgScenicspot;
 import com.group8.entity.LgTravelnotes;
 import com.group8.entity.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -64,6 +66,17 @@ public class TravelNotesController {
     @RequestMapping("/findLatestTravelNotes")
     public ResponseEntity<List<LgTravelnotes>> findLatestTravelNotes(){
         List<LgTravelnotes> lgTravelnotesList = travelNotesService.findLatestTravelNotes();
+        if (lgTravelnotesList != null) {
+            return new ResponseEntity<List<LgTravelnotes>>(200, "查询成功！", lgTravelnotesList);
+        } else {
+            return new ResponseEntity<List<LgTravelnotes>>(500,"查询失败！",null);
+        }
+    }
+
+    //根据关键字查询游记
+    @PostMapping("/searchByKeyword")
+    public ResponseEntity<List<LgTravelnotes>> searchByKeyword(@RequestBody SearchHistory searchHistory){
+        List<LgTravelnotes> lgTravelnotesList = travelNotesService.searchByKeyword(searchHistory.getKeyword());
         if (lgTravelnotesList != null) {
             return new ResponseEntity<List<LgTravelnotes>>(200, "查询成功！", lgTravelnotesList);
         } else {

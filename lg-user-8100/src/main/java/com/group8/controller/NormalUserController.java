@@ -1,6 +1,5 @@
 package com.group8.controller;
 
-import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.CircleCaptcha;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
@@ -14,15 +13,21 @@ import com.alibaba.fastjson.JSONObject;
 import com.group8.dto.UserCollects;
 import com.group8.dto.UserLoginForm;
 import com.group8.entity.*;
+import com.group8.feignClient.GroupClient;
+import com.group8.feignClient.OrderClient;
+import com.group8.feignClient.TravelNoteClient;
 import com.group8.service.NormalUserService;
 import com.group8.util.CommonUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,8 +44,15 @@ public class NormalUserController {
     @Autowired
     NormalUserService normalUserService;
 
-    //@Autowired
-    //TravelNoteClient tourNoteClient;
+    @Autowired
+    OrderClient orderClient;
+    @Autowired
+    GroupClient groupClient;
+    @Autowired
+    TravelNoteClient travelNoteClient;
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
     CircleCaptcha captcha;
 
@@ -254,6 +266,20 @@ public class NormalUserController {
         }
     }
 
+    /**
+     * 获取各状态订单的数量
+     * @param userId
+     * @return
+     */
+    @GetMapping("/getOrderCount/{userId}")
+    @ApiOperation(value = "获取订单数", notes = "根据id获取该用户未付款，已付款，未评价订单数")
+    public ResponseEntity<OrderNum> getOrderCount(@PathVariable("userId") int userId){
+        int unpaid = orderClient.getNotPayOrder(userId).getData().size();
+        int uncomment = orderClient.getNoCommentOrder(userId).getData().size();
+        OrderNum orderNum = new OrderNum(unpaid, uncomment);
+        return new ResponseEntity<>(200, "查询成功！", orderNum);
+    }
+
     @PostMapping("/browse")
     @ApiOperation(value = "记录浏览历史", notes = "查询详情后记录进浏览历史中")
     public void browse() {
@@ -262,35 +288,87 @@ public class NormalUserController {
         normalUserService.browse(browseHistory.getUserId(), browseHistory.getBrowsed());
     }
 
-    @PostMapping("/selectBrowsed/{userId}")
+    /**
+     * 根绝id查询浏览历史
+     * @param userId
+     * @return
+     */
+    @GetMapping("/selectBrowsed/{userId}")
     @ApiOperation(value = "查询浏览历史", notes = "查询详情后展示浏览历史")
     public ResponseEntity<List<Object>> selectBrowsed(@PathVariable("userId") long userId) {
         List<Object> list = normalUserService.selectBrowsed(userId);
         return new ResponseEntity<>(200, "查询成功", list);
     }
 
-
-    @GetMapping("/test")
-    public ResponseEntity<String> test() {
-        //定义图形验证码的长、宽、验证码字符数、干扰元素个数
-        captcha = CaptchaUtil.createCircleCaptcha(200, 100, 4, 20);
-        //CircleCaptcha captcha = new CircleCaptcha(200, 100, 4, 20);
-        //图形验证码写出，可以写出到文件，也可以写出到流
-        captcha.write("/Users/Comme_moi/Desktop/circle.png");
-        return null;
-    }
-
-
-    @GetMapping("/test1/{code}")
-    public ResponseEntity<String> test1(@PathVariable("code") String code) {
-        //验证图形验证码的有效性，返回boolean值
-        boolean verify = captcha.verify(code);
-        if (verify) {
-            return new ResponseEntity<>(200, "true", "true！");
-        } else {
-            return new ResponseEntity<>(500, "false", "false！");
+    /**
+     * 根绝id清除浏览历史
+     * @param userId
+     * @return
+     */
+    @GetMapping("/delBrowsed/{userId}")
+    @ApiOperation(value = "清除浏览历史", notes = "清除浏览历史")
+    public ResponseEntity<String> delBrowsed(@PathVariable("userId") long userId) {
+        Boolean delete = redisTemplate.delete("browse-" + userId);
+        if(delete){
+            return new ResponseEntity<>(200, "删除成功", "");
+        }else {
+            return new ResponseEntity<>(500, "删除失败", "");
         }
+
     }
+
+    @PostMapping("/searchByKeyword")
+    @ApiOperation(value = "查询功能", notes = "根据关键字查询")
+    public ResponseEntity<List<Object>> searchByKeyword(@RequestBody SearchHistory searchHistory){
+        // 将搜索记录放入redis(id不等于0才存入redis)
+        if(searchHistory.getId() != 0){
+            ZSetOperations<String, Object> zSetOperations = redisTemplate.opsForZSet();
+            String user = "search-" + searchHistory.getId();
+            String keyword = searchHistory.getKeyword();
+            Boolean add = zSetOperations.add(user, keyword, System.currentTimeMillis());
+        }
+        // 查询搜索结果
+        List<LgGroup> groupSearch = groupClient.searchByKeyword(searchHistory).getData();
+        List<LgTravelnotes> notesSearch = travelNoteClient.searchByKeyword(searchHistory).getData();
+        List<Object> searchList = new ArrayList<>();
+        if (groupSearch.size() != 0){
+            searchList.addAll(groupSearch);
+        }
+        if (notesSearch.size() != 0){
+            searchList.addAll(notesSearch);
+        }
+        return new ResponseEntity<>(200, "查询成功", searchList);
+    }
+
+    /**
+     * 根绝id查询搜索历史
+     * @param userId
+     * @return
+     */
+    @GetMapping("/selectSearched/{userId}")
+    @ApiOperation(value = "查询搜索历史", notes = "查询详情后展示搜索历史")
+    public ResponseEntity<List<String>> selectSearched(@PathVariable("userId") long userId) {
+        List<String> list = normalUserService.selectSearched(userId);
+        return new ResponseEntity<>(200, "查询成功", list);
+    }
+
+    /**
+     * 根绝id清除搜索历史
+     * @param userId
+     * @return
+     */
+    @GetMapping("/delSearched/{userId}")
+    @ApiOperation(value = "清除搜索历史", notes = "清除搜索历史")
+    public ResponseEntity<String> delSearched(@PathVariable("userId") long userId) {
+        Boolean delete = redisTemplate.delete("search-" + userId);
+        if(delete){
+            return new ResponseEntity<>(200, "删除成功", "");
+        }else {
+            return new ResponseEntity<>(500, "删除失败", "");
+        }
+
+    }
+
 
     /**
      * 用户收藏(团游，景点，游记）

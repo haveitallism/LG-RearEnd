@@ -52,5 +52,7 @@ public interface NormalUserService {
 
     LgNormalUser checkUserName(String userName);
 
+    List<String> selectSearched(long userId);
+
     List<UserCollects> showTypesCollects(UserCollects userCollects);
 }

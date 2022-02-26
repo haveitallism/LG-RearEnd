@@ -2,6 +2,7 @@ package com.group8.controller;
 
 import com.group8.dao.LgComboDao;
 import com.group8.dto.GroupAndComboDto;
+import com.group8.dto.SearchHistory;
 import com.group8.entity.LgCombo;
 import com.group8.entity.LgGroup;
 import com.group8.entity.ResponseEntity;
@@ -54,10 +55,20 @@ public class LgGroupController {
      * @param currentSortType 前端传递的条件
      * @return 集合
      */
-    @GetMapping("/featuredGroup")
-    public ResponseEntity<List<LgGroup>> featuredGroup(@RequestParam("currentSortType") String currentSortType){
+    @GetMapping("/featuredGroup/{currentSortType}")
+    public ResponseEntity<List<LgGroup>> featuredGroup(@PathVariable("currentSortType") String currentSortType){
         List<LgGroup> groupList = lgGroupService.featuredGroup(currentSortType);
-        if(!groupList.isEmpty()){
+        if(groupList != null){
+            return new ResponseEntity<>(200, "查询成功！", groupList);
+        }else {
+            return new ResponseEntity<>(500, "查询失败！", null);
+        }
+    }
+
+    @PostMapping("/searchByKeyword")
+    public ResponseEntity<List<LgGroup>> searchByKeyword(@RequestBody SearchHistory searchHistory){
+        List<LgGroup> groupList = lgGroupService.searchByKeyword(searchHistory.getKeyword());
+        if(groupList != null){
             return new ResponseEntity<>(200, "查询成功！", groupList);
         }else {
             return new ResponseEntity<>(500, "查询失败！", null);

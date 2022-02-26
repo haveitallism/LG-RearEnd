@@ -22,4 +22,6 @@ public interface TravelNotesDao {
     boolean addTravelNotes(LgTravelnotes travelnotes);
 
     List<LgTravelnotes> findLatestTravelNotes();
+
+    List<LgTravelnotes> searchByKeyword(@Param("keyword") String keyword);
 }

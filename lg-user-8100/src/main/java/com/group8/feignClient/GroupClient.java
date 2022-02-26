@@ -1,5 +1,6 @@
 package com.group8.feignClient;
 
+import com.group8.dto.SearchHistory;
 import com.group8.entity.LgGroup;
 import com.group8.entity.ResponseEntity;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -19,4 +20,6 @@ public interface GroupClient {
     @GetMapping("/featuredGroup")
     public ResponseEntity<List<LgGroup>> featuredGroup(@RequestParam("currentSortType") String currentSortType);
 
+    @PostMapping("/searchByKeyword")
+    public ResponseEntity<List<LgGroup>> searchByKeyword(@RequestBody SearchHistory searchHistory);
 }

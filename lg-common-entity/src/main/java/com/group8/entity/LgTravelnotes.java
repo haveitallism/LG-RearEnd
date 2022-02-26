@@ -22,5 +22,7 @@ public class LgTravelnotes {
     private int  notesStatus;
     private int createBy;
     private java.sql.Timestamp createTime;
+    // 游记发布者
+    private LgNormalUser user;
 
 }
