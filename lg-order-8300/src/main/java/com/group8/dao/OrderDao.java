@@ -1,5 +1,6 @@
 package com.group8.dao;
 
+import com.group8.dto.UserOrders;
 import com.group8.entity.LgGroup;
 import com.group8.entity.LgSalesPromotionActivity;
 import com.group8.entity.LgTourOrder;
@@ -26,13 +27,19 @@ public interface OrderDao {
 
     List<LgTourOrder> getAllOrder(LgTourOrder lgTourOrder);
 
-    List<LgTourOrder> getNotPayOrder(int userId);
+    List<UserOrders> getNotPayOrder(int userId);
 
-    List<LgTourOrder> getPayOrder(int userId);
+    List<UserOrders> getPayOrder(int userId);
 
-    List<LgTourOrder> getAllOrderById(int userId);
+    List<UserOrders> getAllOrderById(int userId);
 
-    List<LgTourOrder> getNoCommentOrder(int userId);
+    List<UserOrders> getNoCommentOrder(int userId);
 
     List<LgGroup> findGroup(String groupName);
+
+    List<UserOrders> getNOGoOrder(int userId);
+
+    void deleteOrder(int orderId);
+
+    LgTourOrder findOrderById(@Param("orderId") int orderId);
 }

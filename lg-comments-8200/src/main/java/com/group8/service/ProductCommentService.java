@@ -1,5 +1,6 @@
 package com.group8.service;
 
+import com.group8.dto.CommentResponse;
 import com.group8.entity.LgComment;
 
 import java.util.List;
@@ -11,9 +12,9 @@ public interface ProductCommentService {
      * @param fid
      * @param content
      */
-    void addProductComment(int pid, int uid,int fid,int mark,String content);
+    void addProductComment(int pid, int uid,int fid,int mark,String content,int oid);
 
-    List<LgComment> findAll(int id);
+    List<CommentResponse> findAll(int id,int userId);
 
     void update(int cid);
 

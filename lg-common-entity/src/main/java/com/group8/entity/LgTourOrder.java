@@ -26,5 +26,7 @@ public class LgTourOrder {
     private String updatedBy;
     private java.sql.Timestamp updatedTime;
     private long commentId;
+    // 商品名称
+    private String groupName;
 
 }

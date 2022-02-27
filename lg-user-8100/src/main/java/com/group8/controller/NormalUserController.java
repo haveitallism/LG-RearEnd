@@ -373,7 +373,7 @@ public class NormalUserController {
     /**
      * 用户收藏(团游，景点，游记）
      */
-    @GetMapping("/collect")
+    @PostMapping("/collect")
     public ResponseEntity<String> collectTravelNotes(@RequestBody Object collect){
         String collectJson = JSONObject.toJSONString(collect);
         //如果不包含userId

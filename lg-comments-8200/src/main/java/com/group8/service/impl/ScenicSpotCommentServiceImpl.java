@@ -18,9 +18,13 @@ public class ScenicSpotCommentServiceImpl implements ScenicSpotCommentService {
     public void addScenicSpotComment(int sid, int uid, int fid, String content) {
         LgComment lgComment = new LgComment(0,content,Integer.toString(fid),"0",Integer.toString(uid),new Timestamp(System.currentTimeMillis()),null);
         scenicSpotCommentDao.addScenicSpotComment(lgComment);
-        if(fid == 0){
-            scenicSpotCommentDao.addMiddule(sid,lgComment.getCommentId());
-        }
+        scenicSpotCommentDao.addMiddule(sid,lgComment.getCommentId());
+    }
+
+    @Override
+    public void replayScenicSpotComment(int id, int uid, int fid, int mark, String content) {
+        LgComment lgComment = new LgComment(0,content,Integer.toString(fid),"0",Integer.toString(uid),new Timestamp(System.currentTimeMillis()),null);
+        scenicSpotCommentDao.addScenicSpotComment(lgComment);
     }
 
     @Override
@@ -37,4 +41,6 @@ public class ScenicSpotCommentServiceImpl implements ScenicSpotCommentService {
     public void delete(int cid) {
         scenicSpotCommentDao.delete(cid);
     }
+
+
 }
