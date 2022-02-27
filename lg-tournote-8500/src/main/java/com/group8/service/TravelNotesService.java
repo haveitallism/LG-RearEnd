@@ -20,4 +20,6 @@ public interface TravelNotesService {
     List<LgTravelnotes> searchByKeyword(String keyword);
 
     List<LgTravelnotes> findAllTravelNotes();
+
+    List<LgTravelnotes> findUserTravelNotes(int userId);
 }
