@@ -6,6 +6,8 @@ import com.group8.entity.LgTravelnotes;
 import com.group8.entity.ResponseEntity;
 import com.group8.service.TravelNotesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,12 +27,17 @@ public class TravelNotesController {
     @Autowired
     TravelNotesService travelNotesService;
 
+    @Autowired
+    RedisTemplate redisTemplate;
 
     //根据id查询游记
-    @RequestMapping("/findTravelNotesById/{notesId}")
-    public ResponseEntity<LgTravelnotes> findTravelNotesById(@PathVariable int notesId){
+    @RequestMapping("/findTravelNotesById/{notesId}/{createdBy}")
+    public ResponseEntity<LgTravelnotes> findTravelNotesById(@PathVariable("notesId") int notesId,@PathVariable("createdBy") int createdBy){
         LgTravelnotes travelnotesInfo = travelNotesService.findTravelNotesById(notesId);
         if (travelnotesInfo != null) {
+            ZSetOperations zSetOperations = redisTemplate.opsForZSet();
+            zSetOperations.add("browse-"+createdBy,travelnotesInfo,System.currentTimeMillis());
+
             return new ResponseEntity<LgTravelnotes>(200, "查询成功！", travelnotesInfo);
         } else {
             return new ResponseEntity<LgTravelnotes>(500,"查询失败！",null);
@@ -66,6 +73,7 @@ public class TravelNotesController {
     @RequestMapping("/findLatestTravelNotes")
     public ResponseEntity<List<LgTravelnotes>> findLatestTravelNotes(){
         List<LgTravelnotes> lgTravelnotesList = travelNotesService.findLatestTravelNotes();
+        System.out.println(lgTravelnotesList);
         if (lgTravelnotesList != null) {
             return new ResponseEntity<List<LgTravelnotes>>(200, "查询成功！", lgTravelnotesList);
         } else {
@@ -77,6 +85,17 @@ public class TravelNotesController {
     @PostMapping("/searchByKeyword")
     public ResponseEntity<List<LgTravelnotes>> searchByKeyword(@RequestBody SearchHistory searchHistory){
         List<LgTravelnotes> lgTravelnotesList = travelNotesService.searchByKeyword(searchHistory.getKeyword());
+        if (lgTravelnotesList != null) {
+            return new ResponseEntity<List<LgTravelnotes>>(200, "查询成功！", lgTravelnotesList);
+        } else {
+            return new ResponseEntity<List<LgTravelnotes>>(500,"查询失败！",null);
+        }
+    }
+
+    //查询游记所有信息
+    @RequestMapping("/findAllTravelNotes")
+    public ResponseEntity<List<LgTravelnotes>> findAllTravelNotes(){
+        List<LgTravelnotes> lgTravelnotesList = travelNotesService.findAllTravelNotes();
         if (lgTravelnotesList != null) {
             return new ResponseEntity<List<LgTravelnotes>>(200, "查询成功！", lgTravelnotesList);
         } else {

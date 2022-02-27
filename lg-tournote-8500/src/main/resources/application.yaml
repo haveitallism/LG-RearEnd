@@ -8,7 +8,8 @@ spring:
     username: travel
     password: 123456
     hikari:
-      max-lifetime: 500000
+      max-lifetime: 50000
+
   servlet:
     multipart:
       max-file-size: 50MB
@@ -18,6 +19,19 @@ spring:
       server-addr: 127.0.0.1:8848
   application:
     name: lg-tourNote-8500
+
+  #redis配置
+  redis:
+    host: 162.14.112.78
+    password: 123
+    database: 1
+    port: 6379
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 5
+        min-idle: 0
+        max-wait: -1ms
 
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
