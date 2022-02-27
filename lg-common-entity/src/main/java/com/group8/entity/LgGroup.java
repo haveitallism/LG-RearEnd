@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -36,4 +37,6 @@ public class LgGroup {
     private LgBussinessUser bussinessUser;
     // 日库存对象集合
     private List<LgDailyStock> dailyStockList;
+    // 所有日期集合（不重复）
+    private Set<String> dateSet;
 }

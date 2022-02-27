@@ -131,5 +131,15 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.getNOGoOrder(userId);
     }
 
+    @Override
+    public void deleteOrder(int orderId) {
+        orderDao.deleteOrder(orderId);
+    }
+
+    @Override
+    public LgTourOrder findOrderById(int orderId) {
+        return orderDao.findOrderById(orderId);
+    }
+
 
 }

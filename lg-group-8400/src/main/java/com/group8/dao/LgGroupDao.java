@@ -1,6 +1,7 @@
 package com.group8.dao;
 
 import com.group8.dto.GroupAndComboDto;
+import com.group8.entity.LgDailyStock;
 import com.group8.entity.LgGroup;
 import org.apache.ibatis.annotations.Param;
 
@@ -78,4 +79,6 @@ public interface LgGroupDao {
     List<LgGroup> queryBySlodDesc();
 
     List<LgGroup> searchByKeyword(@Param("keyword") String keyword);
+
+    List<LgDailyStock> getDailyStock(@Param("groupId") Integer groupId);
 }

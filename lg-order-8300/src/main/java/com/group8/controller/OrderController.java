@@ -32,7 +32,7 @@ public class OrderController {
 
 
 
-    @PostConstruct
+    @RequestMapping("/start")
     public ResponseEntity<String> start(){
         List<LgSalesPromotionActivity> activities = orderService.getAllActivity();
         ListOperations opsForList = redisTemplate.opsForList();
@@ -96,5 +96,22 @@ public class OrderController {
     public ResponseEntity<List<UserOrders>> getNOGoOrder(@PathVariable("userId")int userId){
         List<UserOrders> list = orderService.getNOGoOrder(userId);
         return new ResponseEntity(200,"查询成功",list);
+    }
+
+    @RequestMapping("/deleteOrder/{orderId}")
+    public ResponseEntity<String> deleteOrder(@PathVariable("orderId") int orderId){
+        orderService.deleteOrder(orderId);
+        return new ResponseEntity<>(200,"删除成功","删除成功");
+    }
+
+    /**
+     * 根据订单id查询订单详情
+     * @param orderId 订单id
+     * @return 订单详情
+     */
+    @RequestMapping("/findOrderById/{orderId}")
+    public ResponseEntity<LgTourOrder> findOrderById(@PathVariable("orderId") int orderId){
+        LgTourOrder order = orderService.findOrderById(orderId);
+        return new ResponseEntity<>(200,"查询成功",order);
     }
 }

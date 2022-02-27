@@ -38,4 +38,8 @@ public interface OrderDao {
     List<LgGroup> findGroup(String groupName);
 
     List<UserOrders> getNOGoOrder(int userId);
+
+    void deleteOrder(int orderId);
+
+    LgTourOrder findOrderById(@Param("orderId") int orderId);
 }
