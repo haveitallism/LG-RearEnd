@@ -28,7 +28,7 @@ public class ProductCommentController {
      */
     @PostMapping("add")
     public ResponseEntity add(@RequestBody CommentAddDto commentAddDto){
-        productCommentService.addProductComment(commentAddDto.getId(), commentAddDto.getUid(), commentAddDto.getFid(), commentAddDto.getMark(), commentAddDto.getContent());
+        productCommentService.addProductComment(commentAddDto.getId(), commentAddDto.getUid(), commentAddDto.getFid(), commentAddDto.getMark(), commentAddDto.getContent(),commentAddDto.getOid());
         return new ResponseEntity(200,"ok","success");
     }
 
@@ -44,9 +44,9 @@ public class ProductCommentController {
      * @param id
      * @return
      */
-    @GetMapping("findAll/{id}")
-    public ResponseEntity findAll(@PathVariable int id){
-        List<CommentResponse> all = productCommentService.findAll(id);
+    @PostMapping("findAll/{id}/{userId}")
+    public ResponseEntity findAll(@PathVariable int id, @PathVariable int userId){
+        List<CommentResponse> all = productCommentService.findAll(id,userId);
         return new ResponseEntity(200,"ok",all);
     }
 

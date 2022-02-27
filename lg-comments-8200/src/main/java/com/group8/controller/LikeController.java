@@ -15,6 +15,7 @@ public class LikeController {
 
     @PostMapping("like")
     public ResponseEntity like(@RequestBody LgUserLike lgUserLike){
+        System.out.println(lgUserLike);
         if(lgUserLike.getStatus() == 1){
             likeCommentRedisService.saveLiked2Redis(lgUserLike.getLikedUserId(),lgUserLike.getLikedPostId());
             likeCommentRedisService.incrementLikedCount(lgUserLike.getLikedUserId());

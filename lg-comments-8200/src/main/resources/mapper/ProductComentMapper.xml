@@ -20,7 +20,7 @@
         <association property="headImg" column="create_by" javaType="String" select="getImg"></association>
         <association property="name" column="create_by" javaType="String" select="getUserName"></association>
         <association property="commentNum" column="comment_id" javaType="Integer" select="getCommentNum"></association>
-        <collection property="reply" column="comment_id" ofType="com.group8.dto.CommentReplayResponse" select="findSon"></collection>
+        <collection property="reply" column="{id = comment_id,uid = user_id}" ofType="com.group8.dto.CommentReplayResponse" select="findSon"></collection>
     </resultMap>
     <resultMap id="findAllSonMap" type="com.group8.dto.CommentReplayResponse">
         <id property="cid" column="comment_id" javaType="Integer"></id>
@@ -28,17 +28,21 @@
         <result property="comment" column="comment_content" javaType="String"></result>
         <result property="time" column="create_time"></result>
         <result property="like" column="praise_num" javaType="Integer"></result>
+        <result property="status" column="status" javaType="Integer"></result>
         <association property="from" column="create_by" javaType="String" select="getUserName"></association>
         <association property="fromHeadImg" column="create_by" javaType="String" select="getImg"></association>
         <association property="to" column="comment_fid" javaType="String" select="getToName"></association>
         <association property="toId" column="comment_fid" javaType="Integer" select="getToId"></association>
         <association property="commentNum" column="comment_id" javaType="Integer" select="getCommentNum"></association>
+
     </resultMap>
     <select id="findAll" resultMap="findAllMap">
-        select * from lg_comment where comment_id in (select cid from lg_comment_group where pid = #{pid} )
+        select passtable.*,lg_normal_user.user_id from (select commentResponse.*,lg_user_like.status from
+            (select * from lg_comment where comment_id in (select cid from lg_comment_group where pid = #{id} )) as commentResponse left join lg_user_like on
+            comment_id = liked_user_id and liked_post_id = #{uid}) as passtable left join lg_normal_user on user_id = #{uid}
     </select>
     <select id="findSon" resultMap="findAllSonMap">
-        select * from lg_comment where comment_fid =#{id} or comment_fid in (select comment_id from lg_comment where comment_fid = #{id})
+        select reply.*,lg_user_like.status from (select * from lg_comment where comment_fid =#{id} or comment_fid in (select comment_id from lg_comment where comment_fid = #{id})) as reply left join lg_user_like on comment_id = liked_user_id and liked_post_id = #{uid}
     </select>
     <select id="getImg" resultType="String">
         select user_head_img from lg_normal_user where user_id = #{create_by}
@@ -65,5 +69,9 @@
     </delete>
     <update id="updateProductMark">
         update lg_group set group_score = (select cast(AVG(mark) AS DECIMAL(10,2)) from lg_comment_group where pid = #{pid}) where group_id = #{pid}
+    </update>
+
+    <update id="updateOrderCommentId">
+        update lg_tour_order set comment_id = #{cid} where order_id = #{oid}
     </update>
 </mapper>
