@@ -41,7 +41,8 @@ public class ProductCommentController {
 
     /**
      * 查询所有评论
-     * @param id
+     * @param id    商品id
+     * @param userId 用户id
      * @return
      */
     @PostMapping("findAll/{id}/{userId}")

@@ -1,6 +1,7 @@
 package com.group8.controller;
 
 import com.group8.dto.CommentAddDto;
+import com.group8.dto.CommentResponse;
 import com.group8.entity.LgComment;
 import com.group8.entity.ResponseEntity;
 import com.group8.service.ProductCommentService;
@@ -45,9 +46,9 @@ public class ScenicSpotCommentController {
      * @param id
      * @return
      */
-    @GetMapping("findAll/{id}")
-    public ResponseEntity findAll(int id){
-        List<LgComment> all = scenicSpotCommentService.findAll(id);
+    @PostMapping("findAll/{id}/{userId}")
+    public ResponseEntity findAll(@PathVariable int id, @PathVariable int userId){
+        List<CommentResponse> all = scenicSpotCommentService.findAll(id,userId);
         return new ResponseEntity(200,"ok",all);
     }
 

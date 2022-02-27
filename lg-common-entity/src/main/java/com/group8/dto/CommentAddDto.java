@@ -11,7 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentAddDto {
-    int id;
+    int id; //商品id/攻略id/游记id
     int uid;
     int fid;
     int mark;//商品分数
