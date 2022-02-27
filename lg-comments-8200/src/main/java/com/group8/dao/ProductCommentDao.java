@@ -11,7 +11,7 @@ public interface ProductCommentDao {
 
     void addMiddule(@Param("pid") int pid, @Param("cid") long commentId, @Param("mark") int mark);
 
-    List<CommentResponse> findAll(int id);
+    List<CommentResponse> findAll(@Param("id") int id,@Param("uid") int userId);
     List<LgComment> findSon(int fid);
     String getImg();
     String getUserName();
@@ -24,4 +24,6 @@ public interface ProductCommentDao {
     void delete(int cid);
 
     void updateProductMark(int pid);
+
+    void updateOrderCommentId(@Param("oid") int oid, @Param("cid") long commentId);
 }
