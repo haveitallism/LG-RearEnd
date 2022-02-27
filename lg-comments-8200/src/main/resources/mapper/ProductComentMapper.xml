@@ -35,7 +35,7 @@
         <association property="commentNum" column="comment_id" javaType="Integer" select="getCommentNum"></association>
     </resultMap>
     <select id="findAll" resultMap="findAllMap">
-        select * from lg_comment where comment_id in (select cid from lg_comment_group where pid = #{pid} )
+        select * from lg_comment where comment_id in (select cid from lg_comment_group where pid = #{pid} ) order by create_time desc
     </select>
     <select id="findSon" resultMap="findAllSonMap">
         select * from lg_comment where comment_fid =#{id} or comment_fid in (select comment_id from lg_comment where comment_fid = #{id})

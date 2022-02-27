@@ -147,5 +147,10 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.findBookPerson(orderId);
     }
 
+    @Override
+    public LgTourOrder findOrderById(int orderId) {
+        return orderDao.findOrderById(orderId);
+    }
+
 
 }

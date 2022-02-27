@@ -45,4 +45,6 @@ public interface OrderDao {
     List<LgTourOrderPersonalInformation> getAllPersons(int orderId);
 
     List<LgTourOrder> findBookPerson(int orderId);
+
+    LgTourOrder findOrderById(@Param("orderId") int orderId);
 }

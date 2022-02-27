@@ -10,10 +10,7 @@ import com.group8.service.LgGroupService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * 跟团游项目(LgGroup)表服务实现类
@@ -37,7 +34,25 @@ public class LgGroupServiceImpl implements LgGroupService {
      */
     @Override
     public LgGroup queryById(Integer groupId) {
-        return this.lgGroupDao.queryById(groupId);
+        LgGroup group = lgGroupDao.queryById(groupId);
+        if(group != null){
+            List<LgDailyStock> dailyStockList = lgGroupDao.getDailyStock(groupId);
+            group.setDailyStockList(dailyStockList);
+            // 获取group最低价格设置回对象中
+            int[] priceArr = new int[group.getDailyStockList().size()];
+            // 获取去重后的所有日期
+            Set<String> dateSet = new HashSet<>();
+            if(!group.getDailyStockList().isEmpty()){
+                for (int i = 0; i < group.getDailyStockList().size(); i++) {
+                    priceArr[i] = group.getDailyStockList().get(i).getPrice();
+                    dateSet.add(group.getDailyStockList().get(i).getDailyStockDate().toString());
+                }
+                int min = ArrayUtil.min(priceArr);
+                group.setLowestPrice(min);
+                group.setDateSet(dateSet);
+            }
+        }
+        return group;
     }
 
     /**

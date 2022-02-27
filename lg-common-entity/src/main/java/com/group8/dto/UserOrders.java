@@ -15,4 +15,7 @@ public class UserOrders {
     private Date orderStartingTime;
     private double orderAmount;
     private long orderStatus;
+    private Date createdTime;
+    private long commentId;
+    private long orderPayoutStatus;
 }

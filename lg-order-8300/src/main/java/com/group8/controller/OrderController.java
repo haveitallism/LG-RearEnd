@@ -111,4 +111,15 @@ public class OrderController {
         List<LgTourOrder> list = orderService.findBookPerson(orderId);
         return new ResponseEntity(200,"查询成功",list);
     }
+
+    /**
+     * 根据订单id查询订单详情
+     * @param orderId 订单id
+     * @return 订单详情
+     */
+    @RequestMapping("/findOrderById/{orderId}")
+    public ResponseEntity<LgTourOrder> findOrderById(@PathVariable("orderId") int orderId){
+        LgTourOrder order = orderService.findOrderById(orderId);
+        return new ResponseEntity<>(200,"查询成功",order);
+    }
 }

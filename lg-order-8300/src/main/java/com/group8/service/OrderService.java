@@ -43,4 +43,6 @@ public interface OrderService {
     List<LgTourOrderPersonalInformation> getAllPersons(int orderId);
 
     List<LgTourOrder> findBookPerson(int orderId);
+
+    LgTourOrder findOrderById(int orderId);
 }
