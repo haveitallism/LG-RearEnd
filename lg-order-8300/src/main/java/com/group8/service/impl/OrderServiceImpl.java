@@ -5,6 +5,7 @@ import com.group8.dto.UserOrders;
 import com.group8.entity.LgGroup;
 import com.group8.entity.LgSalesPromotionActivity;
 import com.group8.entity.LgTourOrder;
+import com.group8.entity.LgTourOrderPersonalInformation;
 import com.group8.service.OrderService;
 import org.redisson.api.RedissonClient;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -134,6 +135,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deleteOrder(int orderId) {
         orderDao.deleteOrder(orderId);
+    }
+
+    @Override
+    public List<LgTourOrderPersonalInformation> getAllPersons(int orderId) {
+        return orderDao.getAllPersons(orderId);
+    }
+
+    @Override
+    public List<LgTourOrder> findBookPerson(int orderId) {
+        return orderDao.findBookPerson(orderId);
     }
 
     @Override

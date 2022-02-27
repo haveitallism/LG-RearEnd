@@ -96,4 +96,12 @@
     <delete id="deleteOrder" parameterType="int">
         delete from lg_tour_order where order_id = #{orderId}
     </delete>
+
+    <select id="getAllPersons" resultType="com.group8.entity.LgTourOrderPersonalInformation" parameterType="int">
+        select * from lg_tour_order_personal_information where order_id = #{orderId}
+    </select>
+
+    <select id="findBookPerson" parameterType="int" resultType="com.group8.entity.LgTourOrder">
+        select * from lg_tour_order where order_id = #{orderId}
+    </select>
 </mapper>

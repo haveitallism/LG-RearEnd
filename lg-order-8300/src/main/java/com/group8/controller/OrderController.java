@@ -4,10 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.group8.dto.OrderFindByPage;
 import com.group8.dto.UserOrders;
-import com.group8.entity.LgGroup;
-import com.group8.entity.LgSalesPromotionActivity;
-import com.group8.entity.LgTourOrder;
-import com.group8.entity.ResponseEntity;
+import com.group8.entity.*;
 import com.group8.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ListOperations;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 @RestController
@@ -102,6 +98,18 @@ public class OrderController {
     public ResponseEntity<String> deleteOrder(@PathVariable("orderId") int orderId){
         orderService.deleteOrder(orderId);
         return new ResponseEntity<>(200,"删除成功","删除成功");
+    }
+
+    @RequestMapping("/getAllPersons/{orderId}")
+    public ResponseEntity<LgTourOrderPersonalInformation> getAllPersons(@PathVariable("orderId") int orderId){
+        List<LgTourOrderPersonalInformation> list = orderService.getAllPersons(orderId);
+        return new ResponseEntity(200,"查询成功",list);
+    }
+
+    @RequestMapping("/findBookPerson/{orderId}")
+    public ResponseEntity<LgTourOrder> findBookPerson(@PathVariable("orderId") int orderId){
+        List<LgTourOrder> list = orderService.findBookPerson(orderId);
+        return new ResponseEntity(200,"查询成功",list);
     }
 
     /**
