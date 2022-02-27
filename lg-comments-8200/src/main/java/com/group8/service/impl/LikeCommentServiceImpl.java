@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -25,7 +26,7 @@ public class LikeCommentServiceImpl implements com.group8.service.LikeCommentSer
 
     @Override
     public void save(LgUserLike lgUserLike) {
-        lgUserLike.setCreateTime(new Date(System.currentTimeMillis()));
+        lgUserLike.setCreateTime(new Timestamp(System.currentTimeMillis()));
         userLikeCommentDao.save(lgUserLike);
     }
 

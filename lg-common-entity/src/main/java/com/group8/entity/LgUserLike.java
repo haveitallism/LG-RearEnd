@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Data
 @AllArgsConstructor
@@ -15,7 +16,7 @@ public class LgUserLike {
     private String likedUserId;
     private String likedPostId;
     private Integer status = CommentLikedStatusEnum.UNLIKE.getCode();
-    private Date createTime;
+    private Timestamp createTime;
     private java.sql.Timestamp updateTime;
     public LgUserLike(String likedUserId, String likedPostId, Integer status) {
         this.likedUserId = likedUserId;
