@@ -8,7 +8,8 @@ spring:
     username: travel
     password: 123456
     hikari:
-      max-lifetime: 500000
+      max-lifetime: 50000
+
   servlet:
     multipart:
       max-file-size: 50MB

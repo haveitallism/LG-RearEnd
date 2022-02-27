@@ -22,8 +22,9 @@
         insert into lg_travelnotes(notes_id,notes_url,notes_title,pass_scenicspot,travel_cost,travel_date,travel_time,notes_status,create_by,create_time)
         values(null,#{notesUrl},#{notesTitle},#{passScenicspot},#{travelCost},#{travelDate},#{travelTime},#{notesStatus},#{createBy},#{createTime})
     </insert>
-    <select id="findLatestTravelNotes" resultType="com.group8.entity.LgTravelnotes">
-        select * from lg_scenicspot order by created_time desc
+    <!--<select id="findLatestTravelNotes" resultType="com.group8.entity.LgTravelnotes">-->
+        <!--select * from lg_scenicspot order by created_time desc-->
+    <!--</select>-->
 
     <select id="findLatestTravelNotes" resultMap="noteUserMap">
         select n.notes_id,
@@ -62,4 +63,12 @@
             <result property="userHeadImg" column="user_head_img"/>
         </association>
     </resultMap>
+
+    <select id="findAllTravelNotes" resultType="LgTravelnotes">
+        select * from lg_travelnotes order by create_time desc
+    </select>
+
+    <update id="addBrowsenum">
+        update lg_travelnotes set browse_num =  IFNULL(browse_num,0)+1 where notes_id = #{notesId}
+    </update>
 </mapper>

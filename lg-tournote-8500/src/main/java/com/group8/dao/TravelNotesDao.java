@@ -24,4 +24,8 @@ public interface TravelNotesDao {
     List<LgTravelnotes> findLatestTravelNotes();
 
     List<LgTravelnotes> searchByKeyword(@Param("keyword") String keyword);
+
+    List<LgTravelnotes> findAllTravelNotes();
+
+    boolean addBrowsenum(int notesId);
 }

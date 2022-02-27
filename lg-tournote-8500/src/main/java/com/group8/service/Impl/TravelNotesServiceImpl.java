@@ -22,6 +22,7 @@ public class TravelNotesServiceImpl implements TravelNotesService {
     @Override
     public LgTravelnotes findTravelNotesById(int notesId) {
         LgTravelnotes notesInfo = travelNotesDao.findTravelNotesById(notesId);
+        travelNotesDao.addBrowsenum(notesId);
         return notesInfo;
     }
 
@@ -48,5 +49,10 @@ public class TravelNotesServiceImpl implements TravelNotesService {
     @Override
     public List<LgTravelnotes> searchByKeyword(String keyword) {
         return travelNotesDao.searchByKeyword(keyword);
+    }
+
+    @Override
+    public List<LgTravelnotes> findAllTravelNotes() {
+        return travelNotesDao.findAllTravelNotes();
     }
 }

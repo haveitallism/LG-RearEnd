@@ -66,6 +66,7 @@ public class TravelNotesController {
     @RequestMapping("/findLatestTravelNotes")
     public ResponseEntity<List<LgTravelnotes>> findLatestTravelNotes(){
         List<LgTravelnotes> lgTravelnotesList = travelNotesService.findLatestTravelNotes();
+        System.out.println(lgTravelnotesList);
         if (lgTravelnotesList != null) {
             return new ResponseEntity<List<LgTravelnotes>>(200, "查询成功！", lgTravelnotesList);
         } else {
@@ -77,6 +78,17 @@ public class TravelNotesController {
     @PostMapping("/searchByKeyword")
     public ResponseEntity<List<LgTravelnotes>> searchByKeyword(@RequestBody SearchHistory searchHistory){
         List<LgTravelnotes> lgTravelnotesList = travelNotesService.searchByKeyword(searchHistory.getKeyword());
+        if (lgTravelnotesList != null) {
+            return new ResponseEntity<List<LgTravelnotes>>(200, "查询成功！", lgTravelnotesList);
+        } else {
+            return new ResponseEntity<List<LgTravelnotes>>(500,"查询失败！",null);
+        }
+    }
+
+    //查询游记所有信息
+    @RequestMapping("/findAllTravelNotes")
+    public ResponseEntity<List<LgTravelnotes>> findAllTravelNotes(){
+        List<LgTravelnotes> lgTravelnotesList = travelNotesService.findAllTravelNotes();
         if (lgTravelnotesList != null) {
             return new ResponseEntity<List<LgTravelnotes>>(200, "查询成功！", lgTravelnotesList);
         } else {
