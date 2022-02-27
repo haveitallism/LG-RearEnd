@@ -70,4 +70,7 @@
     <update id="updateProductMark">
         update lg_group set group_score = (select cast(AVG(mark) AS DECIMAL(10,2)) from lg_comment_group where pid = #{pid}) where group_id = #{pid}
     </update>
+    <update id="updateOrderCommentId">
+        update lg_tour_order set comment_id = #{cid} where order_id = #{cid}
+    </update>
 </mapper>
