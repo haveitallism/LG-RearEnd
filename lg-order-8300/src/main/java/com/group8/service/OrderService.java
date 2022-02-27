@@ -38,4 +38,6 @@ public interface OrderService {
     List<UserOrders> getNOGoOrder(int userId);
 
     void deleteOrder(int orderId);
+
+    LgTourOrder findOrderById(int orderId);
 }

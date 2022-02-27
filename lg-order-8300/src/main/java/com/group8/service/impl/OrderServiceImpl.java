@@ -136,5 +136,10 @@ public class OrderServiceImpl implements OrderService {
         orderDao.deleteOrder(orderId);
     }
 
+    @Override
+    public LgTourOrder findOrderById(int orderId) {
+        return orderDao.findOrderById(orderId);
+    }
+
 
 }

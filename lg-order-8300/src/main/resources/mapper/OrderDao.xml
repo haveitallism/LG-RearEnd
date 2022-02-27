@@ -44,23 +44,28 @@
     </select>
     
     <select id="getNotPayOrder" parameterType="int" resultType="com.group8.dto.UserOrders">
-        select o.order_id,g.group_name,o.order_starting_time,o.order_amount,o.order_status from lg_tour_order o,lg_group g
-        where o.user_id = #{userId} and o.product_id = g.group_id and o.order_payout_status = 0
+        select o.order_id,g.group_name,o.order_starting_time,o.order_amount,o.order_status,o.created_time,
+               o.order_payout_status, o.comment_id from lg_tour_order o,lg_group g
+        where o.user_id = #{userId} and o.product_id = g.group_id and o.order_payout_status = 0 order by o.created_time desc
     </select>
 
     <select id="getPayOrder" parameterType="int" resultType="com.group8.dto.UserOrders">
-        select o.order_id,g.group_name,o.order_starting_time,o.order_amount,o.order_status from lg_tour_order o,lg_group g
-        where o.user_id = #{userId} and o.product_id = g.group_id and o.order_payout_status = 1
+        select o.order_id,g.group_name,o.order_starting_time,o.order_amount,o.order_status,o.created_time,
+               o.order_payout_status, o.comment_id from lg_tour_order o,lg_group g
+        where o.user_id = #{userId} and o.product_id = g.group_id and o.order_payout_status = 1 order by o.created_time desc
     </select>
 
     <select id="getAllOrderById" parameterType="int" resultType="com.group8.dto.UserOrders">
-        select o.order_id,g.group_name,o.order_starting_time,o.order_amount,o.order_status from lg_tour_order o,lg_group g
-        where o.user_id = #{userId} and o.product_id = g.group_id
+        select o.order_id,g.group_name,o.order_starting_time,o.order_amount,o.order_status,o.created_time,
+               o.order_payout_status, o.comment_id from lg_tour_order o,lg_group g
+        where o.user_id = #{userId} and o.product_id = g.group_id order by o.created_time desc
     </select>
 
     <select id="getNoCommentOrder" parameterType="int" resultType="com.group8.dto.UserOrders">
-        select o.order_id,g.group_name,o.order_starting_time,o.order_amount,o.order_status from lg_tour_order o,lg_group g
-        where o.user_id = #{userId} and o.product_id = g.group_id and o.comment_id = 0
+        select o.order_id,g.group_name,o.order_starting_time,o.order_amount,o.order_status,o.created_time,
+               o.order_payout_status, o.comment_id from lg_tour_order o,lg_group g
+        where o.user_id = #{userId} and o.product_id = g.group_id and
+              o.comment_id = 0 and o.order_payout_status = 1 order by o.created_time desc
     </select>
 
     <select id="getNOGoOrder" parameterType="int" resultType="com.group8.dto.UserOrders">
@@ -69,9 +74,24 @@
     </select>
 
     <select id="findGroup" parameterType="string" resultType="LgGroup">
-        select * from lg_group where group_name like '%#{groupName}%'
+        select * from lg_group where group_name like concat('%', #{groupName}, '%')
     </select>
-    
+    <select id="findOrderById" resultType="com.group8.entity.LgTourOrder">
+        select o.order_id,
+               o.product_id,
+               o.user_id,
+               o.order_child_num,
+               o.order_adult_num,
+               o.order_choose,
+               o.book_name,
+               o.book_tel,
+               o.order_starting_time,
+               o.order_amount,
+               o.order_payout_status,
+               o.created_time,
+               g.group_name from lg.lg_tour_order o, lg.lg_group g where order_id = #{orderId} and o.product_id = g.group_id
+    </select>
+
     <delete id="deleteOrder" parameterType="int">
         delete from lg_tour_order where order_id = #{orderId}
     </delete>

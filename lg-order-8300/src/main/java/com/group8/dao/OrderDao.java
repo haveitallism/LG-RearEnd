@@ -40,4 +40,6 @@ public interface OrderDao {
     List<UserOrders> getNOGoOrder(int userId);
 
     void deleteOrder(int orderId);
+
+    LgTourOrder findOrderById(@Param("orderId") int orderId);
 }
