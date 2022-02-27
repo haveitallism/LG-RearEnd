@@ -4,6 +4,7 @@ import com.group8.dto.UserOrders;
 import com.group8.entity.LgGroup;
 import com.group8.entity.LgSalesPromotionActivity;
 import com.group8.entity.LgTourOrder;
+import com.group8.entity.LgTourOrderPersonalInformation;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -40,6 +41,10 @@ public interface OrderDao {
     List<UserOrders> getNOGoOrder(int userId);
 
     void deleteOrder(int orderId);
+
+    List<LgTourOrderPersonalInformation> getAllPersons(int orderId);
+
+    List<LgTourOrder> findBookPerson(int orderId);
 
     LgTourOrder findOrderById(@Param("orderId") int orderId);
 }
