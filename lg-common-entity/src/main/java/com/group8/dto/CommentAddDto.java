@@ -15,6 +15,7 @@ public class CommentAddDto {
     int uid;
     int fid;
     int mark;//商品分数
+    int oid;
     String content;
     Date date;
     int praiseNum;

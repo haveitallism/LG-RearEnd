@@ -18,4 +18,6 @@ public interface TravelNotesService {
     List<LgTravelnotes> findLatestTravelNotes();
 
     List<LgTravelnotes> searchByKeyword(String keyword);
+
+    List<LgTravelnotes> findAllTravelNotes();
 }

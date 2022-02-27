@@ -44,7 +44,8 @@ public class ScenicController {
 
     //下载攻略
     @PostMapping("/downloadStrategy")
-    public ResponseEntity<String> downloadStrategy(DownFile file) {
+    public ResponseEntity<String> downloadStrategy(@RequestBody DownFile file) {
+        System.out.println(file);
         String strategy = scenicService.downloadStrategy(file);
         return new ResponseEntity<>(200, "下载成功！", strategy);
     }

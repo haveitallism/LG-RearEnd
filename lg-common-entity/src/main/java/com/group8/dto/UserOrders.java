@@ -11,6 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class UserOrders {
     private long orderId;
+    private long productId;
     private String groupName;
     private Date orderStartingTime;
     private double orderAmount;

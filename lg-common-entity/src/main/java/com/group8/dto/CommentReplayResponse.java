@@ -20,5 +20,6 @@ public class CommentReplayResponse {
     private Timestamp time;
     private int commentNum;
     private int like;
+    private int status;
     private boolean inputShow = false;
 }
