@@ -4,6 +4,7 @@ import com.group8.dto.UserOrders;
 import com.group8.entity.LgGroup;
 import com.group8.entity.LgSalesPromotionActivity;
 import com.group8.entity.LgTourOrder;
+import com.group8.entity.LgTourOrderPersonalInformation;
 
 import java.util.List;
 
@@ -38,4 +39,8 @@ public interface OrderService {
     List<UserOrders> getNOGoOrder(int userId);
 
     void deleteOrder(int orderId);
+
+    List<LgTourOrderPersonalInformation> getAllPersons(int orderId);
+
+    List<LgTourOrder> findBookPerson(int orderId);
 }
