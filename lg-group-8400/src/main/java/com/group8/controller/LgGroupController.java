@@ -44,8 +44,10 @@ public class LgGroupController {
     @GetMapping("selectOne/{groupId}/{userId}")
     public ResponseEntity<LgGroup> selectOne(@PathVariable("groupId") Integer groupId, @PathVariable("userId") Integer userId) {
         LgGroup lgGroup = lgGroupService.queryById(groupId);
-        ZSetOperations<String, Object> zSetOperations = redisTemplate.opsForZSet();
-        Boolean add = zSetOperations.add("browse-" + userId, lgGroup, System.currentTimeMillis());
+        if(userId != 0){
+            ZSetOperations<String, Object> zSetOperations = redisTemplate.opsForZSet();
+            Boolean add = zSetOperations.add("browse-" + userId, lgGroup, System.currentTimeMillis());
+        }
         return new ResponseEntity<>(200, "查询成功！", lgGroup);
     }
 
