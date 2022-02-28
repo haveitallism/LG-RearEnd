@@ -2,6 +2,7 @@ package com.group8.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.group8.dto.LgTourGroup;
 import com.group8.dto.OrderFindByPage;
 import com.group8.dto.UserOrders;
 import com.group8.entity.*;
@@ -9,10 +10,7 @@ import com.group8.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -121,5 +119,36 @@ public class OrderController {
     public ResponseEntity<LgTourOrder> findOrderById(@PathVariable("orderId") int orderId){
         LgTourOrder order = orderService.findOrderById(orderId);
         return new ResponseEntity<>(200,"查询成功",order);
+    }
+
+    @RequestMapping("/updatePayStatus/{orderId}")
+    public ResponseEntity<String> updatePayStatus(@PathVariable("orderId") int orderId){
+        orderService.updatePayStatus(orderId);
+        return new ResponseEntity<>(200,"修改成功","支付成功");
+    }
+
+    @RequestMapping("/buyGroup")
+    public ResponseEntity<Long> buyGroup(@RequestBody LgTourGroup lgTourGroup){
+        LgTourOrder lgTourOrder = new LgTourOrder();
+        lgTourOrder.setProductId(lgTourGroup.getGroupId());
+        lgTourOrder.setUserId(lgTourGroup.getUserId());
+        lgTourOrder.setOrderChoose(lgTourGroup.getGroupComboName());
+        lgTourOrder.setOrderStartingTime(lgTourGroup.getDateTime());
+        lgTourOrder.setOrderAmount(lgTourGroup.getPrice());
+        int i = orderService.buyGroup(lgTourOrder);
+        System.out.println(lgTourOrder.getOrderId());
+        return new ResponseEntity(200,"成功创建订单",lgTourOrder.getOrderId());
+    }
+    
+    @RequestMapping("/updateBook")
+    public ResponseEntity<String> updateBook(@RequestBody LgTourOrder lgTourOrder){
+        orderService.updateBook(lgTourOrder);
+        return new ResponseEntity<>(200,"修改成功","添加成功");
+    }
+
+    @RequestMapping("/addInFo")
+    public ResponseEntity addInFo(@RequestBody LgTourOrderPersonalInformation information){
+        orderService.addInfo(information);
+        return new ResponseEntity(200,"添加成功",null);
     }
 }

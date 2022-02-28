@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class LgTourOrderPersonalInformation {
 
     private long infoId;
-    private String orderId;
+    private long orderId;
     private String customerName;
     private String customerId;
     private String customerNationality;

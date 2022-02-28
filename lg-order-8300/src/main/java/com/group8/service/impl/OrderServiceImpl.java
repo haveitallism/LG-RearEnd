@@ -152,5 +152,25 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.findOrderById(orderId);
     }
 
+    @Override
+    public void updatePayStatus(int orderId) {
+        orderDao.updatePayStatus(orderId);
+    }
+
+    @Override
+    public int buyGroup(LgTourOrder lgTourOrder) {
+        return orderDao.buyGroup(lgTourOrder);
+    }
+
+    @Override
+    public void updateBook(LgTourOrder lgTourOrder) {
+        orderDao.updateBook(lgTourOrder);
+    }
+
+    @Override
+    public void addInfo(LgTourOrderPersonalInformation information) {
+        orderDao.addInfo(information);
+    }
+
 
 }

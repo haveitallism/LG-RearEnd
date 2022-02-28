@@ -45,4 +45,12 @@ public interface OrderService {
     List<LgTourOrder> findBookPerson(int orderId);
 
     LgTourOrder findOrderById(int orderId);
+
+    void updatePayStatus(int orderId);
+
+    int buyGroup(LgTourOrder lgTourOrder);
+
+    void updateBook(LgTourOrder lgTourOrder);
+
+    void addInfo(LgTourOrderPersonalInformation information);
 }

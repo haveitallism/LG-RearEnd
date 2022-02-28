@@ -47,4 +47,12 @@ public interface OrderDao {
     List<LgTourOrder> findBookPerson(int orderId);
 
     LgTourOrder findOrderById(@Param("orderId") int orderId);
+
+    void updatePayStatus(int orderId);
+
+    int buyGroup(LgTourOrder lgTourOrder);
+
+    void updateBook(LgTourOrder lgTourOrder);
+
+    void addInfo(LgTourOrderPersonalInformation information);
 }
