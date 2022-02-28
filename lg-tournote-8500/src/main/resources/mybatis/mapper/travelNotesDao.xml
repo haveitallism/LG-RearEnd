@@ -63,6 +63,9 @@
     <select id="findAllTravelNotes" resultType="LgTravelnotes">
         select * from lg_travelnotes order by create_time desc
     </select>
+    <select id="findUserTravelNotes" resultType="com.group8.entity.LgTravelnotes">
+        select * from lg.lg_travelnotes where create_by = #{userId} order by create_time desc
+    </select>
 
     <update id="addBrowsenum">
         update lg_travelnotes set browse_num =  IFNULL(browse_num,0)+1 where notes_id = #{notesId}

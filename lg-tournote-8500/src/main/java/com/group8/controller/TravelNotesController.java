@@ -102,4 +102,15 @@ public class TravelNotesController {
             return new ResponseEntity<List<LgTravelnotes>>(500,"查询失败！",null);
         }
     }
+
+    // 查询用户的游记
+    @RequestMapping("/findUserTravelNotes/{userId}")
+    public ResponseEntity<List<LgTravelnotes>> findUserTravelNotes(@PathVariable("userId") int userId){
+        List<LgTravelnotes> lgTravelnotesList = travelNotesService.findUserTravelNotes(userId);
+        if (lgTravelnotesList != null) {
+            return new ResponseEntity<List<LgTravelnotes>>(200, "查询成功！", lgTravelnotesList);
+        } else {
+            return new ResponseEntity<List<LgTravelnotes>>(500,"查询失败！",null);
+        }
+    }
 }

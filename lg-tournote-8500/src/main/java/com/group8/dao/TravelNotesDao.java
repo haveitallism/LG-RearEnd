@@ -28,4 +28,6 @@ public interface TravelNotesDao {
     List<LgTravelnotes> findAllTravelNotes();
 
     boolean addBrowsenum(int notesId);
+
+    List<LgTravelnotes> findUserTravelNotes(@Param("userId") int userId);
 }

@@ -55,4 +55,9 @@ public class TravelNotesServiceImpl implements TravelNotesService {
     public List<LgTravelnotes> findAllTravelNotes() {
         return travelNotesDao.findAllTravelNotes();
     }
+
+    @Override
+    public List<LgTravelnotes> findUserTravelNotes(int userId) {
+        return travelNotesDao.findUserTravelNotes(userId);
+    }
 }
