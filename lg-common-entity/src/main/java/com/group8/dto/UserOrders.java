@@ -13,7 +13,7 @@ public class UserOrders {
     private long orderId;
     private long productId;
     private String groupName;
-    private Date orderStartingTime;
+    private String orderStartingTime;
     private double orderAmount;
     private long orderStatus;
     private Date createdTime;
