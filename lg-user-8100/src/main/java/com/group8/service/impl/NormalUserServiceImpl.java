@@ -198,13 +198,6 @@ public class NormalUserServiceImpl implements NormalUserService {
         List<Object> arrayList = new ArrayList<>();
         set.forEach(item -> {
             arrayList.add(item);
-            if (item instanceof LgGroup) {
-                System.out.println("LgGroup");
-            } else if (item instanceof LgTravelnotes) {
-                System.out.println("LgTravelnotes");
-            } else if (item instanceof LgScenicspot) {
-                System.out.println("LgScenicspot");
-            }
         });
         return arrayList;
     }

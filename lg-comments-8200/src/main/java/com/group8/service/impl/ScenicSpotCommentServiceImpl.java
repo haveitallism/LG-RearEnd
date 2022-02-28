@@ -1,6 +1,7 @@
 package com.group8.service.impl;
 
 import com.group8.dao.ScenicSpotCommentDao;
+import com.group8.dto.CommentResponse;
 import com.group8.entity.LgComment;
 import com.group8.service.ScenicSpotCommentService;
 import org.springframework.stereotype.Service;
@@ -28,8 +29,8 @@ public class ScenicSpotCommentServiceImpl implements ScenicSpotCommentService {
     }
 
     @Override
-    public List<LgComment> findAll(int id) {
-        return scenicSpotCommentDao.findAll(id);
+    public List<CommentResponse> findAll(int id, int userId) {
+        return scenicSpotCommentDao.findAll(id,userId);
     }
 
     @Override

@@ -8,6 +8,9 @@ import com.group8.entity.LgGroup;
 import com.group8.entity.ResponseEntity;
 import com.group8.service.LgComboService;
 import com.group8.service.LgGroupService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -28,15 +31,23 @@ public class LgGroupController {
     @Resource
     private LgGroupService lgGroupService;
 
+    @Autowired
+    RedisTemplate redisTemplate;
+
     /**
      * 通过主键查询单条数据
      *
-     * @param id 主键
+     * @param groupId 商品id
+     * @param userId 用户id
      * @return 单条数据
      */
-    @GetMapping("selectOne/{id}")
-    public ResponseEntity<LgGroup> selectOne(@PathVariable Integer id) {
-        LgGroup lgGroup = lgGroupService.queryById(id);
+    @GetMapping("selectOne/{groupId}/{userId}")
+    public ResponseEntity<LgGroup> selectOne(@PathVariable("groupId") Integer groupId, @PathVariable("userId") Integer userId) {
+        LgGroup lgGroup = lgGroupService.queryById(groupId);
+        if(userId != 0){
+            ZSetOperations<String, Object> zSetOperations = redisTemplate.opsForZSet();
+            Boolean add = zSetOperations.add("browse-" + userId, lgGroup, System.currentTimeMillis());
+        }
         return new ResponseEntity<>(200, "查询成功！", lgGroup);
     }
 

@@ -1,6 +1,7 @@
 package com.group8.service.impl;
 
 import com.group8.dao.TravelNoteCommentDao;
+import com.group8.dto.CommentResponse;
 import com.group8.entity.LgComment;
 import com.group8.service.TravelNoteCommentService;
 import org.springframework.stereotype.Service;
@@ -41,9 +42,9 @@ public class TravelNoteCommentServiceImpl implements TravelNoteCommentService {
      * @return
      */
     @Override
-    public List<LgComment> findAll(int id) {
-        List<LgComment> lgComments = travelNoteCommentDao.findAll(id);
-        return lgComments;
+    public List<CommentResponse> findAll(int id, int userId) {
+        return travelNoteCommentDao.findAll(id,userId);
+
     }
 
     /**
